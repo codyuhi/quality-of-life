@@ -1,0 +1,141 @@
+:root {
+    --raisin-black: #2a2d34;
+    --bisque: #fae3c6;
+    --pewter-blue: #759aab;
+    --paradise-pink: #ee4266;
+    --cornflower-blue: #779be7;
+    --prussian-blue: #173753;
+    --white:#ffffff;
+    --platinum: #ebebeb;
+}
+
+*, html {
+    color: var(--raisin-black);
+}
+
+.navbar {
+    background-color: var(--cornflower-blue) !important;
+}
+
+i {
+    color: var(--paradise-pink);
+}
+
+button {
+    background-color: var(--prussian-blue) !important;
+    border: none !important;
+    color: var(--white) !important;
+    outline: none !important;
+}
+
+button:hover {
+    background-color: var(--pewter-blue) !important;
+}
+
+a.navbar-brand,
+a.nav-link {
+    color: var(--white) !important;
+}
+
+a.navbar-brand:hover,
+a.nav-link:hover {
+    color: var(--prussian-blue) !important;
+    cursor: pointer;
+}
+
+.loading-indicator {
+    display: none;
+}
+
+#search-text {
+    vertical-align: middle;
+    border: none;
+    padding: 5px 0 5px 5px;
+}
+
+#middle-container {
+    height: 90vh;
+    padding: 50px 0 0 0;
+    z-index: 1;
+}
+
+#middle {
+    height: inherit;
+}
+
+#sidebar-container {
+    height: inherit;
+    width: 0;
+    position: fixed;
+    z-index: 2;
+    background-color: var(--platinum);
+    overflow-x: hidden;
+    transition: 0.5s;
+}
+
+#sidebar-header {
+    padding: 25px 5px 15px 5px;
+}
+
+.search-entry {
+    margin: 5px 0 5px 0;
+}
+
+.search-entry:hover {
+    cursor: pointer;
+    color: var(--prussian-blue);
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+#content-container {
+    transition: .5s;
+}
+
+#searchbar-content-container {
+}
+
+#results-content-container {
+    display: none;
+}
+
+#error-message {
+    display: none;
+    color: var(--paradise-pink);
+    font-weight: bold;
+}
+
+#footer-container {
+    z-index: 3;
+    height: 10vh;
+    width: 100vw;
+    background-color: var(--cornflower-blue);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+}
+
+#footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#footer > p {
+    text-align: center;
+    margin: 0;
+    color: var(--white);
+}
+
+#footer > p > a {
+    color: var(--paradise-pink);
+}

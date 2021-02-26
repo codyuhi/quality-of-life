@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Bootstrap Import -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <!-- Font Awesome Import -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Set viewport width for responsive navbar -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" href="./img/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="./styles/style.css" />
+    <title>Quality of Life</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <a class="navbar-brand" href="#"><i class="fa fa-heartbeat"></i> Quality of Life</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" onclick="clearContent()">Clear Current Search <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="toggleSideBar()">Search History</a>
+                </li>
+                <li class="nav-item">
+                    <img src="./img/loading-indicator.gif" class="nav-link loading-indicator" />
+                </li>
+                <li class="nav-item">
+                    <input type="text" id="search-text" placeholder="Search" />
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick="search()">Search</button>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div id="middle-container">
+        <div id="middle">
+            <div id="sidebar-container">
+                <div id="sidebar">
+                    <div id="sidebar-search-history-container">
+                        <div id="sidebar-header">
+                            <h3>Search History:</h3>
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick="clearHistory()">Clear History</button>
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick="closeSideBar()">Close History</button>
+                        </div>
+                        <hr>
+                        <div id="sidebar-search-history"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="content-container" class="flex-column">
+                <div id="searchbar-content-container" class="flex-column">
+                    <div id="searchbar-content" class="flex-column">
+                        <h1><i class="fa fa-heartbeat"></i> Quality of Life</h1>
+                        <input type="text" id="main-content-search-text" placeholder="Search" />
+                        <p id="error-message"></p>
+                    </div>
+                </div>
+                <div id="results-content-container">
+                    <div id="results-content">
+                        <div id="location-image-container">
+                            <div id="location-image"></div>
+                        </div>
+                        <div id="location-name-container">
+                            <div id="location-name"></div>
+                        </div>
+                        <div id="location-info-container">
+                            <div id="country-info"></div>
+                            <div id="timezone-info"></div>
+                            <div id="urban-area-info"></div>
+                            <div id="alternate-names-info"></div>
+                            <div id="latitude-longitude-info"></div>
+                            <div id="population"></div>
+                        </div>
+                        <div id="adv-location-info-container">
+                            <div class="column">
+                                <div id="housing-rating"></div>
+                                <div id="startups-rating"></div>
+                                <div id="travel-connectivity-rating"></div>
+                                <div id="business-freedom-rating"></div>
+                                <div id="healthcare-rating"></div>
+                                <div id="environmental-quality-rating"></div>
+                                <div id="taxation-rating"></div>
+                            </div>
+                            <div class="column">
+                                <div id="cost-of-living-rating"></div>
+                                <div id="venture-capital-rating"></div>
+                                <div id="commute-rating"></div>
+                                <div id="safety-rating"></div>
+                                <div id="education-rating"></div>
+                                <div id="economy-rating"></div>
+                                <div id="internet-access"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="footer-container">
+        <div id="footer">
+            <p><a href="">Click here</a> to view this website's code on Github</p>
+            <p>&copy; Cody Uhi 2021</p>
+        </div>
+    </div>
+    <script src="./js/script.js"></script>
+    <!-- Bootstrap JS Dependencies -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
