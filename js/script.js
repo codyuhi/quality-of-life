@@ -11,6 +11,12 @@ window.addEventListener('load', function () {
     populateSearchHistory();
 });
 
+window.onresize = (event) => {
+    document.getElementById('sidebar-container').style.width === '250px' ?
+        openSideBar() : closeSideBar();
+    document.getElementById('footer-container').style.width = '100vw';
+}
+
 /**
  * This code block sets up an event listener for the Enter key on the search input
  * If the user presses the Enter key, this code block will call the search function
@@ -47,8 +53,9 @@ function searchListenerFunction(event, form) {
  *  - Endpoint 2
  *  - Endpoint 3
  */
-function search(entry) {
+async function search(entry) {
     populateErrorMessage();
+    closeSideBar();
     let searchText;
     entry ? searchText = entry : searchText = document.getElementById('search-text').value;
     if (!searchText) {
@@ -56,7 +63,66 @@ function search(entry) {
         populateErrorMessage('Please enter something in the search box ');
         return;
     }
-    updateSearchHistory(searchText);
+
+    try {
+        await getCityList(searchText);
+        document.getElementById('searchbar-content-container').style.display = 'none';
+        document.getElementById('results-content-container').style.display = 'flex';
+        console.log('middle height', document.getElementById('middle-container').offsetHeight);
+        console.log('results height', document.getElementById('results-content-container').offsetHeight)
+        if (document.getElementById('middle-container').clientHeight < document.getElementById('results-content-container').clientHeight) {
+            document.getElementById('middle-container').style.height = '100%';
+            document.getElementById('results-city-list').style.height = '100%';
+        } else {
+            document.getElementById('middle-container').style.height = '90vh';
+            document.getElementById('results-city-list').style.removeProperty('height');
+        }
+        document.getElementById('footer-container').style.height = '100px';
+        updateSearchHistory(searchText);
+    } catch (err) {
+        populateErrorMessage(err);
+    }
+    if ((isMobile() || isTablet()) && document.getElementById('nav-toggler').getAttribute('aria-expanded') === 'true') {
+        document.getElementById('nav-toggler').click();
+    }
+}
+
+function getCityList(value) {
+    const url = `https://api.teleport.org/api/cities/?search=${value}&limit=10`;
+    fetch(url)
+        .then((response) => {
+            return response.json();
+        })
+        .then((json) => {
+            if (json.count < 1) {
+                throw `No cities found with the name "${value}"`;
+            }
+            localStorage.queryResponse = JSON.stringify(json);
+            const resultsCityList = document.getElementById('results-city-list');
+            resultsCityList.innerHTML = '';
+            for (let i = 0; i < json._embedded['city:search-results'].length; i++) {
+                const city = json._embedded['city:search-results'][i];
+                const btn = document.createElement('button');
+                const text = document.createTextNode(city.matching_full_name);
+                btn.appendChild(text);
+                btn.classList.add('btn');
+                btn.classList.add('my-2');
+                btn.classList.add('my-sm-0');
+                btn.classList.add('city-list-button');
+                btn.onclick = function () { getCityInfo(city._links['city:item'].href) }
+                resultsCityList.appendChild(btn);
+                console.log(city.matching_full_name);
+                console.log(i);
+            }
+        })
+        .catch((err) => {
+            clearContent();
+            populateErrorMessage(err);
+        });
+}
+
+function getCityInfo(cityURL) {
+    console.log(cityURL);
 }
 
 /**
@@ -83,7 +149,7 @@ function clearHistory() {
 }
 
 function populateSearchHistory() {
-    if(!localStorage.searchHistory) {
+    if (!localStorage.searchHistory) {
         return;
     }
     let searchHistory = JSON.parse(localStorage.searchHistory);
@@ -93,7 +159,7 @@ function populateSearchHistory() {
         const text = document.createTextNode(item);
         li.appendChild(text);
         li.classList.add('search-entry');
-        li.onclick = function() {search()}
+        li.onclick = function () { search(item) }
         ul.appendChild(li);
     });
     document.getElementById('sidebar-search-history').innerHTML = '';
@@ -105,7 +171,7 @@ function populateSearchHistory() {
  */
 function populateErrorMessage(err) {
     const errElement = document.getElementById('error-message');
-    if(!err) {
+    if (!err) {
         errElement.innerHTML = '';
         errElement.style.display = 'none';
     } else {
@@ -118,12 +184,17 @@ function populateErrorMessage(err) {
  * This function clears the current search result off the screen and returns the content to be the default search prompt
  */
 function clearContent() {
+    if ((isMobile() || isTablet()) && document.getElementById('nav-toggler').getAttribute('aria-expanded') === 'true') {
+        document.getElementById('nav-toggler').click();
+    }
     // If there is no active search result on the screen, don't do anything
     if (document.getElementById('searchbar-content-container').style.display !== 'none') {
         return;
     }
     document.getElementById('results-content-container').style.display = 'none';
     document.getElementById('searchbar-content-container').style.display = 'flex';
+    document.getElementById('middle-container').style.height = '90vh';
+    document.getElementById('footer-container').style.height = '100px';
 }
 
 /**
@@ -132,6 +203,9 @@ function clearContent() {
 function toggleSideBar() {
     document.getElementById('sidebar-container').style.width === '250px' ?
         closeSideBar() : openSideBar();
+    if (isMobile() || isTablet()) {
+        document.getElementById('nav-toggler').click();
+    }
 }
 
 /**
@@ -140,9 +214,7 @@ function toggleSideBar() {
 function openSideBar() {
     document.getElementById('sidebar-container').style.width = '250px';
     document.getElementById('content-container').style.marginLeft = '250px';
-    if (!isMobile()) {
-        document.getElementById('content-container').style.width = `${document.getElementById('content-container').clientWidth - 250}px`;
-    }
+    document.getElementById('content-container').style.width = `${document.getElementById('middle-container').clientWidth - 250}px`;
 }
 
 /**

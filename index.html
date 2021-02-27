@@ -15,9 +15,9 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-        <a class="navbar-brand" href="#"><i class="fa fa-heartbeat"></i> Quality of Life</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <a class="navbar-brand" onclick="clearContent()"><i class="fa fa-heartbeat"></i> Quality of Life</a>
+        <button id="nav-toggler" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -48,6 +48,7 @@
                         <div id="sidebar-header">
                             <h3>Search History:</h3>
                             <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick="clearHistory()">Clear History</button>
+                            <br>
                             <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick="closeSideBar()">Close History</button>
                         </div>
                         <hr>
@@ -59,11 +60,17 @@
                 <div id="searchbar-content-container" class="flex-column">
                     <div id="searchbar-content" class="flex-column">
                         <h1><i class="fa fa-heartbeat"></i> Quality of Life</h1>
+                        <p>This application allows you to see several metrics regarding a place's quality of living.</p>
+                        <p>Use the search bar below or at the top to search for a city, country, or other location that you would like more information about.</p>
                         <input type="text" id="main-content-search-text" placeholder="Search" />
                         <p id="error-message"></p>
+                        <button id="main-search-button" class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick="search()">Search</button>
                     </div>
                 </div>
                 <div id="results-content-container">
+                    <div id="results-city-list-container">
+                        <div id="results-city-list"></div>
+                    </div>
                     <div id="results-content">
                         <div id="location-image-container">
                             <div id="location-image"></div>

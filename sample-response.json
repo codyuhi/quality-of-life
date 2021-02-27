@@ -1,0 +1,115 @@
+{
+  "_embedded": {
+    "city:search-results": [
+      {
+        "_links": {
+          "city:item": {
+            "href": "https://api.teleport.org/api/cities/geonameid:5780026/"
+          }
+        },
+        "matching_alternate_names": [
+          {
+            "name": "Provo"
+          },
+          {
+            "name": "Provo City"
+          },
+          {
+            "name": "Provou"
+          }
+        ],
+        "matching_full_name": "Provo, Utah, United States"
+      },
+      {
+        "_links": {
+          "city:item": {
+            "href": "https://api.teleport.org/api/cities/geonameid:461916/"
+          }
+        },
+        "matching_alternate_names": [
+          {
+            "name": "Provoj"
+          }
+        ],
+        "matching_full_name": "Zvenigovo, Mariy-El, Russia (Provoj)"
+      },
+      {
+        "_links": {
+          "city:item": {
+            "href": "https://api.teleport.org/api/cities/geonameid:6113828/"
+          }
+        },
+        "matching_alternate_names": [
+          {
+            "name": "Provost"
+          }
+        ],
+        "matching_full_name": "Provost, Alberta, Canada"
+      },
+      {
+        "_links": {
+          "city:item": {
+            "href": "https://api.teleport.org/api/cities/geonameid:11280829/"
+          }
+        },
+        "matching_alternate_names": [
+          {
+            "name": "Provodov-Sonov"
+          }
+        ],
+        "matching_full_name": "Provodov-Šonov, Královéhradecký, Czechia"
+      },
+      {
+        "_links": {
+          "city:item": {
+            "href": "https://api.teleport.org/api/cities/geonameid:3202567/"
+          }
+        },
+        "matching_alternate_names": [
+          {
+            "name": "Provo"
+          }
+        ],
+        "matching_full_name": "Cista Provo, Split-Dalmatia, Croatia (Provo)"
+      }
+    ]
+  },
+  "_links": {
+    "curies": [
+      {
+        "href": "https://developers.teleport.org/api/resources/Location/#!/relations/{rel}/",
+        "name": "location",
+        "templated": true
+      },
+      {
+        "href": "https://developers.teleport.org/api/resources/City/#!/relations/{rel}/",
+        "name": "city",
+        "templated": true
+      },
+      {
+        "href": "https://developers.teleport.org/api/resources/UrbanArea/#!/relations/{rel}/",
+        "name": "ua",
+        "templated": true
+      },
+      {
+        "href": "https://developers.teleport.org/api/resources/Country/#!/relations/{rel}/",
+        "name": "country",
+        "templated": true
+      },
+      {
+        "href": "https://developers.teleport.org/api/resources/Admin1Division/#!/relations/{rel}/",
+        "name": "a1",
+        "templated": true
+      },
+      {
+        "href": "https://developers.teleport.org/api/resources/Timezone/#!/relations/{rel}/",
+        "name": "tz",
+        "templated": true
+      }
+    ],
+    "self": {
+      "href": "https://api.teleport.org/api/cities/?search=provo&geohash="
+    }
+  },
+  "count": 5
+}
