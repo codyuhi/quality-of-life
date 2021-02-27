@@ -47,11 +47,8 @@ function searchListenerFunction(event, form) {
 }
 
 /**
- * This function performs the search functionality/logic to query all the endpoints that are required to support search functionality
- * The endpoints that are hit in the search process are (atleast 3):
- *  - Endpoint 1
- *  - Endpoint 2
- *  - Endpoint 3
+ * This function performs the search functionality/logic to query the first endpoint that is featured in this app
+ *  - Endpoint 1: GET list of cities by city name (more detail in the getCityList function)
  */
 async function search(entry) {
     populateErrorMessage();
@@ -68,8 +65,6 @@ async function search(entry) {
         await getCityList(searchText);
         document.getElementById('searchbar-content-container').style.display = 'none';
         document.getElementById('results-content-container').style.display = 'flex';
-        console.log('middle height', document.getElementById('middle-container').offsetHeight);
-        console.log('results height', document.getElementById('results-content-container').offsetHeight)
         if (document.getElementById('middle-container').clientHeight < document.getElementById('results-content-container').clientHeight) {
             document.getElementById('middle-container').style.height = '100%';
             document.getElementById('results-city-list').style.height = '100%';
@@ -87,6 +82,10 @@ async function search(entry) {
     }
 }
 
+/**
+ * This 
+ * @param {string} value 
+ */
 function getCityList(value) {
     const url = `https://api.teleport.org/api/cities/?search=${value}&limit=10`;
     fetch(url)
@@ -111,8 +110,6 @@ function getCityList(value) {
                 btn.classList.add('city-list-button');
                 btn.onclick = function () { getCityInfo(city._links['city:item'].href) }
                 resultsCityList.appendChild(btn);
-                console.log(city.matching_full_name);
-                console.log(i);
             }
         })
         .catch((err) => {
@@ -123,6 +120,32 @@ function getCityList(value) {
 
 function getCityInfo(cityURL) {
     console.log(cityURL);
+    fetch(cityURL)
+        .then((response) => {
+            return response.json();
+        })
+        .then((json) => {
+            console.log(json);
+            localStorage.test = JSON.stringify(json);
+            document.getElementById('results-city-list-container').style.display = 'none';
+            document.getElementById('results-content').style.display = 'flex';
+            document.getElementById('location-name').innerHTML = `<h2>${json.name}</h2>`;
+            let counter = 1;
+            let countryString = '';
+            while(json._links[`city:admin${counter}_division`]) {
+                countryString += json._links[`city:admin${counter}_division`].name + ', ';
+                counter++;
+            }
+            countryString += json._links['city:country'].name;
+            document.getElementById('country-info').innerHTML = `<p><i class="fa fa-globe dark"></i> ${countryString}</p>`;
+            document.getElementById('timezone-info').innerHTML = `<p><i class="fa fa-clock-o dark"></i> ${json._links['city:timezone'].name}</p>`;
+            document.getElementById('urban-area-info').innerHTML = `<p><i class="fa fa-building-o dark"></i> ${json._links['city:urban_area'].name}</p>`;
+            document.getElementById('alternate-names-info').innerHTML = `<p><i class="fa fa-id-badge dark"></i> ${json._links['city:']}`
+        })
+        .catch((err) => {
+            clearContent();
+            populateErrorMessage(err);
+        });
 }
 
 /**
@@ -192,6 +215,7 @@ function clearContent() {
         return;
     }
     document.getElementById('results-content-container').style.display = 'none';
+    document.getElementById('results-content').style.display = 'none';
     document.getElementById('searchbar-content-container').style.display = 'flex';
     document.getElementById('middle-container').style.height = '90vh';
     document.getElementById('footer-container').style.height = '100px';
