@@ -64,7 +64,9 @@ async function search(entry) {
     try {
         await getCityList(searchText);
         document.getElementById('searchbar-content-container').style.display = 'none';
+        document.getElementById('results-content').style.display = 'none';
         document.getElementById('results-content-container').style.display = 'flex';
+        document.getElementById('results-city-list-container').style.display = 'flex';
         if (document.getElementById('middle-container').clientHeight < document.getElementById('results-content-container').clientHeight) {
             document.getElementById('middle-container').style.height = '100%';
             document.getElementById('results-city-list').style.height = '100%';
@@ -108,7 +110,7 @@ function getCityList(value) {
                 btn.classList.add('my-2');
                 btn.classList.add('my-sm-0');
                 btn.classList.add('city-list-button');
-                btn.onclick = function () { getCityInfo(city._links['city:item'].href) }
+                btn.onclick = function () { getCityInfo(city._links['city:item'].href, i) }
                 resultsCityList.appendChild(btn);
             }
         })
@@ -118,15 +120,14 @@ function getCityList(value) {
         });
 }
 
-function getCityInfo(cityURL) {
+function getCityInfo(cityURL, index) {
     console.log(cityURL);
     fetch(cityURL)
         .then((response) => {
             return response.json();
         })
         .then((json) => {
-            console.log(json);
-            localStorage.test = JSON.stringify(json);
+            const cachedCity = JSON.parse(localStorage.queryResponse)._embedded['city:search-results'][index];
             document.getElementById('results-city-list-container').style.display = 'none';
             document.getElementById('results-content').style.display = 'flex';
             document.getElementById('location-name').innerHTML = `<h2>${json.name}</h2>`;
@@ -137,10 +138,17 @@ function getCityInfo(cityURL) {
                 counter++;
             }
             countryString += json._links['city:country'].name;
-            document.getElementById('country-info').innerHTML = `<p><i class="fa fa-globe dark"></i> ${countryString}</p>`;
-            document.getElementById('timezone-info').innerHTML = `<p><i class="fa fa-clock-o dark"></i> ${json._links['city:timezone'].name}</p>`;
-            document.getElementById('urban-area-info').innerHTML = `<p><i class="fa fa-building-o dark"></i> ${json._links['city:urban_area'].name}</p>`;
-            document.getElementById('alternate-names-info').innerHTML = `<p><i class="fa fa-id-badge dark"></i> ${json._links['city:']}`
+            document.getElementById('country-info').innerHTML = countryString ? `<p><i class="fa fa-globe dark"></i> ${countryString}</p>` : '';
+            document.getElementById('timezone-info').innerHTML = json._links['city:timezone'] ? `<p><i class="fa fa-clock-o dark"></i> ${json._links['city:timezone'].name}</p>` : '';
+            document.getElementById('urban-area-info').innerHTML = json._links['city:urban_area'] ? `<p><i class="fa fa-building-o dark"></i> ${json._links['city:urban_area'].name}</p>` : '';
+            let altNames = '';
+            for(let i = 0; i < cachedCity.matching_alternate_names.length; i++) {
+                if(i !== 0) {
+                    altNames += ', ';
+                }
+                altNames += cachedCity.matching_alternate_names[i].name;
+            }
+            document.getElementById('alternate-names-info').innerHTML = altNames ? `<p><i class="fa fa-id-badge dark"></i> ${altNames}</p>` : '';
         })
         .catch((err) => {
             clearContent();
@@ -212,6 +220,7 @@ function clearContent() {
     }
     // If there is no active search result on the screen, don't do anything
     if (document.getElementById('searchbar-content-container').style.display !== 'none') {
+        populateErrorMessage();
         return;
     }
     document.getElementById('results-content-container').style.display = 'none';
