@@ -9,12 +9,33 @@
     --platinum: #ebebeb;
 }
 
-*, html {
-    color: var(--raisin-black);
+html, body {
+    height: 100%;
 }
 
-body::-webkit-scrollbar {
-    display: none;
+#page-container,
+#page,
+#middle-container,
+#middle,
+#content-container,
+#results-content,
+#location-image-container,
+#location-name-container,
+#location-info-container,
+#adv-location-info-container,
+#adv-urban-area-detail-container {
+    justify-content: baseline !important;
+}
+
+*, html {
+    color: var(--raisin-black);
+    -webkit-box-sizing: initial;
+    -moz-box-sizing: initial;
+    box-sizing:content-box;
+}
+
+body {
+    overflow: visible;
 }
 
 .navbar {
@@ -51,7 +72,7 @@ a.nav-link:hover {
     background-color: var(--cornflower-blue) !important;
 }
 
-.loading-indicator {
+#loading-indicator {
     display: none;
 }
 
@@ -106,7 +127,14 @@ a.nav-link:hover {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100%;
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }
 
 #content-container {
@@ -117,6 +145,7 @@ a.nav-link:hover {
 
 #searchbar-content-container {
     overflow: auto;
+    margin-top: 150px;
 }
 
 #searchbar-content {
@@ -138,21 +167,30 @@ a.nav-link:hover {
     margin-top: 15px !important;
 }
 
-#error-message {
+#error-message,
+#missing-urban-area-message {
     display: none;
     color: var(--paradise-pink);
     font-weight: bold;
+    max-width: 90vw !important;
+    margin: 15px 15px 15px 15px;
+}
+
+#missing-urban-area-message > p {
+    color: var(--paradise-pink);
 }
 
 #results-content-container {
     display: none;
-    height: inherit;
+    height: auto;
     overflow: auto;
+    margin: 100px 0 150px 0;
 }
 
 #results-city-list-container {
     overflow: auto;
     max-width: 90vw;
+    height: 100%;
 }
 
 #results-city-list-label {
@@ -182,11 +220,53 @@ a.nav-link:hover {
 }
 
 #results-content {
-    
+    height: 100%;
 }
 
 .dark {
     color: var(--raisin-black) !important;
+}
+
+#location-name-container {
+    margin: 30px 30px 30px 30px;
+    text-align: center;
+}
+
+#location-info-container,
+#adv-location-info-container {
+    width: 80vw;
+    flex-wrap: wrap;
+    text-align: center;
+}
+
+#location-info-container > div,
+#adv-location-info-container > div,
+#adv-urban-area-detail-container > div {
+    height: auto;
+}
+
+#adv-location-info-container > div > div {
+    width: 100%;
+}
+
+#adv-urban-area-detail-container {
+    text-align: center;
+    width: 80vw;
+    height: 100%;
+}
+
+#perfrm-new-search-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+#perform-new-search {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #footer-container {
@@ -194,7 +274,8 @@ a.nav-link:hover {
     height: 8vh;
     width: 100vw;
     background-color: var(--cornflower-blue);
-    position: relative; 
+    position: fixed;
+    bottom: 0;
 }
 
 #footer {
@@ -219,7 +300,19 @@ a.nav-link:hover {
 }
 
 @media only screen and (min-width: 1092px) {
-    #results-city-list {
+    #results-city-list,
+    #results-content {
         height: auto;
+    }
+
+    #results-content {
+        margin: 0;
+    }
+
+    #location-info-container > div,
+    #adv-location-info-container > div,
+    #adv-urban-area-detail-container > div {
+        margin: 0 30px 30px 30px;
+        max-width: 25vw;
     }
 }

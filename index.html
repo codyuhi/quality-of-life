@@ -17,107 +17,136 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <a class="navbar-brand" onclick="clearContent()"><i class="fa fa-heartbeat"></i> Quality of Life</a>
-        <button id="nav-toggler" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button id="nav-toggler" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" onclick="clearContent()">Clear Current Search <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" onclick="clearContent()">Clear Current Search <span
+                            class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" onclick="toggleSideBar()">Search History</a>
                 </li>
                 <li class="nav-item">
-                    <img src="./img/loading-indicator.gif" class="nav-link loading-indicator" />
-                </li>
-                <li class="nav-item">
                     <input type="text" id="search-text" placeholder="Search" />
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick="search()">Search</button>
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit"
+                        onclick="search()">Search</button>
                 </li>
             </ul>
         </div>
     </nav>
-    <div id="middle-container">
-        <div id="middle">
-            <div id="sidebar-container">
-                <div id="sidebar">
-                    <div id="sidebar-search-history-container">
-                        <div id="sidebar-header">
-                            <h3>Search History:</h3>
-                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick="clearHistory()">Clear History</button>
-                            <br>
-                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick="closeSideBar()">Close History</button>
-                        </div>
-                        <hr>
-                        <div id="sidebar-search-history"></div>
-                    </div>
-                </div>
-            </div>
-            <div id="content-container" class="flex-column">
-                <div id="searchbar-content-container" class="flex-column">
-                    <div id="searchbar-content" class="flex-column">
-                        <h1><i class="fa fa-heartbeat"></i> Quality of Life</h1>
-                        <p>This application allows you to see several metrics regarding a place's quality of living.</p>
-                        <p>Use the search bar below or at the top to search for a city, country, or other location that you would like more information about.</p>
-                        <input type="text" id="main-content-search-text" placeholder="Search" />
-                        <p id="error-message"></p>
-                        <button id="main-search-button" class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick="search()">Search</button>
-                    </div>
-                </div>
-                <div id="results-content-container">
-                    <div id="results-city-list-container" class="flex-column">
-                        <div id="results-city-list-label" class="flex-column">
-                            <h2>Select the Desired City</h2>
-                        </div>
-                        <div id="results-city-list"></div>
-                    </div>
-                    <div id="results-content">
-                        <div id="location-image-container">
-                            <div id="location-image"></div>
-                        </div>
-                        <div id="location-name-container">
-                            <div id="location-name"></div>
-                        </div>
-                        <div id="location-info-container">
-                            <div id="country-info"></div>
-                            <div id="timezone-info"></div>
-                            <div id="urban-area-info"></div>
-                            <div id="alternate-names-info"></div>
-                            <div id="latitude-longitude-info"></div>
-                            <div id="population"></div>
-                        </div>
-                        <div id="adv-location-info-container">
-                            <div class="column">
-                                <div id="housing-rating"></div>
-                                <div id="startups-rating"></div>
-                                <div id="travel-connectivity-rating"></div>
-                                <div id="business-freedom-rating"></div>
-                                <div id="healthcare-rating"></div>
-                                <div id="environmental-quality-rating"></div>
-                                <div id="taxation-rating"></div>
-                            </div>
-                            <div class="column">
-                                <div id="cost-of-living-rating"></div>
-                                <div id="venture-capital-rating"></div>
-                                <div id="commute-rating"></div>
-                                <div id="safety-rating"></div>
-                                <div id="education-rating"></div>
-                                <div id="economy-rating"></div>
-                                <div id="internet-access"></div>
+    <div id="page-container" class="flex-column">
+        <div id="page" class="flex-column">
+            <div id="middle-container">
+                <div id="middle">
+                    <div id="sidebar-container">
+                        <div id="sidebar">
+                            <div id="sidebar-search-history-container">
+                                <div id="sidebar-header">
+                                    <h3>Search History:</h3>
+                                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit"
+                                        onclick="clearHistory()">Clear History</button>
+                                    <br>
+                                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit"
+                                        onclick="closeSideBar()">Close History</button>
+                                </div>
+                                <hr>
+                                <div id="sidebar-search-history"></div>
                             </div>
                         </div>
                     </div>
+                    <div id="content-container" class="flex-column">
+                        <div id="searchbar-content-container" class="flex-column">
+                            <div id="searchbar-content" class="flex-column">
+                                <h1><i class="fa fa-heartbeat"></i> Quality of Life</h1>
+                                <p>This application allows you to see several metrics regarding a city's quality of
+                                    living.</p>
+                                <p>Use the search bar below or at the top to search for a city that
+                                    you would like more information about.</p>
+                                <input type="text" id="main-content-search-text" placeholder="Search" />
+                                <p id="error-message"></p>
+                                <button id="main-search-button" class="btn btn-outline-success my-2 my-sm-0"
+                                    type="submit" onclick="search()">Search</button>
+                            </div>
+                        </div>
+                        <div id="results-content-container" class="flex-column">
+                            <div id="results-city-list-container" class="flex-column">
+                                <div id="results-city-list-label" class="flex-column">
+                                    <h2>Select the Desired City</h2>
+                                    <img id="loading-indicator" src="./img/loading-indicator.gif"
+                                        alt="Loading indicator" />
+                                </div>
+                                <div id="results-city-list"></div>
+                            </div>
+                            <div id="results-content">
+                                <div id="location-image-container" class="flex-column">
+                                    <div id="location-image"></div>
+                                </div>
+                                <div id="location-name-container" class="flex-column">
+                                    <div id="location-name"></div>
+                                </div>
+                                <div id="location-info-container" class="flex-row">
+                                    <div class="flex-column">
+                                        <div id="country-info"></div>
+                                        <div id="timezone-info"></div>
+                                        <div id="urban-area-info"></div>
+                                    </div>
+                                    <div class="flex-column">
+                                        <div id="alternate-names-info"></div>
+                                        <div id="latitude-longitude-info"></div>
+                                        <div id="population"></div>
+                                    </div>
+                                    <div id="missing-urban-area-message" class="flex-row">
+                                        <p>This city does not have any advanced Urban Area data on file</p>
+                                    </div>
+                                </div>
+                                <div id="adv-location-info-container" class="flex-row">
+                                    <div class="flex-column">
+                                        <div id="housing-rating" class="flex-row"></div>
+                                        <div id="startups-rating"></div>
+                                        <div id="travel-connectivity-rating"></div>
+                                        <div id="business-freedom-rating"></div>
+                                        <div id="healthcare-rating"></div>
+                                        <div id="environmental-quality-rating"></div>
+                                        <div id="taxation-rating"></div>
+                                    </div>
+                                    <div class="flex-column">
+                                        <div id="cost-of-living-rating"></div>
+                                        <div id="venture-capital-rating"></div>
+                                        <div id="commute-rating"></div>
+                                        <div id="safety-rating"></div>
+                                        <div id="education-rating"></div>
+                                        <div id="economy-rating"></div>
+                                        <div id="internet-access"></div>
+                                    </div>
+                                </div>
+                                <div id="adv-urban-area-detail-container" class="flex-column">
+
+                                </div>
+                                <div id="perform-new-search-container">
+                                    <div id="perform-new-search">
+                                        <button id="perform-new-search-btn" class="btn btn-outline-success my-2 my-sm-0"
+                                            type="submit" onclick="clearContent()">Perform New Search</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div id="footer-container" class="flex-column">
-        <div id="footer" class="flex-column">
-            <p><a href="">Click here</a> to view this website's code on Github</p>
-            <p>&copy; Cody Uhi 2021</p>
+            <div id="footer-container" class="flex-column">
+                <div id="footer" class="flex-column">
+                    <p><a href="https://github.com/codyuhi/quality-of-life">Click here</a> to view this website's code
+                        on Github
+                    </p>
+                    <p>&copy; Cody Uhi 2021</p>
+                </div>
+            </div>
         </div>
     </div>
     <script src="./js/script.js"></script>

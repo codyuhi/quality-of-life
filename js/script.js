@@ -60,23 +60,23 @@ async function search(entry) {
         populateErrorMessage('Please enter something in the search box ');
         return;
     }
+    document.getElementById('loading-indicator').style.display = 'block';
 
     try {
         await getCityList(searchText);
         document.getElementById('searchbar-content-container').style.display = 'none';
         document.getElementById('results-content').style.display = 'none';
+        document.getElementById('loading-indicator').style.display = 'none';
         document.getElementById('results-content-container').style.display = 'flex';
+        document.getElementById('results-city-list').innerHTML = '';
+        document.getElementById('adv-urban-area-detail-container').innerHTML = '';
         document.getElementById('results-city-list-container').style.display = 'flex';
-        if (document.getElementById('middle-container').clientHeight < document.getElementById('results-content-container').clientHeight) {
-            document.getElementById('middle-container').style.height = '100%';
-            document.getElementById('results-city-list').style.height = '100%';
-        } else {
-            document.getElementById('middle-container').style.height = '90vh';
-            document.getElementById('results-city-list').style.removeProperty('height');
-        }
+        document.getElementById('middle-container').style.height = '90vh';
+        document.getElementById('results-city-list').style.removeProperty('height');
         document.getElementById('footer-container').style.height = '100px';
         updateSearchHistory(searchText);
     } catch (err) {
+        document.getElementById('loading-indicator').style.display = 'none';
         populateErrorMessage(err);
     }
     if ((isMobile() || isTablet()) && document.getElementById('nav-toggler').getAttribute('aria-expanded') === 'true') {
@@ -120,8 +120,7 @@ function getCityList(value) {
         });
 }
 
-function getCityInfo(cityURL, index) {
-    console.log(cityURL);
+async function getCityInfo(cityURL, index) {
     fetch(cityURL)
         .then((response) => {
             return response.json();
@@ -129,31 +128,163 @@ function getCityInfo(cityURL, index) {
         .then((json) => {
             const cachedCity = JSON.parse(localStorage.queryResponse)._embedded['city:search-results'][index];
             document.getElementById('results-city-list-container').style.display = 'none';
-            document.getElementById('results-content').style.display = 'flex';
+            document.getElementById('results-content').style.display = 'block';
             document.getElementById('location-name').innerHTML = `<h2>${json.name}</h2>`;
             let counter = 1;
             let countryString = '';
-            while(json._links[`city:admin${counter}_division`]) {
+            while (json._links[`city:admin${counter}_division`]) {
                 countryString += json._links[`city:admin${counter}_division`].name + ', ';
                 counter++;
             }
             countryString += json._links['city:country'].name;
             document.getElementById('country-info').innerHTML = countryString ? `<p><i class="fa fa-globe dark"></i> ${countryString}</p>` : '';
-            document.getElementById('timezone-info').innerHTML = json._links['city:timezone'] ? `<p><i class="fa fa-clock-o dark"></i> ${json._links['city:timezone'].name}</p>` : '';
-            document.getElementById('urban-area-info').innerHTML = json._links['city:urban_area'] ? `<p><i class="fa fa-building-o dark"></i> ${json._links['city:urban_area'].name}</p>` : '';
+            document.getElementById('timezone-info').innerHTML = json._links['city:timezone'] ? `<p><i class="fa fa-clock-o dark"></i> Timezone: ${json._links['city:timezone'].name}</p>` : '';
+            if (json._links['city:urban_area']) {
+                document.getElementById('urban-area-info').innerHTML = `<p><i class="fa fa-building-o dark"></i> Urban Area: ${json._links['city:urban_area'].name}</p>`;
+                document.getElementById('missing-urban-area-message').style.display = 'none';
+            } else {
+                document.getElementById('urban-area-info').innerHTML = '';
+                document.getElementById('missing-urban-area-message').style.display = 'block';
+            }
             let altNames = '';
-            for(let i = 0; i < cachedCity.matching_alternate_names.length; i++) {
-                if(i !== 0) {
+            for (let i = 0; i < cachedCity.matching_alternate_names.length; i++) {
+                if (i !== 0) {
                     altNames += ', ';
                 }
                 altNames += cachedCity.matching_alternate_names[i].name;
             }
-            document.getElementById('alternate-names-info').innerHTML = altNames ? `<p><i class="fa fa-id-badge dark"></i> ${altNames}</p>` : '';
+            document.getElementById('alternate-names-info').innerHTML = altNames ? `<p><i class="fa fa-id-badge dark"></i> Alternate Names: ${altNames}</p>` : '';
+            document.getElementById('latitude-longitude-info').innerHTML = json.location ? `<p><i class="fa fa-map-marker dark"></i> Latitude: ${json.location.latlon.latitude}, Longitude: ${json.location.latlon.longitude}</p>` : '';
+            document.getElementById('population').innerHTML = json.population ? `<p><i class="fa fa-users dark"></i> Population: ${json.population}</p>` : '';
+            if (json._links['city:urban_area']) {
+                getAdvCityInfo(json._links['city:urban_area'].href);
+                document.getElementById('adv-location-info-container').style.display = 'flex';
+            } else {
+                document.getElementById('adv-location-info-container').style.display = 'none';
+            }
         })
         .catch((err) => {
             clearContent();
             populateErrorMessage(err);
         });
+}
+
+async function getAdvCityInfo(urbanAreaUrl) {
+    const url = urbanAreaUrl + 'scores';
+    fetch(url)
+        .then((response) => {
+            return response.json();
+        })
+        .then((json) => {
+            document.getElementById('housing-rating').innerHTML = '';
+            document.getElementById('housing-rating').appendChild(generateRating(json.categories[0].score_out_of_10, 'Housing'));
+            document.getElementById('startups-rating').innerHTML = '';
+            document.getElementById('startups-rating').appendChild(generateRating(json.categories[2].score_out_of_10, 'Startups'));
+            document.getElementById('travel-connectivity-rating').innerHTML = '';
+            document.getElementById('travel-connectivity-rating').appendChild(generateRating(json.categories[4].score_out_of_10, 'Travel Connectivity'));
+            document.getElementById('business-freedom-rating').innerHTML = '';
+            document.getElementById('business-freedom-rating').appendChild(generateRating(json.categories[6].score_out_of_10, 'Business Freedom'));
+            document.getElementById('healthcare-rating').innerHTML = '';
+            document.getElementById('healthcare-rating').appendChild(generateRating(json.categories[8].score_out_of_10, 'Healthcare'));
+            document.getElementById('environmental-quality-rating').innerHTML = '';
+            document.getElementById('environmental-quality-rating').appendChild(generateRating(json.categories[10].score_out_of_10, 'Environmental Quality'));
+            document.getElementById('taxation-rating').innerHTML = '';
+            document.getElementById('taxation-rating').appendChild(generateRating(json.categories[12].score_out_of_10, 'Taxation'));
+            document.getElementById('cost-of-living-rating').innerHTML = '';
+            document.getElementById('cost-of-living-rating').appendChild(generateRating(json.categories[1].score_out_of_10, 'Cost of Living'));
+            document.getElementById('venture-capital-rating').innerHTML = '';
+            document.getElementById('venture-capital-rating').appendChild(generateRating(json.categories[3].score_out_of_10, 'Venture Capital'));
+            document.getElementById('commute-rating').innerHTML = '';
+            document.getElementById('commute-rating').appendChild(generateRating(json.categories[5].score_out_of_10, 'Commute'));
+            document.getElementById('safety-rating').innerHTML = '';
+            document.getElementById('safety-rating').appendChild(generateRating(json.categories[7].score_out_of_10, 'Safety'));
+            document.getElementById('education-rating').innerHTML = '';
+            document.getElementById('education-rating').appendChild(generateRating(json.categories[9].score_out_of_10, 'Education'));
+            document.getElementById('economy-rating').innerHTML = '';
+            document.getElementById('economy-rating').appendChild(generateRating(json.categories[11].score_out_of_10, 'Economy'));
+            document.getElementById('internet-access').innerHTML = '';
+            document.getElementById('internet-access').appendChild(generateRating(json.categories[13].score_out_of_10, 'Internet Access'));
+            getUrbanAreaDetails(urbanAreaUrl);
+        })
+        .catch((err) => {
+            clearContent();
+            populateErrorMessage(err);
+        })
+}
+
+function getUrbanAreaDetails(urbanAreaUrl) {
+    const url = urbanAreaUrl + 'details';
+    fetch(url)
+        .then((response) => {
+            return response.json();
+        })
+        .then((json) => {
+            const urbanAreaDetailContainer = document.getElementById('adv-urban-area-detail-container');
+            json.categories.forEach((category) => {
+                const div = document.createElement('div');
+                const h3 = document.createElement('h3');
+                h3.appendChild(document.createTextNode(category.label));
+                h3.classList.add('urban-area-category-label');
+                div.appendChild(h3);
+                for(let i = 0; i < category.data.length; i++) {
+                    const childDiv = document.createElement('div');
+                    // childDiv.classList.add('flex-row');
+                    const p = document.createElement('p');
+                    let text = category.data[i].label + ': ';
+                    if(category.data[i].type === 'currency_dollar') {
+                        text += `$${category.data[i].currency_dollar_value}`;
+                    } else if(category.data[i].type === 'percent') {
+                        text += `${(category.data[i].percent_value * 100).toFixed(2)}%`;
+                    } else if(category.data[i].type === 'float') {
+                        if(typeof(category.data[i].float_value) === 'number') {
+                            text += (category.data[i].float_value).toFixed(2);
+                        } else {
+                            text += category.data[i].float_value
+                        }
+                    } else if(category.data[i].type === 'string') {
+                        text += category.data[i].string_value;
+                    } else if(category.data[i].type === 'int') {
+                        text += category.data[i].int_value;
+                    } else {
+                        continue;
+                    }
+                    p.appendChild(document.createTextNode(text));
+                    div.appendChild(p);
+                }
+                document.getElementById('adv-urban-area-detail-container').appendChild(div);
+            });
+        })
+        .catch((err) => {
+            clearContent();
+            populateErrorMessage(err);
+        })
+}
+
+function generateRating(number, ratingName) {
+    number /= 2;
+    const div = document.createElement('div');
+    div.classList.add('rating-div');
+    const ratingNameDiv = document.createElement('p');
+    ratingNameDiv.classList.add('rating-name');
+    ratingNameDiv.appendChild(document.createTextNode(`${ratingName}: `));
+    for (let i = 1; i <= number; i++) {
+        const star = document.createElement('i');
+        star.classList.add('fa', 'fa-star', 'dark');
+        ratingNameDiv.appendChild(star);
+    }
+    if(number % 1 !== 0) {
+        const halfStar = document.createElement('i');
+        halfStar.classList.add('fa', 'fa-star-half-o', 'dark');
+        ratingNameDiv.appendChild(halfStar);
+        number = Math.ceil(number);
+    }
+    for (let j = 0; j < (5 - number); j++) {
+        const emptyStar = document.createElement('i');
+        emptyStar.classList.add('fa', 'fa-star-o', 'dark');
+        ratingNameDiv.appendChild(emptyStar);
+    }
+    div.appendChild(ratingNameDiv);
+    return div;
 }
 
 /**
@@ -207,7 +338,7 @@ function populateErrorMessage(err) {
         errElement.style.display = 'none';
     } else {
         errElement.innerText = `Error: ${err}`;
-        errElement.style.display = 'flex';
+        errElement.style.display = 'block';
     }
 }
 
@@ -225,9 +356,7 @@ function clearContent() {
     }
     document.getElementById('results-content-container').style.display = 'none';
     document.getElementById('results-content').style.display = 'none';
-    document.getElementById('searchbar-content-container').style.display = 'flex';
-    document.getElementById('middle-container').style.height = '90vh';
-    document.getElementById('footer-container').style.height = '100px';
+    document.getElementById('searchbar-content-container').style.display = 'block';
 }
 
 /**
