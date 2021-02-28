@@ -72,10 +72,6 @@ a.nav-link:hover {
     background-color: var(--cornflower-blue) !important;
 }
 
-#loading-indicator {
-    display: none;
-}
-
 #search-text {
     vertical-align: middle;
     border: none;

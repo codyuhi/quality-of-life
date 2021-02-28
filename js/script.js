@@ -1,4 +1,16 @@
 /**
+ * This file contains network interactions with the Teleport API.  See docs for the API here:
+ * https://developers.teleport.org/
+ * This application performs 5 different API calls.  Those are:
+ *  1. Get list of cities by name (see https://developers.teleport.org/api/getting_started/#search_name).  This is performed in the getCityList function.
+ *  2. Get basic information about a city (see https://developers.teleport.org/api/getting_started/#city_info).  This is performed in the getCityInfo function.
+ *  3. Get quality of life data about an urban area (see https://developers.teleport.org/api/getting_started/#life_quality_ua).  This is performed in the getAdvCityInfo function.
+ *  4. Get detailed information about an urban area (see https://developers.teleport.org/api/reference/#!/urban_areas/getUrbanAreaDetails). This is performed in the getUrbanAreaDetails function.
+ *  5. Get image of the urban area (see https://developers.teleport.org/api/getting_started/#photos_ua).  This is performed in the getUrbanAreaImg function.
+ * For more information of how to use this app, please read the README.md file included in this repo
+ */
+
+/**
  * This listener executes its code when the page is finished loading
  * It will create event listeners for the search input boxes when the user types stuff in there
  * It will also populate the search history with the content that is in localstorage
@@ -11,6 +23,10 @@ window.addEventListener('load', function () {
     populateSearchHistory();
 });
 
+/**
+ * This code makes it so that the side bar's width/height properties can be adjusted if the user changes the screen size
+ * It also resizes the footer container to make sure that its width is always the width of the screen
+ */
 window.onresize = (event) => {
     document.getElementById('sidebar-container').style.width === '250px' ?
         openSideBar() : closeSideBar();
@@ -51,57 +67,63 @@ function searchListenerFunction(event, form) {
  *  - Endpoint 1: GET list of cities by city name (more detail in the getCityList function)
  */
 async function search(entry) {
+    // Hide the error message at the start of the new search
     populateErrorMessage();
     closeSideBar();
+    // If the search text was passed by the search history click event, use that search history's value
+    // Else, grab the value that the user has typed in the search box
     let searchText;
     entry ? searchText = entry : searchText = document.getElementById('search-text').value;
+    // If the search bar is empty and the user didn't click an item on the search history, don't perform the search
     if (!searchText) {
         clearContent();
         populateErrorMessage('Please enter something in the search box ');
         return;
     }
-    document.getElementById('loading-indicator').style.display = 'block';
-
+    
     try {
+        // Call the async function to get the list of cities that match the user's input
         await getCityList(searchText);
+        // When that's done, hide a bunch of the on screen elements and show other ones
         document.getElementById('searchbar-content-container').style.display = 'none';
         document.getElementById('results-content').style.display = 'none';
-        document.getElementById('loading-indicator').style.display = 'none';
         document.getElementById('results-content-container').style.display = 'flex';
         document.getElementById('results-city-list').innerHTML = '';
         document.getElementById('adv-urban-area-detail-container').innerHTML = '';
         document.getElementById('location-image').innerHTML = '';
         document.getElementById('results-city-list-container').style.display = 'flex';
-        document.getElementById('middle-container').style.height = '90vh';
-        document.getElementById('results-city-list').style.removeProperty('height');
-        document.getElementById('footer-container').style.height = '100px';
+        // Update the search history since this was a successful search
         updateSearchHistory(searchText);
     } catch (err) {
-        document.getElementById('loading-indicator').style.display = 'none';
+        // If something went wrong, display the error message on screen
         populateErrorMessage(err);
     }
+    // If the collapsed navbar is open, close it so the user can view the search results easier
     if ((isMobile() || isTablet()) && document.getElementById('nav-toggler').getAttribute('aria-expanded') === 'true') {
         document.getElementById('nav-toggler').click();
     }
 }
 
 /**
- * This 
+ * This function performs a GET request to query a list of cities based on a user-provided city name
  * @param {string} value 
  */
-function getCityList(value) {
-    const url = `https://api.teleport.org/api/cities/?search=${value}&limit=10`;
+async function getCityList(value) {
+    const url = `https://api.teleport.org/api/cities/?search=${value}`;
     fetch(url)
         .then((response) => {
             return response.json();
         })
         .then((json) => {
+            // If there are no cities found with that name, populate it on the screen as an error 
             if (json.count < 1) {
                 throw `No cities found with the name "${value}"`;
             }
+            // Cache this response in local storage for future use
             localStorage.queryResponse = JSON.stringify(json);
             const resultsCityList = document.getElementById('results-city-list');
             resultsCityList.innerHTML = '';
+            // For every city in the list, create a button for the user to select their intended city
             for (let i = 0; i < json._embedded['city:search-results'].length; i++) {
                 const city = json._embedded['city:search-results'][i];
                 const btn = document.createElement('button');
@@ -121,18 +143,26 @@ function getCityList(value) {
         });
 }
 
+/**
+ * This function is called when the user clicks the button for their intended city from the list of cities
+ * @param {string} cityURL 
+ * @param {int} index 
+ */
 async function getCityInfo(cityURL, index) {
     fetch(cityURL)
         .then((response) => {
             return response.json();
         })
         .then((json) => {
+            // Grab the cached data for the city that the user selected
+            // The cached data will be used to populate the alternate names element
             const cachedCity = JSON.parse(localStorage.queryResponse)._embedded['city:search-results'][index];
             document.getElementById('results-city-list-container').style.display = 'none';
             document.getElementById('results-content').style.display = 'block';
             document.getElementById('location-name').innerHTML = `<h2>${json.name}</h2>`;
             let counter = 1;
             let countryString = '';
+            // Grab all the admin divisions (i.e. states, counties, countries, barangays, prefectures, etc.)
             while (json._links[`city:admin${counter}_division`]) {
                 countryString += json._links[`city:admin${counter}_division`].name + ', ';
                 counter++;
@@ -140,6 +170,8 @@ async function getCityInfo(cityURL, index) {
             countryString += json._links['city:country'].name;
             document.getElementById('country-info').innerHTML = countryString ? `<p><i class="fa fa-globe dark"></i> ${countryString}</p>` : '';
             document.getElementById('timezone-info').innerHTML = json._links['city:timezone'] ? `<p><i class="fa fa-clock-o dark"></i> Timezone: ${json._links['city:timezone'].name}</p>` : '';
+            // If the city is associated with an urban area, populate the urban area element
+            // Else hide the element and inform the user that advanced data is not available for this city
             if (json._links['city:urban_area']) {
                 document.getElementById('urban-area-info').innerHTML = `<p><i class="fa fa-building-o dark"></i> Urban Area: ${json._links['city:urban_area'].name}</p>`;
                 document.getElementById('missing-urban-area-message').style.display = 'none';
@@ -147,6 +179,7 @@ async function getCityInfo(cityURL, index) {
                 document.getElementById('urban-area-info').innerHTML = '';
                 document.getElementById('missing-urban-area-message').style.display = 'block';
             }
+            // Get all the alternate names from the cached data (available in the previous GET request, not this current one)
             let altNames = '';
             for (let i = 0; i < cachedCity.matching_alternate_names.length; i++) {
                 if (i !== 0) {
@@ -154,9 +187,11 @@ async function getCityInfo(cityURL, index) {
                 }
                 altNames += cachedCity.matching_alternate_names[i].name;
             }
+            // Fill in the rest of the basic info
             document.getElementById('alternate-names-info').innerHTML = altNames ? `<p><i class="fa fa-id-badge dark"></i> Alternate Names: ${altNames}</p>` : '';
             document.getElementById('latitude-longitude-info').innerHTML = json.location ? `<p><i class="fa fa-map-marker dark"></i> Latitude: ${json.location.latlon.latitude}, Longitude: ${json.location.latlon.longitude}</p>` : '';
             document.getElementById('population').innerHTML = json.population ? `<p><i class="fa fa-users dark"></i> Population: ${json.population}</p>` : '';
+            // If the city is associated with an urban area, populate the advanced data and an image of the urban area
             if (json._links['city:urban_area']) {
                 getUrbanAreaImg(json._links['city:urban_area'].href);
                 getAdvCityInfo(json._links['city:urban_area'].href);
@@ -171,6 +206,13 @@ async function getCityInfo(cityURL, index) {
         });
 }
 
+/**
+ * This function gets more advanced data for the city if the city is associated with an urban area
+ * Since this data is only available for urban areas and not cities, this function is only called when the city has an urban area
+ * It is also called without any extra input from the user besides selecting the city with an urban area from the city list
+ * This function mostly just provides some ratings that compare the city's quality of life with other cities
+ * @param {string} urbanAreaUrl 
+ */
 async function getAdvCityInfo(urbanAreaUrl) {
     const url = urbanAreaUrl + 'scores';
     fetch(url)
@@ -178,6 +220,7 @@ async function getAdvCityInfo(urbanAreaUrl) {
             return response.json();
         })
         .then((json) => {
+            // Clear out the values for all the existing ratings and generate the ratings elements for each
             document.getElementById('housing-rating').innerHTML = '';
             document.getElementById('housing-rating').appendChild(generateRating(json.categories[0].score_out_of_10, 'Housing'));
             document.getElementById('startups-rating').innerHTML = '';
@@ -206,6 +249,7 @@ async function getAdvCityInfo(urbanAreaUrl) {
             document.getElementById('economy-rating').appendChild(generateRating(json.categories[11].score_out_of_10, 'Economy'));
             document.getElementById('internet-access').innerHTML = '';
             document.getElementById('internet-access').appendChild(generateRating(json.categories[13].score_out_of_10, 'Internet Access'));
+            // After these elements have been populated, send the request to get more advanced details (no user input)
             getUrbanAreaDetails(urbanAreaUrl);
         })
         .catch((err) => {
@@ -214,6 +258,12 @@ async function getAdvCityInfo(urbanAreaUrl) {
         })
 }
 
+/**
+ * This function gets more advanced details about the urban area.
+ * There is quite a bit of data returned from this operation, so this function iterates through all the data
+ * and puts it on screen for the user to browse through
+ * @param {string} urbanAreaUrl 
+ */
 async function getUrbanAreaDetails(urbanAreaUrl) {
     const url = urbanAreaUrl + 'details';
     fetch(url)
@@ -222,17 +272,21 @@ async function getUrbanAreaDetails(urbanAreaUrl) {
         })
         .then((json) => {
             const urbanAreaDetailContainer = document.getElementById('adv-urban-area-detail-container');
+            // For each data category, create an entry and populate it with the data
             json.categories.forEach((category) => {
                 const div = document.createElement('div');
                 const h3 = document.createElement('h3');
                 h3.appendChild(document.createTextNode(category.label));
                 h3.classList.add('urban-area-category-label');
                 div.appendChild(h3);
+                // For every sub-category within the category, populate its information
                 for (let i = 0; i < category.data.length; i++) {
                     const childDiv = document.createElement('div');
-                    // childDiv.classList.add('flex-row');
                     const p = document.createElement('p');
                     let text = category.data[i].label + ': ';
+                    // The data has a different schema based on the type of data,
+                    // So grab the data correctly based on type
+                    // If there is a type that isn't defined in these if statements, just ignore this sub-category
                     if (category.data[i].type === 'currency_dollar') {
                         text += `$${category.data[i].currency_dollar_value}`;
                     } else if (category.data[i].type === 'percent') {
@@ -262,6 +316,11 @@ async function getUrbanAreaDetails(urbanAreaUrl) {
         })
 }
 
+/**
+ * This function grabs an image of the urban area if the city is associated with an urban area
+ * This function is called without any extra user input besides selecting a city with an urban area from the city list 
+ * @param {string} urbanAreaUrl 
+ */
 function getUrbanAreaImg(urbanAreaUrl) {
     const url = urbanAreaUrl + 'images';
     fetch(url)
@@ -269,6 +328,7 @@ function getUrbanAreaImg(urbanAreaUrl) {
             return response.json();
         })
         .then((json) => {
+            // If there are no photos for this urban area, don't do anything
             if(json.photos && json.photos.length < 1) {
                 return;
             }
@@ -284,24 +344,36 @@ function getUrbanAreaImg(urbanAreaUrl) {
         })
 }
 
+/**
+ * This function generates a rating element which takes the original rating out of 10,
+ * and converts that rating into a 5 star rating
+ * The div containing this label and star rating is returned to the caller function
+ * @param {float} number 
+ * @param {string} ratingName 
+ */
 function generateRating(number, ratingName) {
+    // Take the out of 10 rating and convert it to an out of 5 rating
     number /= 2;
     const div = document.createElement('div');
     div.classList.add('rating-div');
+    // Label this rating based on the name of the attribute that the rating's for
     const ratingNameDiv = document.createElement('p');
     ratingNameDiv.classList.add('rating-name');
     ratingNameDiv.appendChild(document.createTextNode(`${ratingName}: `));
+    // For every whole number, generate a full star
     for (let i = 1; i <= number; i++) {
         const star = document.createElement('i');
         star.classList.add('fa', 'fa-star', 'dark');
         ratingNameDiv.appendChild(star);
     }
+    // If there is a decimal, generate a half star
     if (number % 1 !== 0) {
         const halfStar = document.createElement('i');
         halfStar.classList.add('fa', 'fa-star-half-o', 'dark');
         ratingNameDiv.appendChild(halfStar);
         number = Math.ceil(number);
     }
+    // For the remainder of the out of five rating, generate an empty star
     for (let j = 0; j < (5 - number); j++) {
         const emptyStar = document.createElement('i');
         emptyStar.classList.add('fa', 'fa-star-o', 'dark');
@@ -334,10 +406,15 @@ function clearHistory() {
     document.getElementById('sidebar-search-history').innerHTML = '';
 }
 
+/**
+ * This function populates the search history after it's been updated
+ */
 function populateSearchHistory() {
+    // If there is no search history, don't do anything
     if (!localStorage.searchHistory) {
         return;
     }
+    // For every item in the search history, generate a search entry and put it on the search history sidebar
     let searchHistory = JSON.parse(localStorage.searchHistory);
     const ul = document.createElement('ul');
     searchHistory.forEach((item) => {
