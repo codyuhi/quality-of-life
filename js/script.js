@@ -70,6 +70,7 @@ async function search(entry) {
         document.getElementById('results-content-container').style.display = 'flex';
         document.getElementById('results-city-list').innerHTML = '';
         document.getElementById('adv-urban-area-detail-container').innerHTML = '';
+        document.getElementById('location-image').innerHTML = '';
         document.getElementById('results-city-list-container').style.display = 'flex';
         document.getElementById('middle-container').style.height = '90vh';
         document.getElementById('results-city-list').style.removeProperty('height');
@@ -157,6 +158,7 @@ async function getCityInfo(cityURL, index) {
             document.getElementById('latitude-longitude-info').innerHTML = json.location ? `<p><i class="fa fa-map-marker dark"></i> Latitude: ${json.location.latlon.latitude}, Longitude: ${json.location.latlon.longitude}</p>` : '';
             document.getElementById('population').innerHTML = json.population ? `<p><i class="fa fa-users dark"></i> Population: ${json.population}</p>` : '';
             if (json._links['city:urban_area']) {
+                getUrbanAreaImg(json._links['city:urban_area'].href);
                 getAdvCityInfo(json._links['city:urban_area'].href);
                 document.getElementById('adv-location-info-container').style.display = 'flex';
             } else {
@@ -212,7 +214,7 @@ async function getAdvCityInfo(urbanAreaUrl) {
         })
 }
 
-function getUrbanAreaDetails(urbanAreaUrl) {
+async function getUrbanAreaDetails(urbanAreaUrl) {
     const url = urbanAreaUrl + 'details';
     fetch(url)
         .then((response) => {
@@ -226,24 +228,24 @@ function getUrbanAreaDetails(urbanAreaUrl) {
                 h3.appendChild(document.createTextNode(category.label));
                 h3.classList.add('urban-area-category-label');
                 div.appendChild(h3);
-                for(let i = 0; i < category.data.length; i++) {
+                for (let i = 0; i < category.data.length; i++) {
                     const childDiv = document.createElement('div');
                     // childDiv.classList.add('flex-row');
                     const p = document.createElement('p');
                     let text = category.data[i].label + ': ';
-                    if(category.data[i].type === 'currency_dollar') {
+                    if (category.data[i].type === 'currency_dollar') {
                         text += `$${category.data[i].currency_dollar_value}`;
-                    } else if(category.data[i].type === 'percent') {
+                    } else if (category.data[i].type === 'percent') {
                         text += `${(category.data[i].percent_value * 100).toFixed(2)}%`;
-                    } else if(category.data[i].type === 'float') {
-                        if(typeof(category.data[i].float_value) === 'number') {
+                    } else if (category.data[i].type === 'float') {
+                        if (typeof (category.data[i].float_value) === 'number') {
                             text += (category.data[i].float_value).toFixed(2);
                         } else {
                             text += category.data[i].float_value
                         }
-                    } else if(category.data[i].type === 'string') {
+                    } else if (category.data[i].type === 'string') {
                         text += category.data[i].string_value;
-                    } else if(category.data[i].type === 'int') {
+                    } else if (category.data[i].type === 'int') {
                         text += category.data[i].int_value;
                     } else {
                         continue;
@@ -253,6 +255,28 @@ function getUrbanAreaDetails(urbanAreaUrl) {
                 }
                 document.getElementById('adv-urban-area-detail-container').appendChild(div);
             });
+        })
+        .catch((err) => {
+            clearContent();
+            populateErrorMessage(err);
+        })
+}
+
+function getUrbanAreaImg(urbanAreaUrl) {
+    const url = urbanAreaUrl + 'images';
+    fetch(url)
+        .then((response) => {
+            return response.json();
+        })
+        .then((json) => {
+            if(json.photos && json.photos.length < 1) {
+                return;
+            }
+            const img = document.createElement('img');
+            img.src = json.photos[0].image.mobile;
+            img.alt = `Photo of the city by ${json.photos[0].attribution.photographer} taken from ${json.photos[0].attribution.source} under the ${json.photos[0].attribution.license} license`;
+            img.id = 'city-img';
+            document.getElementById('location-image').appendChild(img);
         })
         .catch((err) => {
             clearContent();
@@ -272,7 +296,7 @@ function generateRating(number, ratingName) {
         star.classList.add('fa', 'fa-star', 'dark');
         ratingNameDiv.appendChild(star);
     }
-    if(number % 1 !== 0) {
+    if (number % 1 !== 0) {
         const halfStar = document.createElement('i');
         halfStar.classList.add('fa', 'fa-star-half-o', 'dark');
         ratingNameDiv.appendChild(halfStar);

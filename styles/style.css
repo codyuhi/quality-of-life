@@ -227,6 +227,10 @@ a.nav-link:hover {
     color: var(--raisin-black) !important;
 }
 
+#city-img {
+    max-width: 80vw;
+}
+
 #location-name-container {
     margin: 30px 30px 30px 30px;
     text-align: center;
