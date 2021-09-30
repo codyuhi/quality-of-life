@@ -6,7 +6,7 @@ import Content from 'components/Content';
 import Footer from 'components/Footer';
 
 function App() {
-    const [searchTerm, setSearchTerm] = useState('Search Term')
+    const [searchTerm, setSearchTerm] = useState('')
     return (
         <div className="App">
             <Navbar updateSearchTerm={setSearchTerm} searchTerm={searchTerm} />
