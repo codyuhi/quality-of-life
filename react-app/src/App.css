@@ -1,0 +1,23 @@
+:root {
+    --darkest: #2a2d34;
+    --dark: #173753;
+    --neutral: #ebebeb;
+    --light: #fae3c6;
+    --lightest: #ffffff;
+    --pink: #ee4266;
+    --lightblue: #779be7;
+    --blue: #759aab;
+}
+
+.App {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+.center {
+    text-align: center;
+}
