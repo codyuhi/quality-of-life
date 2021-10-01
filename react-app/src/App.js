@@ -9,6 +9,7 @@ import Footer from 'components/Footer';
 function App() {
     const [searchTerm, setSearchTerm] = useState('')
     const [cityList, setCityList] = useState(null)
+    const [activeCity, setActiveCity] = useState(null)
 
     const search = () => {
         if (!searchTerm) {
@@ -29,10 +30,25 @@ function App() {
             })
     }
 
+    const getCityInfo = (cityUrl) => {
+        axios.get(cityUrl)
+            .then((response) => {
+                return response.data;
+            })
+            .then((data) => {
+                setActiveCity(data);
+            })
+            .catch((err) => {
+                console.error(err);
+            })
+    }
+
     return (
         <div className="App">
             <Navbar
                 updateSearchTerm={setSearchTerm}
+                updateCityList={setCityList}
+                updateActiveCity={setActiveCity}
                 searchTerm={searchTerm}
                 search={search}
             />
@@ -42,6 +58,8 @@ function App() {
                 searchTerm={searchTerm}
                 search={search}
                 cityList={cityList}
+                getCityInfo={getCityInfo}
+                activeCity={activeCity}
             />
             <Footer />
         </div>
