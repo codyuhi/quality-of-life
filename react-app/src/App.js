@@ -8,6 +8,7 @@ import Footer from 'components/Footer';
 
 function App() {
     const [searchTerm, setSearchTerm] = useState('')
+    const [searchHistory, setSearchHistory] = useState([])
     const [cityList, setCityList] = useState(null)
     const [activeCity, setActiveCity] = useState(null)
     const [advancedCityData, setAdvancedCityData] = useState(null)
@@ -24,6 +25,7 @@ function App() {
                 if (data.count < 1) {
                     throw Error(`No cities found with the name "${searchTerm}"`)
                 }
+                setSearchHistory([...searchHistory, data]);
                 setCityList(data);
             })
             .catch((err) => {
@@ -85,7 +87,9 @@ function App() {
                 searchTerm={searchTerm}
                 search={search}
             />
-            <Sidebar />
+            <Sidebar
+                searchHistory={searchHistory}
+            />
             <Content
                 updateSearchTerm={setSearchTerm}
                 searchTerm={searchTerm}
