@@ -17,6 +17,8 @@ export default class Navbar extends React.Component {
         this.props.updateSearchTerm((searchTerm) => '');
         this.props.updateCityList((cityList) => null);
         this.props.updateActiveCity((activeCity) => null);
+        this.props.updateCityImg((cityImg) => null);
+        this.props.updateAdvancedCityData((advancedCityData) => null);
     }
     render() {
         return (
