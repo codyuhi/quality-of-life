@@ -43,7 +43,7 @@ export default class Navbar extends React.Component {
                         <p>|</p>
                         <span>Search History</span>
                         <input type='text' value={this.props.searchTerm} onChange={this.setSearchTerm} placeholder="Search"></input>
-                        <button onClick={this.setSearchTerm}>Search</button>
+                        <button onClick={this.props.search}>Search</button>
                     </div>
                 </div>
             </div>

@@ -11,6 +11,7 @@ export default class Content extends React.Component {
                 <div className="Content center">
                     <h1>Content</h1>
                     <p>{this.props.searchTerm}</p>
+                    {this.props.cityList ? <p>{JSON.stringify(this.props.cityList)}</p> : <p>No City List</p>}
                     <button onClick={this.setSearchTerm}>Change search term</button>
                 </div>
             </div>
