@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
 import 'App.css';
 import Navbar from 'components/Navbar';
@@ -9,10 +9,18 @@ import Footer from 'components/Footer';
 function App() {
     const [searchTerm, setSearchTerm] = useState('')
     const [searchHistory, setSearchHistory] = useState([])
+    const [searchHistoryOpen, toggleSearchHistory] = useState(false)
     const [cityList, setCityList] = useState(null)
     const [activeCity, setActiveCity] = useState(null)
     const [advancedCityData, setAdvancedCityData] = useState(null)
     const [cityImg, setCityImg] = useState(null)
+
+    useEffect(() => {
+        if (localStorage.history) {
+            setSearchHistory(() => JSON.parse(localStorage.history))
+        }
+    }, [])
+
     const search = () => {
         if (!searchTerm) {
             return;
@@ -25,7 +33,13 @@ function App() {
                 if (data.count < 1) {
                     throw Error(`No cities found with the name "${searchTerm}"`)
                 }
-                setSearchHistory([...searchHistory, data]);
+                const history = localStorage.history ? JSON.parse(localStorage.history) : [];
+                if (history.includes(searchTerm)) {
+                    history.splice(history.indexOf(searchTerm), 1);
+                }
+                history.push(searchTerm);
+                localStorage.history = JSON.stringify(history);
+                setSearchHistory(history);
                 setCityList(data);
             })
             .catch((err) => {
@@ -80,6 +94,8 @@ function App() {
         <div className="App">
             <Navbar
                 updateSearchTerm={setSearchTerm}
+                searchHistoryOpen={searchHistoryOpen}
+                updateSearchHistoryOpen={toggleSearchHistory}
                 updateCityList={setCityList}
                 updateActiveCity={setActiveCity}
                 updateCityImg={setCityImg}
@@ -89,6 +105,11 @@ function App() {
             />
             <Sidebar
                 searchHistory={searchHistory}
+                clearSearchHistory={setSearchHistory}
+                updateSearchHistoryOpen={toggleSearchHistory}
+                searchHistoryOpen={searchHistoryOpen}
+                search={search}
+                updateSearchTerm={setSearchTerm}
             />
             <Content
                 updateSearchTerm={setSearchTerm}

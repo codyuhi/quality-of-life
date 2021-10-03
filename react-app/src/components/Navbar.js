@@ -3,6 +3,9 @@ import 'App.css';
 
 export default class Navbar extends React.Component {
     toggleMobileNav = () => {
+        if (this.props.searchHistoryOpen) {
+            this.props.updateSearchHistoryOpen((open) => false);
+        }
         const mobileNavButton = document.getElementById('Mobile-Nav-Button');
         mobileNavButton.classList.toggle('open');
         mobileNavButton.classList.toggle('closed');
@@ -13,12 +16,34 @@ export default class Navbar extends React.Component {
     setSearchTerm = (e) => {
         this.props.updateSearchTerm((searchTerm) => e.target.value)
     }
+    checkEnterPressed = (e) => {
+        if (e.keyCode === 13) {
+            this.props.search()
+            this.toggleMobileNav()
+        }
+    }
     clearCurrentSearch = () => {
         this.props.updateSearchTerm((searchTerm) => '');
         this.props.updateCityList((cityList) => null);
         this.props.updateActiveCity((activeCity) => null);
         this.props.updateCityImg((cityImg) => null);
         this.props.updateAdvancedCityData((advancedCityData) => null);
+    }
+    updateSearchHistory = () => {
+        this.props.updateSearchHistoryOpen((open) => !this.props.searchHistoryOpen)
+    }
+    mobileClearSearch = () => {
+        this.clearCurrentSearch();
+        this.toggleMobileNav();
+    }
+    mobileSearchHistory = () => {
+        this.updateSearchHistory()
+        this.toggleMobileNav()
+    }
+    mobileSearch = (e) => {
+        this.setSearchTerm(e)
+        this.props.search()
+        this.toggleMobileNav()
     }
     render() {
         return (
@@ -35,18 +60,18 @@ export default class Navbar extends React.Component {
                             <span></span>
                         </div>
                         <div id="Navbar-Mobile-Search-Dropdown" className="closed">
-                            <span onClick={this.clearCurrentSearch}>Clear Current Search</span>
+                            <span onClick={this.mobileClearSearch}>Clear Current Search</span>
                             <hr />
-                            <span>Search History</span>
-                            <input type='text' value={this.props.searchTerm} onChange={this.setSearchTerm} placeholder="Search"></input>
-                            <button onClick={this.setSearchTerm}>Search</button>
+                            <span onClick={this.mobileSearchHistory}>Search History</span>
+                            <input type='text' value={this.props.searchTerm} onChange={this.setSearchTerm} onKeyDown={this.checkEnterPressed} placeholder="Search"></input>
+                            <button onClick={this.mobileSearch}>Search</button>
                         </div>
                     </div>
                     <div className="Navbar-Search">
                         <span onClick={this.clearCurrentSearch}>Clear Current Search</span>
                         <p>|</p>
-                        <span>Search History</span>
-                        <input type='text' value={this.props.searchTerm} onChange={this.setSearchTerm} placeholder="Search"></input>
+                        <span onClick={this.updateSearchHistory}>Search History</span>
+                        <input type='text' value={this.props.searchTerm} onChange={this.setSearchTerm} onKeyDown={this.checkEnterPressed} placeholder="Search"></input>
                         <button onClick={this.props.search}>Search</button>
                     </div>
                 </div>
