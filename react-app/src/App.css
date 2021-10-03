@@ -206,6 +206,10 @@
     font-size: 15px;
 }
 
+#Navbar-Mobile-Search-Dropdown.open>input:focus {
+    outline-width: 0;
+}
+
 #Navbar-Mobile-Search-Dropdown.open>button {
     background-color: var(--dark);
     padding: 10px;
@@ -344,6 +348,107 @@
     cursor: pointer;
 }
 
+/* Content Styles */
+
+.Content-Container {
+    padding-top: 62px;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    max-width: 90vw;
+}
+
+.Content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.Hero-Container {
+    padding-bottom: 62px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.Hero-Container>h1>i {
+    color: var(--pink);
+}
+
+.Hero-Container>input {
+    border-radius: 5%;
+    border: 1px solid var(--darkest);
+    padding: 10px;
+    font-size: 15px;
+}
+
+.Hero-Container>input:focus {
+    outline-width: 0;
+}
+
+.Hero-Container>button {
+    background-color: var(--dark);
+    padding: 8px;
+    margin: 15px 5px 15px 15px;
+    border-radius: 5%;
+    border: none;
+    color: var(--lightest);
+    font-size: 15px;
+    transition: background-color .15s ease-in-out;
+}
+
+.Hero-Container>button:hover {
+    background-color: var(--blue);
+    cursor: pointer;
+}
+
+.City-List-Container {
+    position: fixed;
+    max-height: 100%;
+    width: 100%;
+    max-width: 90vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    overflow-y: scroll;
+}
+
+.List-Container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    max-width: 90vw;
+    max-height: 100%;
+}
+
+.City-List-Item {
+    background-color: var(--dark);
+    padding: 8px;
+    margin: 15px;
+    border-radius: 5%;
+    border: none;
+    color: var(--lightest);
+    font-size: 15px;
+    transition: background-color .15s ease-in-out;
+}
+
+.City-List-Item:hover {
+    background-color: var(--blue);
+    cursor: pointer;
+}
+
 @media only screen and (min-width: 780px) {
     .Navbar {
         align-items: center;
@@ -380,6 +485,9 @@
         padding: 8px;
         margin: 2px 10px 5px 10px;
         font-size: 15px;
+    }
+    .Navbar-Search>input:focus {
+        outline-width: 0;
     }
     .Navbar-Search>button {
         background-color: var(--dark);
