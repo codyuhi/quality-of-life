@@ -35,6 +35,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    z-index: 3;
 }
 
 .Navbar {
@@ -224,6 +225,123 @@
 
 .Sidebar-Container {
     margin-top: 62px;
+    height: 100%;
+    position: fixed;
+    z-index: 2;
+    background-color: var(--neutral);
+    overflow-x: hidden;
+    transition: all 0.5s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.Sidebar-Open {
+    min-width: 250px !important;
+    left: 0;
+    -webkit-animation: slideIn 0.35s forwards;
+    -moz-animation: slideIn 0.35s forwards;
+    animation: slideIn 0.35s forwards;
+}
+
+@-webkit-keyframes slideIn {
+    0% {
+        transform: translateX(-900px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@-moz-keyframes slideIn {
+    0% {
+        transform: translateX(-900px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideIn {
+    0% {
+        transform: translateX(-900px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.Sidebar-Container.Sidebar-Closed {
+    left: -900px;
+    -webkit-animation: slideOut 0.5s forwards;
+    -moz-animation: slideOut 0.5s forwards;
+    animation: slideOut 0.5s forwards;
+}
+
+@-webkit-keyframes slideOut {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-900px);
+    }
+}
+
+@-moz-keyframes slideOut {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-900px);
+    }
+}
+
+@keyframes slideOut {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-900px);
+    }
+}
+
+.Sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    margin: 5px 0 15px 0;
+}
+
+.Sidebar>h3, .Sidebar>button {
+    margin-left: 15px;
+}
+
+.Sidebar>button {
+    background-color: var(--dark);
+    padding: 8px;
+    margin: 0 5px 15px 15px;
+    border-radius: 5%;
+    border: none;
+    color: var(--lightest);
+    font-size: 15px;
+    transition: background-color .15s ease-in-out;
+}
+
+.Sidebar>button:hover {
+    background-color: var(--blue);
+    cursor: pointer;
+}
+
+.Sidebar>hr {
+    width: 100%;
+}
+
+.Sidebar>ul>li:hover {
+    color: var(--pink);
+    cursor: pointer;
 }
 
 @media only screen and (min-width: 780px) {
