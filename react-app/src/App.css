@@ -17,7 +17,7 @@
     justify-content: flex-start;
     align-items: center;
     width: 100vw;
-    height: 100vh;
+    /* height: 100vh; */
 }
 
 .center {
@@ -35,7 +35,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    z-index: 3;
+    z-index: 5;
 }
 
 .Navbar {
@@ -231,7 +231,7 @@
     margin-top: 62px;
     height: 100%;
     position: fixed;
-    z-index: 2;
+    z-index: 4;
     background-color: var(--neutral);
     overflow-x: hidden;
     transition: all 0.5s ease-in-out;
@@ -351,14 +351,12 @@
 /* Content Styles */
 
 .Content-Container {
-    padding-top: 62px;
-    position: fixed;
+    padding-top: 100px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 100%;
     max-width: 90vw;
 }
 
@@ -368,16 +366,15 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 100%;
 }
 
 .Hero-Container {
-    padding-bottom: 62px;
     text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    height: 70vh;
 }
 
 .Hero-Container>h1>i {
@@ -412,8 +409,7 @@
 }
 
 .City-List-Container {
-    position: fixed;
-    max-height: 100%;
+    height: 100%;
     width: 100%;
     max-width: 90vw;
     display: flex;
@@ -421,6 +417,12 @@
     justify-content: flex-start;
     align-items: center;
     overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.City-List-Container::-webkit-scrollbar {
+    display: none;
 }
 
 .List-Container {
@@ -430,7 +432,8 @@
     align-items: center;
     flex-wrap: wrap;
     max-width: 90vw;
-    max-height: 100%;
+    height: 100%;
+    z-index: 3;
 }
 
 .City-List-Item {
@@ -447,6 +450,69 @@
 .City-List-Item:hover {
     background-color: var(--blue);
     cursor: pointer;
+}
+
+.Active-City-Container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.Active-City-Column-Container, .Advanced-City-Column-Container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 90vw;
+}
+
+.Active-City-Column, .Advanced-City-Column {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.Active-City-Column>p, .Advanced-City-Column>p {
+    width: 80vw;
+}
+.Advanced-City-Column>p{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.City-Image {
+    width: 500px;
+    max-width: 90vw;
+    height: auto;
+    margin: 25px;
+}
+
+.Red {
+    font-style: italic;
+    font-weight: bold;
+    color: var(--pink);
+}
+
+.Error-Display-Active {
+    display: flex;
+    font-style: italic;
+    font-weight: bold;
+    color: var(--pink);
+}
+
+.Error-Display-Inactive {
+    display: none;
+}
+
+.Footer {
+    text-align: center;
+    margin: 35px;
 }
 
 @media only screen and (min-width: 780px) {
@@ -502,5 +568,19 @@
     .Navbar-Search>button:hover {
         background-color: var(--blue);
         cursor: pointer;
+    }
+    .Content-Container {
+        height: 100%;
+    }
+    .Hero-Container {
+        height: 70vh;
+    }
+    .Active-City-Column-Container, .Advanced-City-Column-Container {
+        max-width: 90vw;
+        width: 800px;
+    }
+    .Active-City-Column, .Active-City-Column>p, .Advanced-City-Column, .Advanced-City-Column>p {
+        max-width: 80vw;
+        width: 400px;
     }
 }

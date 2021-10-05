@@ -4,6 +4,7 @@ import 'App.css';
 export default class Sidebar extends React.Component {
     clearHistory = () => {
         this.props.clearSearchHistory(() => [])
+        localStorage.clear();
     }
     updateSearchHistoryOpen = () => {
         if (this.props.searchHistoryOpen) {
@@ -12,6 +13,7 @@ export default class Sidebar extends React.Component {
         this.props.updateSearchHistoryOpen(() => !this.props.searchHistoryOpen)
     }
     search = async (e) => {
+        this.props.updateSearchHistoryOpen(false)
         await this.props.updateSearchTerm(() => e.target.innerText)
         this.props.search()
     }

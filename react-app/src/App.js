@@ -4,7 +4,6 @@ import 'App.css';
 import Navbar from 'components/Navbar';
 import Sidebar from 'components/Sidebar';
 import Content from 'components/Content';
-import Footer from 'components/Footer';
 
 function App() {
     const [searchTerm, setSearchTerm] = useState('')
@@ -14,6 +13,7 @@ function App() {
     const [activeCity, setActiveCity] = useState(null)
     const [advancedCityData, setAdvancedCityData] = useState(null)
     const [cityImg, setCityImg] = useState(null)
+    const [activeError, setActiveError] = useState('')
 
     useEffect(() => {
         if (localStorage.history) {
@@ -25,6 +25,7 @@ function App() {
         if (!searchTerm) {
             return;
         }
+        setActiveCity(null)
         axios.get(`https://api.teleport.org/api/cities/?search=${searchTerm}`)
             .then((response) => {
                 return response.data;
@@ -41,9 +42,12 @@ function App() {
                 localStorage.history = JSON.stringify(history);
                 setSearchHistory(history);
                 setCityList(data);
+                setActiveError('');
             })
             .catch((err) => {
-                console.error(err);
+                const error = err;
+                console.error(error);
+                setActiveError(typeof (error) === 'string' ? error : error.toString());
             })
     }
 
@@ -60,7 +64,9 @@ function App() {
                 }
             })
             .catch((err) => {
-                console.error(err);
+                const error = err;
+                console.error(error);
+                setActiveError(typeof (error) === 'string' ? error : error.toString());
             })
     }
 
@@ -73,7 +79,9 @@ function App() {
                 setAdvancedCityData(data)
             })
             .catch((err) => {
-                console.error(err);
+                const error = err;
+                console.error(error);
+                setActiveError(typeof (error) === 'string' ? error : error.toString());
             })
     }
 
@@ -86,7 +94,9 @@ function App() {
                 setCityImg(data)
             })
             .catch((err) => {
-                console.error(err);
+                const error = err;
+                console.error(error);
+                setActiveError(typeof (error) === 'string' ? error : error.toString());
             })
     }
 
@@ -120,8 +130,8 @@ function App() {
                 activeCity={activeCity}
                 cityImg={cityImg}
                 advancedCityData={advancedCityData}
+                activeError={activeError}
             />
-            <Footer />
         </div>
     );
 }

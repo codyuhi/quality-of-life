@@ -6,7 +6,7 @@ export default class Footer extends React.Component {
         return (
             <div className="Footer-Container">
                 <div className="Footer center">
-                    <h1>Footer</h1>
+                    <p>&copy; Copyright Cody Uhi 2021</p>
                 </div>
             </div>
         )
