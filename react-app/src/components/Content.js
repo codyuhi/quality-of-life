@@ -106,6 +106,30 @@ export default class Content extends React.Component {
             return rating
         }
 
+        let advancedCityDetails = [];
+        if (this.props.urbanCityDetails) {
+            this.props.urbanCityDetails.categories.forEach((category) => {
+                advancedCityDetails.push(<hr />)
+                advancedCityDetails.push(<h3>{category.label}</h3>);
+                for (let i = 0; i < category.data.length; i++) {
+                    advancedCityDetails.push(<p>{`${category.data[i].label}: ${category.data[i].type === 'currency_dollar' ?
+                        `$${category.data[i].currency_dollar_value}` :
+                        category.data[i].type === 'percent' ?
+                            `${(category.data[i].percent_value * 100).toFixed(2)}%` :
+                            category.data[i].type === 'float' ?
+                                typeof (category.data[i].float_value) === 'number' ?
+                                    (category.data[i].float_value).toFixed(2) :
+                                    category.data[i].float_value :
+                                category.data[i].type === 'string' ?
+                                    category.data[i].string_value :
+                                    category.data[i].type === 'int' ?
+                                        category.data[i].int_value :
+                                        ''
+                        }`}</p>)
+                }
+            })
+        }
+
         const advancedCityData = (
             this.props.advancedCityData ?
                 <div className="Advanced-City-Container">
@@ -128,6 +152,9 @@ export default class Content extends React.Component {
                             <p>Economy:&nbsp;{generateRating(this.props.advancedCityData.categories[11].score_out_of_10)}</p>
                             <p>Internet Access:&nbsp;{generateRating(this.props.advancedCityData.categories[13].score_out_of_10)}</p>
                         </div>
+                    </div>
+                    <div className="Advanced-City-Details">
+                        {advancedCityDetails}
                     </div>
                 </div> :
                 ''
@@ -172,7 +199,7 @@ export default class Content extends React.Component {
                         </p>
                     </div>
                 </div>
-                {advancedCityData}
+                {advancedCityData ? advancedCityData : ''}
             </div> :
                 hero
         );
