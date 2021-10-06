@@ -465,7 +465,6 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    width: 90vw;
 }
 
 .Active-City-Column, .Advanced-City-Column {
@@ -484,6 +483,21 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
+}
+
+.Advanced-City-Details {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+}
+.Advanced-City-Details>* {
+    text-align: center;
+    max-width: 90vw;
+}
+.Advanced-City-Details>hr {
+    width: 100%;
 }
 
 .City-Image {

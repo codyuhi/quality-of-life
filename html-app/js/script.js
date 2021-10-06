@@ -274,6 +274,7 @@ async function getUrbanAreaDetails(urbanAreaUrl) {
             const urbanAreaDetailContainer = document.getElementById('adv-urban-area-detail-container');
             // For each data category, create an entry and populate it with the data
             json.categories.forEach((category) => {
+                console.log(category);
                 const div = document.createElement('div');
                 const h3 = document.createElement('h3');
                 h3.appendChild(document.createTextNode(category.label));

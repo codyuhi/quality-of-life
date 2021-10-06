@@ -12,6 +12,7 @@ function App() {
     const [cityList, setCityList] = useState(null)
     const [activeCity, setActiveCity] = useState(null)
     const [advancedCityData, setAdvancedCityData] = useState(null)
+    const [urbanCityDetails, setUrbanCityDetails] = useState(null)
     const [cityImg, setCityImg] = useState(null)
     const [activeError, setActiveError] = useState('')
 
@@ -61,6 +62,7 @@ function App() {
                 if (data._links['city:urban_area']) {
                     getCityImg(data._links['city:urban_area'].href)
                     getAdvancedCityInfo(data._links['city:urban_area'].href)
+                    getUrbanCityDetails(data._links['city:urban_area'].href)
                 }
             })
             .catch((err) => {
@@ -82,6 +84,21 @@ function App() {
                 const error = err;
                 console.error(error);
                 setActiveError(typeof (error) === 'string' ? error : error.toString());
+            })
+    }
+
+    const getUrbanCityDetails = (urbanAreaUrl) => {
+        axios.get(urbanAreaUrl + 'details')
+            .then((response) => {
+                return response.data;
+            })
+            .then((data) => {
+                setUrbanCityDetails(data);
+            })
+            .catch((err) => {
+                const error = err;
+                console.error(error);
+                setActiveError(typeof (error) === 'string' ? error : error.toString())
             })
     }
 
@@ -128,6 +145,7 @@ function App() {
                 cityList={cityList}
                 getCityInfo={getCityInfo}
                 activeCity={activeCity}
+                urbanCityDetails={urbanCityDetails}
                 cityImg={cityImg}
                 advancedCityData={advancedCityData}
                 activeError={activeError}
