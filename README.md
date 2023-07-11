@@ -57,3 +57,21 @@ The website calls the following API endpoints:
 - This endpoint returns information about where to access an image related to an urban area. The images available via this endpoint are associated with Creative Commons licenses and are legal for me to display on this site
 - This functionality is also triggered at the same time as API endpoint number two. The image that is returned by this operation is displayed along with the data that was provided by endpoint numbers three and four<br><br><img src='html-app/img/8.png' alt='picture of the urban area image'>
 - Like API endpoint numbers three and four, the city image will not load for the user if the city he/she selected is not associated with an urban area
+
+## Installation
+
+1. Clone the repo
+```
+git clone git@github.com:codyuhi/quality-of-life.git && cd quality-of-life
+```
+
+2. Build the Docker image
+```
+docker build -t game-deals .
+```
+3. Run the Docker container and expose a port for you to access from localhost
+```
+docker run -p 90:80 quality-of-life
+```
+4. Open a browser window and navigate to localhost and the port you opened
+   "http://localhost:90"
