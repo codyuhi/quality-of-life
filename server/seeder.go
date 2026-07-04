@@ -8,6 +8,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"net/url"
 	"regexp"
 	"strconv"
 	"strings"
@@ -57,7 +58,7 @@ func SeedDatabase() error {
 		metadata, err := resolveCityMetadata(city.Name, city.Country)
 		if err != nil {
 			log.Printf("[Seeder] Warning: could not resolve metadata for %s: %v. Using fallbacks.", city.Name, err)
-			metadata = getDefaultMetadata(city.Name, city.Country, city.Continent)
+			metadata = getDefaultMetadata(city.Name, city.Country, city.Continent, i)
 		}
 
 		city.GeonameID = metadata.GeonameID
@@ -178,7 +179,7 @@ type GeoDBMetadata struct {
 
 func resolveCityMetadata(cityName, countryName string) (*GeoDBMetadata, error) {
 	// 1. Search city to get ID
-	searchURL := fmt.Sprintf("http://geodb-free-service.wirefreethought.com/v1/geo/cities?namePrefix=%s&limit=1", cityName)
+	searchURL := fmt.Sprintf("http://geodb-free-service.wirefreethought.com/v1/geo/cities?namePrefix=%s&limit=1", url.QueryEscape(cityName))
 	
 	client := &http.Client{Timeout: 10 * time.Second}
 	resp, err := client.Get(searchURL)
@@ -257,9 +258,9 @@ func resolveCityMetadata(cityName, countryName string) (*GeoDBMetadata, error) {
 	}, nil
 }
 
-func getDefaultMetadata(cityName, countryName, continent string) *GeoDBMetadata {
-	// Generates a deterministically random geoname_id and fallbacks
-	id := 1000000 + int(cityName[0]) + int(countryName[0])*100
+func getDefaultMetadata(cityName, countryName, continent string, index int) *GeoDBMetadata {
+	// Generates a completely unique fallback geoname_id based on the loop index to prevent conflicts
+	id := 1000000 + index
 	return &GeoDBMetadata{
 		GeonameID:  id,
 		Latitude:   37.0, // default generic lat
