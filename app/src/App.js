@@ -27,7 +27,8 @@ function App() {
             return;
         }
         setActiveCity(null)
-        axios.get(`https://api.teleport.org/api/cities/?search=${searchTerm}`)
+        const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+        axios.get(`${API_BASE_URL}/api/cities/?search=${searchTerm}`)
             .then((response) => {
                 return response.data;
             })
