@@ -1,0 +1,8 @@
+# Go compiled binaries
+server
+*.exe
+*.test
+*.prof
+
+# Local configuration
+.env
