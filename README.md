@@ -1,77 +1,156 @@
-# Quality of Life
+# Quality of Life App
 
-&copy; Cody Uhi 2021<br>
-This web application allows users to search for a city anywhere in the world and get information about the quality of life associated with that city.<br>
-This web application was created for the CS260 Web Development Class at BYU to fulfill the requirements of Creative Project 2.<br>
-All data is provided via the Teleport API. Documentation for this API is available at https://developers.teleport.org/
+A premium, modern web application that allows users to search for cities around the world and view detailed ratings and statistics regarding their quality of life.
 
-## General Usage
+Historically built on the defunct Teleport API, the application has been refactored to run fully self-hosted using a React SPA frontend, a Go (Golang) REST API backend, and a PostgreSQL database.
 
-To use this application, you can access it over the internet at http://quality.codyuhi.me or locally by using the code in this repo. To access it locally clone the repo with
+---
 
-```
-git clone https://github.com/codyuhi/quality-of-life.git
-```
+## 1. System Architecture
 
-then navigate to the git repo in your machine and start your http server. Open localhost and the app will be available for use.
+The application is split into three main components:
 
-Open the application in a web browser. On screen, you can either search for a city by using the search bar in the navigation bar at the top of the screen, or by searching from the main prompt in the center of the screen.<br><br><img src='html-app/img/1.png' alt='picture of the main search box'>
-
-You can view previous searches by selecting the "Search History" option in the navigation bar. From the Search History tab, you can click on any of the items there to re-search a previously searched city. You can close the Search History tab by either clicking the "Close History" button in the tab, or clicking on the "Search History" option again in the navigation bar. If you want to clear this search history list, select the clear history option in the Search History tab.<br><br><img src='html-app/img/2.png' alt='picture of the search history'>
-
-Once you have performed a search, you will see a list of cities that are similar to the search you provided (if there are no cities with a name similar to the one your provided, you will see an error. Try something else!). Select one of the cities from this list to view more information about the city.<br><br><img src='html-app/img/4.png' alt='picture of the cities list'>
-
-After selecting a city, you will see a picture of the city and a lot of information about the city that you can use to learn more about the quality of life that residents of that city experience. Please notice that if the Teleport API does not have advanced data about the city you selected, only simple city data can be displayed (and no picture). If you want to see advanced data about a city's quality of life, make sure to select a city that is closely associated with an urban area (i.e. New York City or San Francisco).<br><br><img src='html-app/img/8.png' alt='picture of a selected city'>
-
-## API Usage
-
-The website calls the following API endpoints:
-
-1.  https://api.teleport.org/api/cities/?search=CITY_NAME
-
-- This endpoint provides a list of cities whose names are similar to the one that the user passed as a query parameter to the API
-- This functionality is used to provide a list of cities based off the user's input in a search box<br><br><img src='html-app/img/1.png' alt='picture of the main search box'><br><br><img src='html-app/img/4.png' alt='picture of the cities list'>
-- This functionality is also called when the user selects one of the options from the search history. Searching anything will add it to the search history and be persistent within the browser even after the page is closed on this device<br><br><img src='html-app/img/2.png' alt='picture of the search history'>
-
-2.  https://api.teleport.org/api/cities/geonameid:CITY_ID
-
-- This endpoint provides basic information about a city
-- This functionality is triggered when the user selects one of the cities from the cities list that is produced in API endpoint number one
-- When this functionality is triggered, the user will see basic information about the city that they selected<br><br><img src='html-app/img/3.png' alt='picture of basic city info'>
-
-3.  https://api.teleport.org/api/urban_areas/slug:URBAN_AREA_ID/scores
-
-- This endpoint provides a list of ratings that describe the quality of life found in the city being examined
-- This functionality is triggered at the same time as API endpoint number two. The data from this operation is displayed on-screen below the basic information provided by API endpoint number two<br><br><img src='html-app/img/6.png' alt='picture of the urban area ratings'>
-- If the city that was selected from the city list is not associated with an urban area, the user will be notified that there is no advanced data regarding ratings and this data will not be displayed<br><img src='html-app/img/5.png' alt='picture of the error saying advanced data is not available'>
-- The reason why users cannot see the ratings for quality of life for a city without an urban area is because of the limits of the Teleport API
-
-4.  https://api.teleport.org/api/urban_areas/slug:URBAN_AREA_ID/details
-
-- This endpoint provides more details about the urban area that the city is associated with. This detailed data has many diverse uses and offers a window into the urban area that users can compare to their own location
-- This functionality is also triggered at the same time as API endpoint number two. The data for this operation is displayed on-screen below the ratings data provided by API endpoint number three<br><br><img src='html-app/img/7.png' alt='picture of the advanced urban area details'>
-- Like API endpoint number three, this section will not load for the user if the city he/she selected is not associated with an urban area
-
-5.  https://api.teleport.org/api/urban_areas/slug:URBAN_AREA_ID/images
-
-- This endpoint returns information about where to access an image related to an urban area. The images available via this endpoint are associated with Creative Commons licenses and are legal for me to display on this site
-- This functionality is also triggered at the same time as API endpoint number two. The image that is returned by this operation is displayed along with the data that was provided by endpoint numbers three and four<br><br><img src='html-app/img/8.png' alt='picture of the urban area image'>
-- Like API endpoint numbers three and four, the city image will not load for the user if the city he/she selected is not associated with an urban area
-
-## Installation
-
-1. Clone the repo
-```
-git clone git@github.com:codyuhi/quality-of-life.git && cd quality-of-life
+```mermaid
+graph TD
+    Client[React SPA Frontend] -->|HTTP Requests| GoServer[Go REST API Backend]
+    GoServer -->|Queries & Inserts| Postgres[(PostgreSQL Database)]
+    GoServer -->|ARFF Data Source| OpenML[OpenML Dataset Archive]
+    GoServer -->|Geographic Specs| GeoDB[GeoDB Cities API]
 ```
 
-2. Build the Docker image
+### A. React SPA Frontend (`/app`)
+* **Framework**: React 18 SPA built with functional Hook components.
+* **Styling**: Vanilla CSS featuring a premium slate-dark glassmorphism theme (`#0a0f1d`), modern typography (`Inter`), responsive Flexbox/Grid layouts, and custom glowing progress meters for scores.
+* **Client**: Axios is used to fetch city ratings and data dynamically from the Go REST API.
+
+### B. Go REST API Backend (`/server`)
+* **Language**: Go (Golang) 1.22+ utilizing the high-performance standard library `net/http` server.
+* **Security**: Zero hardcoded credential defaults. Strict environment variable validation (`DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`) immediately aborts startup if configurations are missing.
+* **Endpoints**: Exposes mock-compatible routes matching the original Teleport URL structure:
+  - `GET /api/cities/?search=:query` - Searches for cities matching the pattern.
+  - `GET /api/cities/geonameid::id/` - Returns basic city details, timezone, and population.
+  - `GET /api/urban_areas/slug::slug/scores` - Returns the 14 quality-of-life categories and a calculated composite rating.
+  - `GET /api/urban_areas/slug::slug/details` - Returns granular local specs (cost of living details, currency conversions, metrics).
+  - `GET /api/urban_areas/slug::slug/images` - Fetches attribution and matching Wikipedia mobile/desktop cover images.
+
+### C. PostgreSQL Database
+* **Relational Schema**: Consists of two core tables:
+  - `cities`: Stores coordinates, timezones, country mappings, populations, and unique slugs.
+  - `scores`: Holds category ratings, custom summaries, and final composite quality-of-life metrics.
+
+---
+
+## 2. Frontend Component Interactions
+
+The frontend follows a coordinate-state design centered around [App.js](app/src/App.js):
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Navbar
+    participant Sidebar
+    participant Content
+    participant App as App.js Coordinator
+    participant API as Go REST API
+
+    User->>Navbar: Enters "Aarhus" & presses Search
+    Navbar->>App: Calls search("Aarhus")
+    App->>API: GET /api/cities/?search=Aarhus
+    API-->>App: Returns search result matching Aarhus
+    App->>Content: Updates cityList state
+    Content-->>User: Renders list of matching cities
+    User->>Content: Clicks "Aarhus, Denmark"
+    Content->>App: Calls getCityInfo(cityUrl)
+    App->>API: GET /api/cities/geonameid:1294/
+    API-->>App: Returns details, timezone, and urban area link
+    App->>API: GET /api/urban_areas/slug:aarhus-denmark/scores
+    API-->>App: Returns scores and summaries
+    App->>Content: Updates activeCity & advancedCityData
+    Content-->>User: Displays frosted glass cards & glowing progress ratings
 ```
-docker build -t game-deals .
+
+---
+
+## 3. Database Seeder Mechanism
+
+When the Go backend starts up and detects that the `cities` table is empty (`count == 0`), it automatically triggers a database seeding worker in the background:
+1. **Historic Scores Download**: Fetches the static historic Teleport scores dataset (`City-Quality-of-Life-Dataset.arff`) containing the final snapshot of the Teleport Quality of Life database from OpenML.
+2. **Metadata Resolution**: Queries the free **GeoDB Cities API** to extract real-world timezones, coordinates, and populations.
+3. **Robust Constraint Conflict Resolution**:
+   - **URL Escaping**: Query prefixes are URL-escaped to allow multi-word cities (e.g. `San Jose`, `New York`) to query successfully.
+   - **Duplicate City Name Handling**: Uses a state and country lookup (`getCountryISO`) to filter search parameters using `countryIds`. This prevents duplicate city names in different countries (e.g. `London, UK` vs `London, Canada`) from resolving to the same ID.
+   - **Unique Fallbacks**: Generates fallback IDs using `1000000 + loop_index` to prevent unique key violation rollbacks, ensuring exactly **265 cities** seed successfully into the DB.
+
+---
+
+## 4. Local Development & Setup
+
+### Prerequisites
+* [Docker](https://www.docker.com/) (to run PostgreSQL locally)
+* [Go 1.22+](https://go.dev/)
+* [NodeJS & Yarn](https://yarnpkg.com/)
+
+### Step 1: Start PostgreSQL
+Run a local PostgreSQL instance in Docker:
+```bash
+docker run -d \
+  --name quality-of-life-db \
+  -p 5432:5432 \
+  -e POSTGRES_DB=quality_of_life \
+  -e POSTGRES_USER=postgres \
+  -e POSTGRES_PASSWORD=postgres \
+  postgres:15
 ```
-3. Run the Docker container and expose a port for you to access from localhost
+
+### Step 2: Configure and Run the Go Backend
+1. Navigate to the server directory:
+   ```bash
+   cd server
+   ```
+2. Create a `.env` file containing configuration variables:
+   ```env
+   DB_HOST=localhost
+   DB_PORT=5432
+   DB_USER=postgres
+   DB_PASSWORD=postgres
+   DB_NAME=quality_of_life
+   DB_SSLMODE=disable
+   ```
+3. Run the Go server:
+   ```bash
+   go run .
+   ```
+   *Note: On first launch, the seeder will start downloading and populating the database. It sleeps 1.2s between cities to prevent GeoDB rate-limiting, taking ~5 minutes to complete.*
+
+### Step 3: Run the React Frontend
+1. Navigate to the app directory:
+   ```bash
+   cd app
+   ```
+2. Install dependencies:
+   ```bash
+   yarn install
+   ```
+3. Start the React development server:
+   ```bash
+   yarn start
+   ```
+4. Open your browser to `http://localhost:3000`.
+
+---
+
+## 5. Running Tests
+
+### Backend Unit Tests
+The Go test suite stubs database calls and tests JSON responses and HTTP status codes:
+```bash
+cd server
+go test -v .
 ```
-docker run -p 90:80 quality-of-life
+
+### Frontend Unit Tests
+Jest tests verify the layout, placeholders, and interactive components:
+```bash
+cd app
+yarn test --watchAll=false
 ```
-4. Open a browser window and navigate to localhost and the port you opened
-   "http://localhost:90"

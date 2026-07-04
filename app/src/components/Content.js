@@ -1,225 +1,242 @@
-import React from 'react';
-import 'App.css';
+import React, { useRef } from 'react';
+import '../App.css';
 
-export default class Content extends React.Component {
-    index = -1;
-    setSearchTerm = (e) => {
-        this.props.updateSearchTerm((searchTerm) => e.target.value)
-    }
-    checkEnterPressed = (e) => {
-        if (e.keyCode === 13) {
-            this.props.search()
+export default function Content({
+    updateSearchTerm,
+    searchTerm,
+    search,
+    cityList,
+    getCityInfo,
+    activeCity,
+    urbanCityDetails,
+    cityImg,
+    advancedCityData,
+    activeError
+}) {
+    const cityIndexRef = useRef(-1);
+
+    const setSearchTerm = (e) => {
+        updateSearchTerm(e.target.value);
+    };
+
+    const checkEnterPressed = (e) => {
+        if (e.key === 'Enter' || e.keyCode === 13) {
+            search();
         }
-    }
-    getCityInfo = (index) => {
-        this.index = index;
-        this.props.getCityInfo(this.props.cityList._embedded['city:search-results'][index]._links['city:item'].href)
-    }
-    render() {
-        const hero = (
-            <div className="Hero-Container">
-                <h1><i className="fa fa-heartbeat"> </i> Quality of Life</h1>
-                <p>This application allows you to see several metrics regarding a city's quality of living.</p>
-                <p>Use the search bar below or at the top to search for a city that you would like more information about.</p>
-                <input
-                    autoFocus
-                    text="text"
-                    value={this.props.searchTerm}
-                    onChange={this.setSearchTerm}
-                    placeholder="Search"
-                    onKeyDown={this.checkEnterPressed}></input>
-                <button onClick={this.props.search}>Search</button>
-            </div>
-        );
-        const cityListDivs = [];
-        if (this.props.cityList) {
-            for (let i = 0; i < this.props.cityList._embedded['city:search-results'].length; i++) {
-                cityListDivs.push(
-                    <div key={'city-list-' + i.toString()} className="City-List-Item" onClick={this.getCityInfo.bind(this, i)}>
-                        {this.props.cityList._embedded['city:search-results'][i].matching_full_name}
-                    </div>
-                )
-            }
+    };
+
+    const handleCityClick = (index) => {
+        cityIndexRef.current = index;
+        const href = cityList._embedded['city:search-results'][index]._links['city:item'].href;
+        getCityInfo(href);
+    };
+
+    const generateRating = (number) => {
+        const percentage = number * 10;
+        let color = 'var(--accent-pink)';
+        if (number >= 7.5) {
+            color = 'var(--accent-cyan)';
+        } else if (number >= 5.0) {
+            color = 'var(--accent-blue)';
         }
-        const cityList = (
-            <div className="City-List-Container">
-                <h1>Select the Desired City:</h1>
-                <div className="List-Container">
-                    {cityListDivs}
+        return (
+            <div className="Score-Bar-Container">
+                <div className="Score-Bar-Header">
+                    <span className="Score-Bar-Value">{number.toFixed(1)} / 10</span>
+                </div>
+                <div className="Score-Bar-Track">
+                    <div className="Score-Bar-Fill" style={{ width: `${percentage}%`, background: color }}></div>
                 </div>
             </div>
         );
-        let countryString = '';
-        let alternateNames = '';
-        if (this.props.activeCity) {
-            let counter = 1;
-            while (this.props.activeCity._links[`city:admin${counter}_division`]) {
-                countryString += this.props.activeCity._links[`city:admin${counter}_division`].name + ', ';
-                counter++;
-            }
-            countryString += this.props.activeCity._links['city:country'].name;
-            if (this.index !== -1) {
-                for (let i = 0; i < this.props.cityList._embedded['city:search-results'][this.index].matching_alternate_names.length; i++) {
-                    if (i !== 0) {
-                        alternateNames += ', ';
-                    }
-                    alternateNames += this.props.cityList._embedded['city:search-results'][this.index].matching_alternate_names[i].name;
-                }
-            }
-        }
+    };
 
-        const cityImg = (
-            <div className="City-Image-Container">
-                {
-                    this.props.cityImg ?
-                        <img className="City-Image"
-                            src={this.props.cityImg.photos[0].image.mobile}
-                            alt={`City by ${this.props.cityImg.photos[0].attribution.photographer} taken from ${this.props.cityImg.photos[0].attribution.source} under the ${this.props.cityImg.photos[0].attribution.license} license`} />
-                        : <p className="Red">No Advanced Data or Images on File for {this.props.activeCity ? this.props.activeCity.name : 'This City'} <i className="fa fa-frown-o"></i></p>
-                }
-            </div>
-        );
+    const hero = (
+        <div className="Hero-Container glass-panel" style={{ padding: '40px', borderRadius: '24px' }}>
+            <h1><i className="fa fa-heartbeat"> </i> Quality of Life</h1>
+            <p>Compare cost of living, safety, healthcare, and quality of life metrics across 260+ major cities globally.</p>
+            <input
+                autoFocus
+                type="text"
+                value={searchTerm}
+                onChange={setSearchTerm}
+                placeholder="Enter city name..."
+                onKeyDown={checkEnterPressed}
+            />
+            <button style={{ marginTop: '16px' }} onClick={() => search()}>Search Cities</button>
+        </div>
+    );
 
-        const generateRating = (number) => {
-            number /= 2;
-            const stars = [];
-            // Generate full-star ratings
-            for (let i = 1; i <= number; i++) {
-                stars.push(<i className="fa fa-star dark"></i>)
-            }
-            // Generate half-star ratings
-            if (number % 1 !== 0) {
-                stars.push(<i className="fa fa-star-half-o dark"></i>)
-                number = Math.ceil(number)
-            }
-            // For the remainder of the out of five rating, generate an empty star
-            for (let j = 0; j < (5 - number); j++) {
-                stars.push(<i className="fa fa-star-o dark"></i>)
-            }
-            const rating = (
-                <div className="Rating-Container">
-                    <p className="Rating">
-                        {stars}
-                    </p>
+    const cityListDivs = [];
+    if (cityList && cityList._embedded && cityList._embedded['city:search-results']) {
+        cityList._embedded['city:search-results'].forEach((item, i) => {
+            cityListDivs.push(
+                <div key={'city-list-' + i} className="City-List-Item" onClick={() => handleCityClick(i)}>
+                    <span>{item.matching_full_name}</span>
+                    <i className="fa fa-chevron-right" style={{ color: 'var(--accent-cyan)', fontSize: '12px' }}></i>
                 </div>
             );
-            return rating
+        });
+    }
+
+    const cityListLayout = (
+        <div className="City-List-Container">
+            <h1>Select City</h1>
+            <div className="List-Container">
+                {cityListDivs}
+            </div>
+        </div>
+    );
+
+    let countryString = '';
+    let alternateNames = '';
+    if (activeCity) {
+        let counter = 1;
+        while (activeCity._links[`city:admin${counter}_division`]) {
+            countryString += activeCity._links[`city:admin${counter}_division`].name + ', ';
+            counter++;
         }
+        countryString += activeCity._links['city:country'].name;
 
-        let advancedCityDetails = [];
-        if (this.props.urbanCityDetails) {
-            this.props.urbanCityDetails.categories.forEach((category) => {
-                advancedCityDetails.push(<hr />)
-                advancedCityDetails.push(<h3>{category.label}</h3>);
-                for (let i = 0; i < category.data.length; i++) {
-                    advancedCityDetails.push(<p>{`${category.data[i].label}: ${category.data[i].type === 'currency_dollar' ?
-                        `$${category.data[i].currency_dollar_value}` :
-                        category.data[i].type === 'percent' ?
-                            `${(category.data[i].percent_value * 100).toFixed(2)}%` :
-                            category.data[i].type === 'float' ?
-                                typeof (category.data[i].float_value) === 'number' ?
-                                    (category.data[i].float_value).toFixed(2) :
-                                    category.data[i].float_value :
-                                category.data[i].type === 'string' ?
-                                    category.data[i].string_value :
-                                    category.data[i].type === 'int' ?
-                                        category.data[i].int_value :
-                                        ''
-                        }`}</p>)
-                }
-            })
+        if (cityIndexRef.current !== -1 && cityList && cityList._embedded && cityList._embedded['city:search-results'][cityIndexRef.current]) {
+            const matchingAlts = cityList._embedded['city:search-results'][cityIndexRef.current].matching_alternate_names || [];
+            alternateNames = matchingAlts.map(alt => alt.name).join(', ');
         }
+    }
 
-        const advancedCityData = (
-            this.props.advancedCityData ?
-                <div className="Advanced-City-Container">
-                    <div className="Advanced-City-Column-Container">
-                        <div className="Advanced-City-Column">
-                            <p>Housing:&nbsp;{generateRating(this.props.advancedCityData.categories[0].score_out_of_10)}</p>
-                            <p>Startups:&nbsp;{generateRating(this.props.advancedCityData.categories[2].score_out_of_10)}</p>
-                            <p>Travel Connectivity:&nbsp;{generateRating(this.props.advancedCityData.categories[4].score_out_of_10)}</p>
-                            <p>Business Freedom:&nbsp;{generateRating(this.props.advancedCityData.categories[6].score_out_of_10)}</p>
-                            <p>Healthcare:&nbsp;{generateRating(this.props.advancedCityData.categories[8].score_out_of_10)}</p>
-                            <p>Environmental Quality:&nbsp;{generateRating(this.props.advancedCityData.categories[10].score_out_of_10)}</p>
-                            <p>Taxation:&nbsp;{generateRating(this.props.advancedCityData.categories[12].score_out_of_10)}</p>
-                        </div>
-                        <div className="Advanced-City-Column">
-                            <p>Cost of Living:&nbsp;{generateRating(this.props.advancedCityData.categories[1].score_out_of_10)}</p>
-                            <p>Venture Capital:&nbsp;{generateRating(this.props.advancedCityData.categories[3].score_out_of_10)}</p>
-                            <p>Commute:&nbsp;{generateRating(this.props.advancedCityData.categories[5].score_out_of_10)}</p>
-                            <p>Safety:&nbsp;{generateRating(this.props.advancedCityData.categories[7].score_out_of_10)}</p>
-                            <p>Education:&nbsp;{generateRating(this.props.advancedCityData.categories[9].score_out_of_10)}</p>
-                            <p>Economy:&nbsp;{generateRating(this.props.advancedCityData.categories[11].score_out_of_10)}</p>
-                            <p>Internet Access:&nbsp;{generateRating(this.props.advancedCityData.categories[13].score_out_of_10)}</p>
-                        </div>
-                    </div>
-                    <div className="Advanced-City-Details">
-                        {advancedCityDetails}
-                    </div>
-                </div> :
-                ''
-        );
-
-        const activeCity = (
-            this.props.activeCity ? <div className="Active-City-Container">
-                {cityImg}
-                <h1>{JSON.stringify(this.props.activeCity.name).substring(1, this.props.activeCity.name.length + 1)}</h1>
-                <div className="Active-City-Column-Container">
-                    <div className="Active-City-Column">
-                        <p>
-                            <i className="fa fa-globe"></i> {countryString ? countryString : 'No data on file'}
-                        </p>
-                        <p>
-                            <i className="fa fa-clock-o"></i> Timezone: {
-                                this.props.activeCity._links['city:timezone'] ?
-                                    JSON.stringify(this.props.activeCity._links['city:timezone'].name)
-                                        .substring(1, this.props.activeCity._links['city:timezone'].name.length + 1) :
-                                    <span className="Red">No Data on File</span>}
-                        </p>
-                        <p>
-                            <i className="fa fa-building-o"></i> Urban Area: {
-                                this.props.activeCity._links['city:urban_area'] ?
-                                    JSON.stringify(this.props.activeCity._links['city:urban_area'].name)
-                                        .substring(1, this.props.activeCity._links['city:urban_area'].name.length + 1) :
-                                    <span className="Red">No Urban Area Data on File</span>
-                            }
-                        </p>
-                    </div>
-                    <div className="Active-City-Column">
-                        <p>
-                            <i className="fa fa-id-badge"></i> Alternate Names: {
-                                alternateNames ? alternateNames : <span className="Red">No Alternate Names on File</span>
-                            }
-                        </p>
-                        <p>
-                            <i className="fa fa-map-marker"></i> Latitude: {this.props.activeCity.location.latlon.latitude}° N, Longitude: {this.props.activeCity.location.latlon.longitude}° E
-                        </p>
-                        <p>
-                            <i className="fa fa-users"></i> Population: {new Intl.NumberFormat('en-US').format(this.props.activeCity.population)}
-                        </p>
-                    </div>
+    const cityImgLayout = (
+        <div className="City-Image-Container">
+            {cityImg && cityImg.photos && cityImg.photos[0] ? (
+                <img
+                    className="City-Image"
+                    src={cityImg.photos[0].image.mobile}
+                    alt={`City by ${cityImg.photos[0].attribution.photographer}`}
+                />
+            ) : (
+                <div style={{ padding: '60px 20px', textAlign: 'center', background: 'rgba(255,255,255,0.02)' }}>
+                    <p className="Red">No Advanced Data or Images on File for {activeCity ? activeCity.name : 'This City'} <i className="fa fa-frown-o"></i></p>
                 </div>
-                {advancedCityData ? advancedCityData : ''}
-            </div> :
-                hero
-        );
+            )}
+        </div>
+    );
 
+    const categoriesList = [
+        { label: 'Housing', index: 0 },
+        { label: 'Cost of Living', index: 1 },
+        { label: 'Startups', index: 2 },
+        { label: 'Venture Capital', index: 3 },
+        { label: 'Travel Connectivity', index: 4 },
+        { label: 'Commute', index: 5 },
+        { label: 'Business Freedom', index: 6 },
+        { label: 'Safety', index: 7 },
+        { label: 'Healthcare', index: 8 },
+        { label: 'Education', index: 9 },
+        { label: 'Environmental Quality', index: 10 },
+        { label: 'Economy', index: 11 },
+        { label: 'Taxation', index: 12 },
+        { label: 'Internet Access', index: 13 }
+    ];
 
+    const advancedCityDetails = [];
+    if (urbanCityDetails && urbanCityDetails.categories) {
+        urbanCityDetails.categories.forEach((category, catIdx) => {
+            advancedCityDetails.push(<hr key={'hr-' + catIdx} />);
+            advancedCityDetails.push(<h3 key={'h3-' + catIdx}>{category.label}</h3>);
+            category.data.forEach((item, itemIdx) => {
+                let valueStr = '';
+                if (item.type === 'currency_dollar') {
+                    valueStr = `$${item.currency_dollar_value}`;
+                } else if (item.type === 'percent') {
+                    valueStr = `${(item.percent_value * 100).toFixed(2)}%`;
+                } else if (item.type === 'float') {
+                    valueStr = typeof item.float_value === 'number' ? item.float_value.toFixed(2) : item.float_value;
+                } else if (item.type === 'string') {
+                    valueStr = item.string_value;
+                } else if (item.type === 'int') {
+                    valueStr = item.int_value;
+                }
+                advancedCityDetails.push(
+                    <p key={'p-' + catIdx + '-' + itemIdx}>{`${item.label}: ${valueStr}`}</p>
+                );
+            });
+        });
+    }
 
-        return (
-            <div className="Content-Container">
-                <div className="Content center">
-                    {
-                        this.props.cityList ?
-                            this.props.activeCity ?
-                                activeCity :
-                                cityList :
-                            hero
-                    }
-                    <p className={this.props.activeError ? "Error-Display-Active" : "Error-Display-Inactive"}>{this.props.activeError}</p>
-                    <p className="Footer">&copy; Copyright Cody Uhi 2021</p>
+    const advancedCityDataLayout = advancedCityData && advancedCityData.categories ? (
+        <div className="Advanced-City-Container">
+            <h2 style={{ fontSize: '24px', fontWeight: '700', marginBottom: '8px', color: 'var(--accent-purple)' }}>Quality of Life Ratings</h2>
+            <div className="Advanced-City-Column-Container">
+                <div className="Advanced-City-Column">
+                    {categoriesList.filter((_, idx) => idx % 2 === 0).map((cat) => (
+                        <p key={cat.label}>
+                            <span>{cat.label}</span>
+                            {generateRating(advancedCityData.categories[cat.index].score_out_of_10)}
+                        </p>
+                    ))}
+                </div>
+                <div className="Advanced-City-Column">
+                    {categoriesList.filter((_, idx) => idx % 2 !== 0).map((cat) => (
+                        <p key={cat.label}>
+                            <span>{cat.label}</span>
+                            {generateRating(advancedCityData.categories[cat.index].score_out_of_10)}
+                        </p>
+                    ))}
                 </div>
             </div>
-        )
-    }
+            {advancedCityDetails.length > 0 && (
+                <div className="Advanced-City-Details">
+                    <h2 style={{ fontSize: '24px', fontWeight: '700', marginTop: '32px', marginBottom: '8px', color: 'var(--accent-purple)' }}>Local Statistics & Details</h2>
+                    {advancedCityDetails}
+                </div>
+            )}
+        </div>
+    ) : null;
+
+    const activeCityLayout = activeCity ? (
+        <div className="Active-City-Container">
+            {cityImgLayout}
+            <h1>{activeCity.name}</h1>
+            <div className="Active-City-Column-Container">
+                <div className="Active-City-Column">
+                    <p>
+                        <i className="fa fa-globe"></i> <span>Region: {countryString || 'No data on file'}</span>
+                    </p>
+                    <p>
+                        <i className="fa fa-clock-o"></i> <span>Timezone: {activeCity._links['city:timezone'] ? activeCity._links['city:timezone'].name : 'No Data on File'}</span>
+                    </p>
+                    <p>
+                        <i className="fa fa-building-o"></i> <span>Urban Area: {activeCity._links['city:urban_area'] ? activeCity._links['city:urban_area'].name : 'No Urban Area Data on File'}</span>
+                    </p>
+                </div>
+                <div className="Active-City-Column">
+                    <p>
+                        <i className="fa fa-id-badge"></i> <span>Alternate Names: {alternateNames || 'No Alternate Names on File'}</span>
+                    </p>
+                    <p>
+                        <i className="fa fa-map-marker"></i> <span>Coordinates: {activeCity.location.latlon.latitude.toFixed(4)}° N, {activeCity.location.latlon.longitude.toFixed(4)}° E</span>
+                    </p>
+                    <p>
+                        <i className="fa fa-users"></i> <span>Population: {new Intl.NumberFormat('en-US').format(activeCity.population)}</span>
+                    </p>
+                </div>
+            </div>
+            {advancedCityDataLayout}
+        </div>
+    ) : null;
+
+    return (
+        <div className="Content-Container">
+            <div className="Content center">
+                {
+                    cityList ?
+                        activeCity ?
+                            activeCityLayout :
+                            cityListLayout :
+                        hero
+                }
+                <p className={activeError ? "Error-Display-Active" : "Error-Display-Inactive"}>{activeError}</p>
+                <p className="Footer">&copy; Copyright Cody Uhi {new Date().getFullYear()}</p>
+            </div>
+        </div>
+    );
 }

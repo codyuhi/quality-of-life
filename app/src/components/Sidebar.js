@@ -1,39 +1,54 @@
 import React from 'react';
-import 'App.css';
+import '../App.css';
 
-export default class Sidebar extends React.Component {
-    clearHistory = () => {
-        this.props.clearSearchHistory(() => [])
+export default function Sidebar({
+    clearSearchHistory,
+    searchHistoryOpen,
+    updateSearchHistoryOpen,
+    updateSearchTerm,
+    search,
+    searchHistory
+}) {
+    const clearHistory = () => {
+        clearSearchHistory([]);
         localStorage.clear();
-    }
-    updateSearchHistoryOpen = () => {
-        if (this.props.searchHistoryOpen) {
-            document.getElementsByClassName('Sidebar-Container')[0].classList.add('Sidebar-Closed')
-        }
-        this.props.updateSearchHistoryOpen(() => !this.props.searchHistoryOpen)
-    }
-    search = async (e) => {
-        this.props.updateSearchHistoryOpen(false)
-        await this.props.updateSearchTerm(() => e.target.innerText)
-        this.props.search()
-    }
-    render() {
-        const searchHistory = [];
-        for (let item of this.props.searchHistory.slice().reverse()) {
-            searchHistory.push(<li key={item} className="Search-History-Item" onClick={this.search}>{item}</li>)
-        }
-        return (
-            <div className={this.props.searchHistoryOpen ? 'Sidebar-Container Sidebar-Open' : 'Sidebar-Container Sidebar-Closed'}>
-                <div className="Sidebar">
-                    <h3>Search History:</h3>
-                    <button className="Sidebar-Clear-Button" onClick={this.clearHistory}>Clear History</button>
-                    <button className="Sidebar-Close-Button" onClick={this.updateSearchHistoryOpen}>Close History</button>
-                    <hr />
-                    <ul>
-                        {searchHistory}
-                    </ul>
-                </div>
+    };
+
+    const handleCloseHistory = () => {
+        updateSearchHistoryOpen(!searchHistoryOpen);
+    };
+
+    const handleHistoryClick = (e) => {
+        const text = e.target.innerText;
+        updateSearchHistoryOpen(false);
+        updateSearchTerm(text);
+        search(text);
+    };
+
+    const renderedHistory = searchHistory
+        .slice()
+        .reverse()
+        .map((item) => (
+            <li key={item} className="Search-History-Item" onClick={handleHistoryClick}>
+                {item}
+            </li>
+        ));
+
+    return (
+        <div className={searchHistoryOpen ? 'Sidebar-Container Sidebar-Open' : 'Sidebar-Container Sidebar-Closed'}>
+            <div className="Sidebar">
+                <h3>Search History:</h3>
+                <button className="Sidebar-Clear-Button" onClick={clearHistory}>
+                    Clear History
+                </button>
+                <button className="Sidebar-Close-Button" onClick={handleCloseHistory}>
+                    Close History
+                </button>
+                <hr />
+                <ul>
+                    {renderedHistory}
+                </ul>
             </div>
-        )
-    }
+        </div>
+    );
 }

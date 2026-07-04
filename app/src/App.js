@@ -22,25 +22,26 @@ function App() {
         }
     }, [])
 
-    const search = () => {
-        if (!searchTerm) {
+    const search = (term) => {
+        const queryTerm = typeof term === 'string' ? term : searchTerm;
+        if (!queryTerm) {
             return;
         }
         setActiveCity(null)
         const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
-        axios.get(`${API_BASE_URL}/api/cities/?search=${searchTerm}`)
+        axios.get(`${API_BASE_URL}/api/cities/?search=${queryTerm}`)
             .then((response) => {
                 return response.data;
             })
             .then((data) => {
                 if (data.count < 1) {
-                    throw Error(`No cities found with the name "${searchTerm}"`)
+                    throw Error(`No cities found with the name "${queryTerm}"`)
                 }
                 const history = localStorage.history ? JSON.parse(localStorage.history) : [];
-                if (history.includes(searchTerm)) {
-                    history.splice(history.indexOf(searchTerm), 1);
+                if (history.includes(queryTerm)) {
+                    history.splice(history.indexOf(queryTerm), 1);
                 }
-                history.push(searchTerm);
+                history.push(queryTerm);
                 localStorage.history = JSON.stringify(history);
                 setSearchHistory(history);
                 setCityList(data);
