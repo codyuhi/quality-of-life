@@ -178,8 +178,13 @@ type GeoDBMetadata struct {
 }
 
 func resolveCityMetadata(cityName, countryName string) (*GeoDBMetadata, error) {
-	// 1. Search city to get ID
-	searchURL := fmt.Sprintf("http://geodb-free-service.wirefreethought.com/v1/geo/cities?namePrefix=%s&limit=1", url.QueryEscape(cityName))
+	isoCode := getCountryISO(countryName, cityName)
+	var searchURL string
+	if isoCode != "" {
+		searchURL = fmt.Sprintf("http://geodb-free-service.wirefreethought.com/v1/geo/cities?namePrefix=%s&countryIds=%s&limit=1", url.QueryEscape(cityName), isoCode)
+	} else {
+		searchURL = fmt.Sprintf("http://geodb-free-service.wirefreethought.com/v1/geo/cities?namePrefix=%s&limit=1", url.QueryEscape(cityName))
+	}
 	
 	client := &http.Client{Timeout: 10 * time.Second}
 	resp, err := client.Get(searchURL)
@@ -335,4 +340,142 @@ func insertCityData(city *ParsedCity) error {
 	}
 
 	return tx.Commit()
+}
+
+func getCountryISO(countryOrState, cityName string) string {
+	name := strings.TrimSpace(strings.ToLower(countryOrState))
+	
+	// Map US States to US
+	usStates := map[string]bool{
+		"alabama": true, "alaska": true, "arizona": true, "arkansas": true, "california": true,
+		"colorado": true, "connecticut": true, "delaware": true, "district of columbia": true,
+		"florida": true, "hawaii": true, "idaho": true, "illinois": true, "indiana": true,
+		"iowa": true, "kansas": true, "kentucky": true, "louisiana": true, "maine": true,
+		"maryland": true, "massachusetts": true, "michigan": true, "minnesota": true,
+		"mississippi": true, "missouri": true, "montana": true, "nebraska": true,
+		"nevada": true, "new hampshire": true, "new jersey": true, "new mexico": true,
+		"new york": true, "north carolina": true, "north dakota": true, "ohio": true,
+		"oklahoma": true, "oregon": true, "pennsylvania": true, "rhode island": true,
+		"south carolina": true, "south dakota": true, "tennessee": true, "texas": true,
+		"utah": true, "vermont": true, "virginia": true, "washington": true,
+		"west virginia": true, "wisconsin": true, "wyoming": true,
+	}
+	
+	if name == "georgia" {
+		// Differentiate country Georgia (Tbilisi) from US State Georgia (Atlanta)
+		if strings.ToLower(cityName) == "tbilisi" {
+			return "GE"
+		}
+		return "US"
+	}
+	
+	if usStates[name] {
+		return "US"
+	}
+
+	// Map country names to 2-letter ISO codes
+	countries := map[string]string{
+		"argentina": "AR",
+		"armenia": "AM",
+		"australia": "AU",
+		"austria": "AT",
+		"azerbaijan": "AZ",
+		"belarus": "BY",
+		"belgium": "BE",
+		"belize": "BZ",
+		"bolivia": "BO",
+		"bosnia and herzegovina": "BA",
+		"brazil": "BR",
+		"bulgaria": "BG",
+		"cambodia": "KH",
+		"canada": "CA",
+		"chile": "CL",
+		"china": "CN",
+		"colombia": "CO",
+		"costa rica": "CR",
+		"croatia": "HR",
+		"cuba": "CU",
+		"cyprus": "CY",
+		"czechia": "CZ",
+		"denmark": "DK",
+		"dominican republic": "DO",
+		"ecuador": "EC",
+		"egypt": "EG",
+		"el salvador": "SV",
+		"estonia": "EE",
+		"finland": "FI",
+		"france": "FR",
+		"germany": "DE",
+		"gibraltar": "GI",
+		"greece": "GR",
+		"guatemala": "GT",
+		"hong kong": "HK",
+		"hungary": "HU",
+		"iceland": "IS",
+		"india": "IN",
+		"indonesia": "ID",
+		"iran": "IR",
+		"ireland": "IE",
+		"israel": "IL",
+		"italy": "IT",
+		"jamaica": "JM",
+		"japan": "JP",
+		"kazakhstan": "KZ",
+		"kenya": "KE",
+		"latvia": "LV",
+		"lebanon": "LB",
+		"lithuania": "LT",
+		"luxembourg": "LU",
+		"macedonia": "MK",
+		"malaysia": "MY",
+		"malta": "MT",
+		"mexico": "MX",
+		"moldova": "MD",
+		"morocco": "MA",
+		"nepal": "NP",
+		"netherlands": "NL",
+		"new zealand": "NZ",
+		"nicaragua": "NI",
+		"nigeria": "NG",
+		"norway": "NO",
+		"panama": "PA",
+		"paraguay": "PY",
+		"peru": "PE",
+		"philippines": "PH",
+		"poland": "PL",
+		"portugal": "PT",
+		"puerto rico": "PR",
+		"qatar": "QA",
+		"romania": "RO",
+		"russia": "RU",
+		"saudi arabia": "SA",
+		"serbia": "RS",
+		"singapore": "SG",
+		"slovakia": "SK",
+		"slovenia": "SI",
+		"south africa": "ZA",
+		"south korea": "KR",
+		"spain": "ES",
+		"sweden": "SE",
+		"switzerland": "CH",
+		"taiwan": "TW",
+		"tanzania": "TZ",
+		"thailand": "TH",
+		"tunisia": "TN",
+		"turkey": "TR",
+		"ukraine": "UA",
+		"united  arab emirates": "AE",
+		"united arab emirates": "AE",
+		"united kingdom": "GB",
+		"uruguay": "UY",
+		"uzbekistan": "UZ",
+		"venezuela": "VE",
+		"vietnam": "VN",
+		"andorra": "AD",
+	}
+
+	if code, ok := countries[name]; ok {
+		return code
+	}
+	return ""
 }
