@@ -67,7 +67,7 @@ func SeedDatabase() error {
 		city.Population = metadata.Population
 		city.Timezone = metadata.Timezone
 		city.Country = metadata.Country // Normalized country
-		city.Slug = generateSlug(city.Name)
+		city.Slug = generateSlug(city.Name + "-" + city.Country)
 
 		// Insert into DB
 		if err := insertCityData(city); err != nil {
