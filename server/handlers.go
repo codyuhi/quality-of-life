@@ -19,6 +19,21 @@ func writeError(w http.ResponseWriter, code int, msg string) {
 	_ = json.NewEncoder(w).Encode(map[string]string{"error": msg})
 }
 
+// Helper to extract base URL from request, respecting reverse proxy headers
+func getBaseURL(r *http.Request) string {
+	scheme := "http"
+	if proto := r.Header.Get("X-Forwarded-Proto"); proto != "" {
+		scheme = proto
+	} else if r.TLS != nil {
+		scheme = "https"
+	}
+	host := r.Host
+	if fHost := r.Header.Get("X-Forwarded-Host"); fHost != "" {
+		host = fHost
+	}
+	return fmt.Sprintf("%s://%s", scheme, host)
+}
+
 // Enable CORS and common headers
 func withCORS(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -66,11 +81,7 @@ func SearchCitiesHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var results []SearchResultItem
-	scheme := "http"
-	if r.TLS != nil {
-		scheme = "https"
-	}
-	host := r.Host
+	baseURL := getBaseURL(r)
 
 	for rows.Next() {
 		var id int
@@ -83,7 +94,7 @@ func SearchCitiesHandler(w http.ResponseWriter, r *http.Request) {
 			MatchingFullName: fullName,
 			MatchingAlternateNames: []map[string]string{},
 		}
-		item.Links.CityItem.Href = fmt.Sprintf("%s://%s/api/cities/geonameid:%d/", scheme, host, id)
+		item.Links.CityItem.Href = fmt.Sprintf("%s/api/cities/geonameid:%d/", baseURL, id)
 		results = append(results, item)
 	}
 
@@ -93,7 +104,7 @@ func SearchCitiesHandler(w http.ResponseWriter, r *http.Request) {
 		},
 		"_links": map[string]interface{}{
 			"self": map[string]interface{}{
-				"href": fmt.Sprintf("%s://%s/api/cities/?search=%s", scheme, host, searchTerm),
+				"href": fmt.Sprintf("%s/api/cities/?search=%s", baseURL, url.QueryEscape(searchTerm)),
 			},
 		},
 		"count": len(results),
@@ -138,11 +149,7 @@ func CityDetailsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	scheme := "http"
-	if r.TLS != nil {
-		scheme = "https"
-	}
-	host := r.Host
+	baseURL := getBaseURL(r)
 
 	response := map[string]interface{}{
 		"geoname_id": id,
@@ -157,7 +164,7 @@ func CityDetailsHandler(w http.ResponseWriter, r *http.Request) {
 		"population": population,
 		"_links": map[string]interface{}{
 			"self": map[string]interface{}{
-				"href": fmt.Sprintf("%s://%s/api/cities/geonameid:%d/", scheme, host, id),
+				"href": fmt.Sprintf("%s/api/cities/geonameid:%d/", baseURL, id),
 			},
 			"city:timezone": map[string]interface{}{
 				"name": timezone,
@@ -166,7 +173,7 @@ func CityDetailsHandler(w http.ResponseWriter, r *http.Request) {
 				"name": country,
 			},
 			"city:urban_area": map[string]interface{}{
-				"href": fmt.Sprintf("%s://%s/api/urban_areas/slug:%s/", scheme, host, slug),
+				"href": fmt.Sprintf("%s/api/urban_areas/slug:%s/", baseURL, slug),
 				"name": name,
 			},
 		},

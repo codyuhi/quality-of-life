@@ -28,8 +28,10 @@ function App() {
             return;
         }
         setActiveCity(null)
-        const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
-        axios.get(`${API_BASE_URL}/api/cities/?search=${queryTerm}`)
+        const API_BASE_URL = process.env.REACT_APP_API_URL !== undefined
+            ? process.env.REACT_APP_API_URL
+            : (process.env.NODE_ENV === 'development' ? 'http://localhost:5001' : '');
+        axios.get(`${API_BASE_URL}/api/cities/?search=${encodeURIComponent(queryTerm)}`)
             .then((response) => {
                 return response.data;
             })
@@ -61,10 +63,11 @@ function App() {
             })
             .then((data) => {
                 setActiveCity(data);
-                if (data._links['city:urban_area']) {
-                    getCityImg(data._links['city:urban_area'].href)
-                    getAdvancedCityInfo(data._links['city:urban_area'].href)
-                    getUrbanCityDetails(data._links['city:urban_area'].href)
+                if (data._links && data._links['city:urban_area']) {
+                    const urbanAreaHref = data._links['city:urban_area'].href;
+                    getCityImg(urbanAreaHref);
+                    getAdvancedCityInfo(urbanAreaHref);
+                    getUrbanCityDetails(urbanAreaHref);
                 }
             })
             .catch((err) => {
@@ -75,7 +78,8 @@ function App() {
     }
 
     const getAdvancedCityInfo = (urbanAreaUrl) => {
-        axios.get(urbanAreaUrl + 'scores')
+        const url = urbanAreaUrl.endsWith('/') ? `${urbanAreaUrl}scores` : `${urbanAreaUrl}/scores`;
+        axios.get(url)
             .then((response) => {
                 return response.data;
             })
@@ -90,7 +94,8 @@ function App() {
     }
 
     const getUrbanCityDetails = (urbanAreaUrl) => {
-        axios.get(urbanAreaUrl + 'details')
+        const url = urbanAreaUrl.endsWith('/') ? `${urbanAreaUrl}details` : `${urbanAreaUrl}/details`;
+        axios.get(url)
             .then((response) => {
                 return response.data;
             })
@@ -105,7 +110,8 @@ function App() {
     }
 
     const getCityImg = (urbanAreaUrl) => {
-        axios.get(urbanAreaUrl + 'images')
+        const url = urbanAreaUrl.endsWith('/') ? `${urbanAreaUrl}images` : `${urbanAreaUrl}/images`;
+        axios.get(url)
             .then((response) => {
                 return response.data;
             })

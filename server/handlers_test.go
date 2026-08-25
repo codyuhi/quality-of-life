@@ -50,6 +50,22 @@ func getFirstGeonameIDAndSlug(t *testing.T) (int, string) {
 	return id, slug
 }
 
+func TestGetBaseURL(t *testing.T) {
+	// Standard HTTP request
+	req1, _ := http.NewRequest("GET", "http://localhost:5001/api/cities/", nil)
+	if url := getBaseURL(req1); url != "http://localhost:5001" {
+		t.Errorf("expected http://localhost:5001, got %s", url)
+	}
+
+	// Reverse proxy with X-Forwarded-Proto and X-Forwarded-Host
+	req2, _ := http.NewRequest("GET", "http://backend-svc:5001/api/cities/", nil)
+	req2.Header.Set("X-Forwarded-Proto", "https")
+	req2.Header.Set("X-Forwarded-Host", "quality-of-life.minipc.local")
+	if url := getBaseURL(req2); url != "https://quality-of-life.minipc.local" {
+		t.Errorf("expected https://quality-of-life.minipc.local, got %s", url)
+	}
+}
+
 func TestSearchCitiesHandler(t *testing.T) {
 	initTestDB(t)
 
