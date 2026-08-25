@@ -23,12 +23,12 @@ func SeedDatabase() error {
 		return fmt.Errorf("failed to query cities count: %w", err)
 	}
 
-	if count > 0 {
-		log.Println("Database already seeded. Skipping seeder.")
+	if count >= 265 {
+		log.Printf("Database already fully seeded with %d cities. Skipping seeder.", count)
 		return nil
 	}
 
-	log.Println("Database is empty. Starting database seeding process...")
+	log.Printf("Database has %d cities (expected 265). Starting database seeding process...", count)
 
 	// 1. Download ARFF file
 	url := "https://www.openml.org/data/v1/download/22102652/City-Quality-of-Life-Dataset.arff"
@@ -52,13 +52,23 @@ func SeedDatabase() error {
 
 	// 3. Resolve metadata and scores
 	for i, city := range citiesData {
+		slug := generateSlug(city.Name + "-" + city.Country)
+		var existingCount int
+		_ = DB.QueryRow("SELECT COUNT(*) FROM cities WHERE urban_area_slug = $1 OR (name ILIKE $2 AND country ILIKE $3)", slug, city.Name, city.Country).Scan(&existingCount)
+		if existingCount > 0 {
+			continue
+		}
+
 		log.Printf("[Seeder] [%d/%d] Resolving details for city: %s, %s", i+1, len(citiesData), city.Name, city.Country)
-		
+
 		// Query GeoDB API
 		metadata, err := resolveCityMetadata(city.Name, city.Country)
 		if err != nil {
 			log.Printf("[Seeder] Warning: could not resolve metadata for %s: %v. Using fallbacks.", city.Name, err)
 			metadata = getDefaultMetadata(city.Name, city.Country, city.Continent, i)
+		} else {
+			// Wait between successful requests to respect GeoDB free tier rate limits (1 request/sec)
+			time.Sleep(1200 * time.Millisecond)
 		}
 
 		city.GeonameID = metadata.GeonameID
@@ -67,15 +77,12 @@ func SeedDatabase() error {
 		city.Population = metadata.Population
 		city.Timezone = metadata.Timezone
 		city.Country = metadata.Country // Normalized country
-		city.Slug = generateSlug(city.Name + "-" + city.Country)
+		city.Slug = slug
 
 		// Insert into DB
 		if err := insertCityData(city); err != nil {
 			log.Printf("[Seeder] Error inserting city %s: %v", city.Name, err)
 		}
-
-		// Wait 1.2 seconds between requests to respect GeoDB free tier rate limits (1 request/sec)
-		time.Sleep(1200 * time.Millisecond)
 	}
 
 	log.Println("Database seeding completed successfully!")
@@ -181,12 +188,12 @@ func resolveCityMetadata(cityName, countryName string) (*GeoDBMetadata, error) {
 	isoCode := getCountryISO(countryName, cityName)
 	var searchURL string
 	if isoCode != "" {
-		searchURL = fmt.Sprintf("http://geodb-free-service.wirefreethought.com/v1/geo/cities?namePrefix=%s&countryIds=%s&limit=1", url.QueryEscape(cityName), isoCode)
+		searchURL = fmt.Sprintf("https://geodb-free-service.wirefreethought.com/v1/geo/cities?namePrefix=%s&countryIds=%s&limit=1", url.QueryEscape(cityName), isoCode)
 	} else {
-		searchURL = fmt.Sprintf("http://geodb-free-service.wirefreethought.com/v1/geo/cities?namePrefix=%s&limit=1", url.QueryEscape(cityName))
+		searchURL = fmt.Sprintf("https://geodb-free-service.wirefreethought.com/v1/geo/cities?namePrefix=%s&limit=1", url.QueryEscape(cityName))
 	}
 	
-	client := &http.Client{Timeout: 10 * time.Second}
+	client := &http.Client{Timeout: 5 * time.Second}
 	resp, err := client.Get(searchURL)
 	if err != nil {
 		return nil, err
@@ -219,10 +226,10 @@ func resolveCityMetadata(cityName, countryName string) (*GeoDBMetadata, error) {
 	cityID := searchResult.Data[0].ID
 
 	// Wait a moment between search and detail query to respect rate limits
-	time.Sleep(500 * time.Millisecond)
+	time.Sleep(300 * time.Millisecond)
 
 	// 2. Fetch full city details (for timezone)
-	detailURL := fmt.Sprintf("http://geodb-free-service.wirefreethought.com/v1/geo/cities/%d", cityID)
+	detailURL := fmt.Sprintf("https://geodb-free-service.wirefreethought.com/v1/geo/cities/%d", cityID)
 	respDetail, err := client.Get(detailURL)
 	if err != nil {
 		return nil, err
