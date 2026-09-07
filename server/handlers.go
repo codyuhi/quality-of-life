@@ -92,6 +92,33 @@ func handleDBError(w http.ResponseWriter, err error, defaultMsg string) {
 	writeError(w, http.StatusInternalServerError, defaultMsg)
 }
 
+// CityCountHandler handles GET /api/cities/count or GET /api/cities/?count=true
+func CityCountHandler(w http.ResponseWriter, r *http.Request) {
+	if DB == nil {
+		writeError(w, http.StatusServiceUnavailable, "Database not connected")
+		return
+	}
+
+	var count int
+	err := DB.QueryRow("SELECT COUNT(*) FROM cities").Scan(&count)
+	if err != nil {
+		log.Printf("Error querying city count: %v", err)
+		handleDBError(w, err, "Failed to query city count")
+		return
+	}
+
+	expected := 266
+	response := map[string]interface{}{
+		"count":           count,
+		"expected":        expected,
+		"is_fully_seeded": count >= expected,
+		"percentage":      float64(count) / float64(expected) * 100.0,
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(response)
+}
+
 // SearchCitiesHandler handles GET /api/cities/?search=:searchTerm
 func SearchCitiesHandler(w http.ResponseWriter, r *http.Request) {
 	searchTerm := r.URL.Query().Get("search")

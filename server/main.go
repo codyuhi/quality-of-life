@@ -47,7 +47,10 @@ func main() {
 	http.HandleFunc("/healthz", withCORS(HealthzHandler))
 
 	http.HandleFunc("/api/cities/", withCORS(func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Query().Get("search") != "" {
+		path := strings.TrimSuffix(r.URL.Path, "/")
+		if path == "/api/cities/count" || r.URL.Query().Get("count") != "" || (path == "/api/cities" && r.URL.Query().Get("search") == "") {
+			CityCountHandler(w, r)
+		} else if r.URL.Query().Get("search") != "" {
 			SearchCitiesHandler(w, r)
 		} else {
 			CityDetailsHandler(w, r)

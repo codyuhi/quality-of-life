@@ -246,3 +246,17 @@ func TestHealthzHandlerNilDB(t *testing.T) {
 		t.Errorf("expected 503 for nil DB, got %d", rr.Code)
 	}
 }
+
+func TestCityCountHandlerNilDB(t *testing.T) {
+	origDB := DB
+	DB = nil
+	defer func() { DB = origDB }()
+
+	req, _ := http.NewRequest("GET", "/api/cities/count", nil)
+	rr := httptest.NewRecorder()
+	CityCountHandler(rr, req)
+
+	if rr.Code != http.StatusInternalServerError && rr.Code != http.StatusServiceUnavailable {
+		t.Errorf("expected 500 or 503 for nil DB, got %d", rr.Code)
+	}
+}
