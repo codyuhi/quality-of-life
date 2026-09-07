@@ -213,3 +213,36 @@ func TestUrbanAreaImagesHandler(t *testing.T) {
 		t.Errorf("handler returned unexpected status: got %v", status)
 	}
 }
+
+func TestGenerateSlug(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected string
+	}{
+		{"Portland-Maine", "portland-maine"},
+		{"San Francisco Bay Area-California", "san-francisco-bay-area-california"},
+		{"Tel Aviv-Israel", "tel-aviv-israel"},
+		{"St. Louis-Missouri", "st-louis-missouri"},
+	}
+
+	for _, tt := range tests {
+		got := generateSlug(tt.input)
+		if got != tt.expected {
+			t.Errorf("generateSlug(%q) = %q; want %q", tt.input, got, tt.expected)
+		}
+	}
+}
+
+func TestHealthzHandlerNilDB(t *testing.T) {
+	origDB := DB
+	DB = nil
+	defer func() { DB = origDB }()
+
+	req, _ := http.NewRequest("GET", "/healthz", nil)
+	rr := httptest.NewRecorder()
+	HealthzHandler(rr, req)
+
+	if rr.Code != http.StatusServiceUnavailable {
+		t.Errorf("expected 503 for nil DB, got %d", rr.Code)
+	}
+}

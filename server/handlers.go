@@ -48,6 +48,50 @@ func withCORS(next http.HandlerFunc) http.HandlerFunc {
 	}
 }
 
+// HealthzHandler checks database connectivity and table readiness
+func HealthzHandler(w http.ResponseWriter, r *http.Request) {
+	if DB == nil {
+		writeError(w, http.StatusServiceUnavailable, "Database not connected")
+		return
+	}
+
+	if err := DB.Ping(); err != nil {
+		log.Printf("Health check failed - DB ping error: %v", err)
+		writeError(w, http.StatusServiceUnavailable, "Database ping failed")
+		return
+	}
+
+	var exists bool
+	err := DB.QueryRow("SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_name = 'cities')").Scan(&exists)
+	if err != nil || !exists {
+		log.Println("Health check - cities table missing, triggering background initialization")
+		go func() {
+			if err := SeedDatabase(); err != nil {
+				log.Printf("Seeder warnings or errors: %v", err)
+			}
+		}()
+		writeError(w, http.StatusServiceUnavailable, "Database initializing")
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	_, _ = w.Write([]byte(`{"status":"ok"}`))
+}
+
+func handleDBError(w http.ResponseWriter, err error, defaultMsg string) {
+	if strings.Contains(err.Error(), "does not exist") || strings.Contains(err.Error(), "42P01") {
+		go func() {
+			if err := SeedDatabase(); err != nil {
+				log.Printf("Seeder warnings or errors: %v", err)
+			}
+		}()
+		writeError(w, http.StatusServiceUnavailable, "Database initializing, please retry shortly")
+		return
+	}
+	writeError(w, http.StatusInternalServerError, defaultMsg)
+}
+
 // SearchCitiesHandler handles GET /api/cities/?search=:searchTerm
 func SearchCitiesHandler(w http.ResponseWriter, r *http.Request) {
 	searchTerm := r.URL.Query().Get("search")
@@ -65,7 +109,7 @@ func SearchCitiesHandler(w http.ResponseWriter, r *http.Request) {
 	rows, err := DB.Query(query, "%"+searchTerm+"%")
 	if err != nil {
 		log.Printf("Error searching cities: %v", err)
-		writeError(w, http.StatusInternalServerError, "Database search failed")
+		handleDBError(w, err, "Database search failed")
 		return
 	}
 	defer rows.Close()
@@ -145,7 +189,7 @@ func CityDetailsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	} else if err != nil {
 		log.Printf("Error fetching city details: %v", err)
-		writeError(w, http.StatusInternalServerError, "Database error")
+		handleDBError(w, err, "Database error")
 		return
 	}
 
@@ -213,7 +257,7 @@ func UrbanAreaScoresHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	} else if err != nil {
 		log.Printf("Error fetching scores: %v", err)
-		writeError(w, http.StatusInternalServerError, "Database error")
+		handleDBError(w, err, "Database error")
 		return
 	}
 
@@ -271,7 +315,7 @@ func UrbanAreaDetailsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	} else if err != nil {
 		log.Printf("Error fetching scores for details: %v", err)
-		writeError(w, http.StatusInternalServerError, "Database error")
+		handleDBError(w, err, "Database error")
 		return
 	}
 
@@ -354,7 +398,7 @@ func UrbanAreaImagesHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	} else if err != nil {
 		log.Printf("Error fetching city name for image: %v", err)
-		writeError(w, http.StatusInternalServerError, "Database error")
+		handleDBError(w, err, "Database error")
 		return
 	}
 

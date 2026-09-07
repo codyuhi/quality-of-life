@@ -12,23 +12,48 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
+)
+
+var (
+	seederMutex sync.Mutex
+	isSeeding   bool
 )
 
 // SeedDatabase checks if database is seeded, if not downloads and populates data
 func SeedDatabase() error {
+	seederMutex.Lock()
+	if isSeeding {
+		seederMutex.Unlock()
+		log.Println("[Seeder] Seeding already in progress, skipping duplicate call.")
+		return nil
+	}
+	isSeeding = true
+	seederMutex.Unlock()
+
+	defer func() {
+		seederMutex.Lock()
+		isSeeding = false
+		seederMutex.Unlock()
+	}()
+
+	if err := createTables(); err != nil {
+		return fmt.Errorf("failed to ensure tables exist: %w", err)
+	}
+
 	var count int
 	err := DB.QueryRow("SELECT COUNT(*) FROM cities").Scan(&count)
 	if err != nil {
 		return fmt.Errorf("failed to query cities count: %w", err)
 	}
 
-	if count >= 265 {
+	if count >= 266 {
 		log.Printf("Database already fully seeded with %d cities. Skipping seeder.", count)
 		return nil
 	}
 
-	log.Printf("Database has %d cities (expected 265). Starting database seeding process...", count)
+	log.Printf("Database has %d cities (expected 266). Starting database seeding process...", count)
 
 	// 1. Download ARFF file
 	url := "https://www.openml.org/data/v1/download/22102652/City-Quality-of-Life-Dataset.arff"
@@ -54,7 +79,7 @@ func SeedDatabase() error {
 	for i, city := range citiesData {
 		slug := generateSlug(city.Name + "-" + city.Country)
 		var existingCount int
-		_ = DB.QueryRow("SELECT COUNT(*) FROM cities WHERE urban_area_slug = $1 OR (name ILIKE $2 AND country ILIKE $3)", slug, city.Name, city.Country).Scan(&existingCount)
+		_ = DB.QueryRow("SELECT COUNT(*) FROM cities WHERE urban_area_slug = $1", slug).Scan(&existingCount)
 		if existingCount > 0 {
 			continue
 		}
@@ -188,9 +213,9 @@ func resolveCityMetadata(cityName, countryName string) (*GeoDBMetadata, error) {
 	isoCode := getCountryISO(countryName, cityName)
 	var searchURL string
 	if isoCode != "" {
-		searchURL = fmt.Sprintf("https://geodb-free-service.wirefreethought.com/v1/geo/cities?namePrefix=%s&countryIds=%s&limit=1", url.QueryEscape(cityName), isoCode)
+		searchURL = fmt.Sprintf("https://geodb-free-service.wirefreethought.com/v1/geo/cities?namePrefix=%s&countryIds=%s&limit=5", url.QueryEscape(cityName), isoCode)
 	} else {
-		searchURL = fmt.Sprintf("https://geodb-free-service.wirefreethought.com/v1/geo/cities?namePrefix=%s&limit=1", url.QueryEscape(cityName))
+		searchURL = fmt.Sprintf("https://geodb-free-service.wirefreethought.com/v1/geo/cities?namePrefix=%s&limit=5", url.QueryEscape(cityName))
 	}
 	
 	client := &http.Client{Timeout: 5 * time.Second}
@@ -206,12 +231,14 @@ func resolveCityMetadata(cityName, countryName string) (*GeoDBMetadata, error) {
 
 	var searchResult struct {
 		Data []struct {
-			ID          int     `json:"id"`
-			City        string  `json:"city"`
-			Country     string  `json:"country"`
-			Latitude    float64 `json:"latitude"`
-			Longitude   float64 `json:"longitude"`
-			Population  int     `json:"population"`
+			ID         int     `json:"id"`
+			City       string  `json:"city"`
+			Country    string  `json:"country"`
+			Region     string  `json:"region"`
+			RegionCode string  `json:"regionCode"`
+			Latitude   float64 `json:"latitude"`
+			Longitude  float64 `json:"longitude"`
+			Population int     `json:"population"`
 		} `json:"data"`
 	}
 
@@ -223,7 +250,17 @@ func resolveCityMetadata(cityName, countryName string) (*GeoDBMetadata, error) {
 		return nil, fmt.Errorf("city not found in GeoDB")
 	}
 
-	cityID := searchResult.Data[0].ID
+	selectedIdx := 0
+	targetRegion := strings.TrimSpace(countryName)
+	for idx, item := range searchResult.Data {
+		if strings.EqualFold(item.Region, targetRegion) || strings.EqualFold(item.RegionCode, targetRegion) {
+			selectedIdx = idx
+			break
+		}
+	}
+
+	match := searchResult.Data[selectedIdx]
+	cityID := match.ID
 
 	// Wait a moment between search and detail query to respect rate limits
 	time.Sleep(300 * time.Millisecond)
@@ -240,11 +277,11 @@ func resolveCityMetadata(cityName, countryName string) (*GeoDBMetadata, error) {
 		// If details query fails, return what we have from search
 		return &GeoDBMetadata{
 			GeonameID:  cityID,
-			Latitude:   searchResult.Data[0].Latitude,
-			Longitude:  searchResult.Data[0].Longitude,
-			Population: searchResult.Data[0].Population,
+			Latitude:   match.Latitude,
+			Longitude:  match.Longitude,
+			Population: match.Population,
 			Timezone:   "UTC",
-			Country:    searchResult.Data[0].Country,
+			Country:    match.Country,
 		}, nil
 	}
 
@@ -262,11 +299,11 @@ func resolveCityMetadata(cityName, countryName string) (*GeoDBMetadata, error) {
 
 	return &GeoDBMetadata{
 		GeonameID:  cityID,
-		Latitude:   searchResult.Data[0].Latitude,
-		Longitude:  searchResult.Data[0].Longitude,
-		Population: searchResult.Data[0].Population,
+		Latitude:   match.Latitude,
+		Longitude:  match.Longitude,
+		Population: match.Population,
 		Timezone:   tz,
-		Country:    searchResult.Data[0].Country,
+		Country:    match.Country,
 	}, nil
 }
 
@@ -294,6 +331,25 @@ func generateSlug(name string) string {
 }
 
 func insertCityData(city *ParsedCity) error {
+	// If this geoname_id is already used by a DIFFERENT urban_area_slug, generate a fallback ID
+	var existingSlug string
+	err := DB.QueryRow("SELECT urban_area_slug FROM cities WHERE geoname_id = $1", city.GeonameID).Scan(&existingSlug)
+	if err == nil && existingSlug != "" && existingSlug != city.Slug {
+		var maxID int
+		_ = DB.QueryRow("SELECT COALESCE(MAX(geoname_id), 2000000) FROM cities").Scan(&maxID)
+		if maxID < 2000000 {
+			maxID = 2000000
+		}
+		city.GeonameID = maxID + 1
+	}
+
+	// If this urban_area_slug already exists in cities with another geoname_id, reuse that geoname_id
+	var existingID int
+	err = DB.QueryRow("SELECT geoname_id FROM cities WHERE urban_area_slug = $1", city.Slug).Scan(&existingID)
+	if err == nil && existingID > 0 {
+		city.GeonameID = existingID
+	}
+
 	tx, err := DB.Begin()
 	if err != nil {
 		return err
@@ -305,10 +361,15 @@ func insertCityData(city *ParsedCity) error {
 		INSERT INTO cities (geoname_id, name, full_name, latitude, longitude, population, timezone, country, continent, urban_area_slug)
 		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
 		ON CONFLICT (geoname_id) DO UPDATE SET
+			name = EXCLUDED.name,
+			full_name = EXCLUDED.full_name,
 			population = EXCLUDED.population,
 			latitude = EXCLUDED.latitude,
 			longitude = EXCLUDED.longitude,
-			timezone = EXCLUDED.timezone
+			timezone = EXCLUDED.timezone,
+			country = EXCLUDED.country,
+			continent = EXCLUDED.continent,
+			urban_area_slug = EXCLUDED.urban_area_slug
 	`, city.GeonameID, city.Name, fmt.Sprintf("%s, %s", city.Name, city.Country), city.Latitude, city.Longitude, city.Population, city.Timezone, city.Country, city.Continent, city.Slug)
 	if err != nil {
 		return fmt.Errorf("failed to insert city record: %w", err)
@@ -336,6 +397,21 @@ func insertCityData(city *ParsedCity) error {
 		) ON CONFLICT (urban_area_slug) DO UPDATE SET
 			housing = EXCLUDED.housing,
 			cost_of_living = EXCLUDED.cost_of_living,
+			startups = EXCLUDED.startups,
+			venture_capital = EXCLUDED.venture_capital,
+			travel_connectivity = EXCLUDED.travel_connectivity,
+			commute = EXCLUDED.commute,
+			business_freedom = EXCLUDED.business_freedom,
+			safety = EXCLUDED.safety,
+			healthcare = EXCLUDED.healthcare,
+			education = EXCLUDED.education,
+			environmental_quality = EXCLUDED.environmental_quality,
+			economy = EXCLUDED.economy,
+			taxation = EXCLUDED.taxation,
+			internet_access = EXCLUDED.internet_access,
+			leisure_and_culture = EXCLUDED.leisure_and_culture,
+			tolerance = EXCLUDED.tolerance,
+			outdoors = EXCLUDED.outdoors,
 			summary = EXCLUDED.summary,
 			teleport_city_score = EXCLUDED.teleport_city_score
 	`, city.Slug, city.Scores[0], city.Scores[1], city.Scores[2], city.Scores[3],

@@ -44,6 +44,8 @@ func main() {
 	}()
 
 	// Bind handlers
+	http.HandleFunc("/healthz", withCORS(HealthzHandler))
+
 	http.HandleFunc("/api/cities/", withCORS(func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Query().Get("search") != "" {
 			SearchCitiesHandler(w, r)

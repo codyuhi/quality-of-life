@@ -34,6 +34,14 @@ func InitDB(host string, port int, user, password, dbname, sslmode string) error
 	return nil
 }
 
+// EnsureTables ensures cities and scores tables exist in the database
+func EnsureTables() error {
+	if DB == nil {
+		return fmt.Errorf("database connection is nil")
+	}
+	return createTables()
+}
+
 func createTables() error {
 	queries := []string{
 		`CREATE TABLE IF NOT EXISTS cities (
@@ -48,6 +56,10 @@ func createTables() error {
 			continent VARCHAR(100),
 			urban_area_slug VARCHAR(100) UNIQUE
 		);`,
+		`CREATE INDEX IF NOT EXISTS idx_cities_name ON cities(name);`,
+		`CREATE INDEX IF NOT EXISTS idx_cities_country ON cities(country);`,
+		`CREATE INDEX IF NOT EXISTS idx_cities_full_name ON cities(full_name);`,
+		`CREATE INDEX IF NOT EXISTS idx_cities_slug ON cities(urban_area_slug);`,
 		`CREATE TABLE IF NOT EXISTS scores (
 			urban_area_slug VARCHAR(100) PRIMARY KEY REFERENCES cities(urban_area_slug) ON DELETE CASCADE,
 			housing REAL,
