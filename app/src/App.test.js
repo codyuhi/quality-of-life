@@ -21,3 +21,17 @@ test('renders search description text', () => {
   const descElement = screen.getByText(/Compare cost of living, safety, healthcare/i);
   expect(descElement).toBeInTheDocument();
 });
+
+test('toggles mobile navigation button and search history', () => {
+  render(<App />);
+  const mobileNavBtn = screen.getByRole('button', { name: /Toggle mobile menu/i });
+  expect(mobileNavBtn).toBeInTheDocument();
+  expect(mobileNavBtn).toHaveClass('closed');
+
+  mobileNavBtn.click();
+  expect(mobileNavBtn).toHaveClass('open');
+
+  // Verify mobile search dropdown is open
+  const dropdown = document.getElementById('Navbar-Mobile-Search-Dropdown');
+  expect(dropdown).toHaveClass('open');
+});

@@ -15,7 +15,7 @@ export default function Sidebar({
     };
 
     const handleCloseHistory = () => {
-        updateSearchHistoryOpen(!searchHistoryOpen);
+        updateSearchHistoryOpen(false);
     };
 
     const handleHistoryClick = (e) => {
@@ -30,25 +30,49 @@ export default function Sidebar({
         .reverse()
         .map((item) => (
             <li key={item} className="Search-History-Item" onClick={handleHistoryClick}>
-                {item}
+                <i className="fa fa-history" style={{ marginRight: '8px', opacity: 0.6 }}></i>
+                <span>{item}</span>
             </li>
         ));
 
     return (
-        <div className={searchHistoryOpen ? 'Sidebar-Container Sidebar-Open' : 'Sidebar-Container Sidebar-Closed'}>
-            <div className="Sidebar">
-                <h3>Search History:</h3>
-                <button className="Sidebar-Clear-Button" onClick={clearHistory}>
-                    Clear History
-                </button>
-                <button className="Sidebar-Close-Button" onClick={handleCloseHistory}>
-                    Close History
-                </button>
-                <hr />
-                <ul>
-                    {renderedHistory}
-                </ul>
+        <>
+            {searchHistoryOpen && (
+                <div 
+                    className="Sidebar-Backdrop" 
+                    onClick={handleCloseHistory}
+                    aria-hidden="true"
+                />
+            )}
+            <div className={searchHistoryOpen ? 'Sidebar-Container Sidebar-Open' : 'Sidebar-Container Sidebar-Closed'}>
+                <div className="Sidebar">
+                    <div className="Sidebar-Header">
+                        <h3>Search History</h3>
+                        <button 
+                            className="Sidebar-Close-Icon-Btn" 
+                            onClick={handleCloseHistory}
+                            aria-label="Close search history"
+                            type="button"
+                        >
+                            <i className="fa fa-times"></i>
+                        </button>
+                    </div>
+                    <button className="Sidebar-Clear-Button" onClick={clearHistory}>
+                        <i className="fa fa-trash-o"></i> Clear History
+                    </button>
+                    <button className="Sidebar-Close-Button" onClick={handleCloseHistory}>
+                        Close History
+                    </button>
+                    <hr />
+                    {renderedHistory.length > 0 ? (
+                        <ul>
+                            {renderedHistory}
+                        </ul>
+                    ) : (
+                        <p className="Sidebar-Empty">No search history yet.</p>
+                    )}
+                </div>
             </div>
-        </div>
+        </>
     );
 }

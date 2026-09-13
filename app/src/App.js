@@ -153,6 +153,7 @@ function App() {
                 cityList={cityList}
                 getCityInfo={getCityInfo}
                 activeCity={activeCity}
+                updateActiveCity={setActiveCity}
                 urbanCityDetails={urbanCityDetails}
                 cityImg={cityImg}
                 advancedCityData={advancedCityData}

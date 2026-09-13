@@ -8,6 +8,7 @@ export default function Content({
     cityList,
     getCityInfo,
     activeCity,
+    updateActiveCity,
     urbanCityDetails,
     cityImg,
     advancedCityData,
@@ -32,7 +33,7 @@ export default function Content({
     };
 
     const generateRating = (number) => {
-        const percentage = number * 10;
+        const percentage = Math.min(100, Math.max(0, number * 10));
         let color = 'var(--accent-pink)';
         if (number >= 7.5) {
             color = 'var(--accent-cyan)';
@@ -52,18 +53,21 @@ export default function Content({
     };
 
     const hero = (
-        <div className="Hero-Container glass-panel" style={{ padding: '40px', borderRadius: '24px' }}>
+        <div className="Hero-Container glass-panel">
             <h1><i className="fa fa-heartbeat"> </i> Quality of Life</h1>
             <p>Compare cost of living, safety, healthcare, and quality of life metrics across 260+ major cities globally.</p>
-            <input
-                autoFocus
-                type="text"
-                value={searchTerm}
-                onChange={setSearchTerm}
-                placeholder="Enter city name..."
-                onKeyDown={checkEnterPressed}
-            />
-            <button style={{ marginTop: '16px' }} onClick={() => search()}>Search Cities</button>
+            <div className="Hero-Search-Form">
+                <input
+                    autoFocus
+                    type="text"
+                    value={searchTerm}
+                    onChange={setSearchTerm}
+                    placeholder="Enter city name..."
+                    onKeyDown={checkEnterPressed}
+                    aria-label="City name"
+                />
+                <button type="button" onClick={() => search()}>Search Cities</button>
+            </div>
         </div>
     );
 
@@ -71,9 +75,9 @@ export default function Content({
     if (cityList && cityList._embedded && cityList._embedded['city:search-results']) {
         cityList._embedded['city:search-results'].forEach((item, i) => {
             cityListDivs.push(
-                <div key={'city-list-' + i} className="City-List-Item" onClick={() => handleCityClick(i)}>
-                    <span>{item.matching_full_name}</span>
-                    <i className="fa fa-chevron-right" style={{ color: 'var(--accent-cyan)', fontSize: '12px' }}></i>
+                <div key={'city-list-' + i} className="City-List-Item" onClick={() => handleCityClick(i)} role="button" tabIndex={0}>
+                    <span className="City-Item-Name">{item.matching_full_name}</span>
+                    <i className="fa fa-chevron-right" style={{ color: 'var(--accent-cyan)', fontSize: '14px', flexShrink: 0, marginLeft: '8px' }}></i>
                 </div>
             );
         });
@@ -81,7 +85,10 @@ export default function Content({
 
     const cityListLayout = (
         <div className="City-List-Container">
-            <h1>Select City</h1>
+            <div className="City-List-Header">
+                <h1>Select City</h1>
+                <span className="City-Results-Badge">{cityListDivs.length} results</span>
+            </div>
             <div className="List-Container">
                 {cityListDivs}
             </div>
@@ -96,7 +103,7 @@ export default function Content({
             countryString += activeCity._links[`city:admin${counter}_division`].name + ', ';
             counter++;
         }
-        countryString += activeCity._links['city:country'].name;
+        countryString += activeCity._links['city:country'] ? activeCity._links['city:country'].name : '';
 
         if (cityIndexRef.current !== -1 && cityList && cityList._embedded && cityList._embedded['city:search-results'][cityIndexRef.current]) {
             const matchingAlts = cityList._embedded['city:search-results'][cityIndexRef.current].matching_alternate_names || [];
@@ -110,10 +117,10 @@ export default function Content({
                 <img
                     className="City-Image"
                     src={cityImg.photos[0].image.mobile}
-                    alt={`City by ${cityImg.photos[0].attribution.photographer}`}
+                    alt={`City by ${cityImg.photos[0].attribution ? cityImg.photos[0].attribution.photographer : 'photographer'}`}
                 />
             ) : (
-                <div style={{ padding: '60px 20px', textAlign: 'center', background: 'rgba(255,255,255,0.02)' }}>
+                <div className="City-Image-Placeholder">
                     <p className="Red">No Advanced Data or Images on File for {activeCity ? activeCity.name : 'This City'} <i className="fa fa-frown-o"></i></p>
                 </div>
             )}
@@ -156,7 +163,10 @@ export default function Content({
                     valueStr = item.int_value;
                 }
                 advancedCityDetails.push(
-                    <p key={'p-' + catIdx + '-' + itemIdx}>{`${item.label}: ${valueStr}`}</p>
+                    <p key={'p-' + catIdx + '-' + itemIdx} className="Statistic-Row">
+                        <span className="Stat-Label">{item.label}:</span>
+                        <span className="Stat-Value">{valueStr}</span>
+                    </p>
                 );
             });
         });
@@ -164,28 +174,28 @@ export default function Content({
 
     const advancedCityDataLayout = advancedCityData && advancedCityData.categories ? (
         <div className="Advanced-City-Container">
-            <h2 style={{ fontSize: '24px', fontWeight: '700', marginBottom: '8px', color: 'var(--accent-purple)' }}>Quality of Life Ratings</h2>
+            <h2 className="Section-Title">Quality of Life Ratings</h2>
             <div className="Advanced-City-Column-Container">
                 <div className="Advanced-City-Column">
                     {categoriesList.filter((_, idx) => idx % 2 === 0).map((cat) => (
-                        <p key={cat.label}>
-                            <span>{cat.label}</span>
-                            {generateRating(advancedCityData.categories[cat.index].score_out_of_10)}
-                        </p>
+                        <div key={cat.label} className="Rating-Item">
+                            <span className="Rating-Label">{cat.label}</span>
+                            {generateRating(advancedCityData.categories[cat.index] ? advancedCityData.categories[cat.index].score_out_of_10 : 0)}
+                        </div>
                     ))}
                 </div>
                 <div className="Advanced-City-Column">
                     {categoriesList.filter((_, idx) => idx % 2 !== 0).map((cat) => (
-                        <p key={cat.label}>
-                            <span>{cat.label}</span>
-                            {generateRating(advancedCityData.categories[cat.index].score_out_of_10)}
-                        </p>
+                        <div key={cat.label} className="Rating-Item">
+                            <span className="Rating-Label">{cat.label}</span>
+                            {generateRating(advancedCityData.categories[cat.index] ? advancedCityData.categories[cat.index].score_out_of_10 : 0)}
+                        </div>
                     ))}
                 </div>
             </div>
             {advancedCityDetails.length > 0 && (
                 <div className="Advanced-City-Details">
-                    <h2 style={{ fontSize: '24px', fontWeight: '700', marginTop: '32px', marginBottom: '8px', color: 'var(--accent-purple)' }}>Local Statistics & Details</h2>
+                    <h2 className="Section-Title" style={{ marginTop: '32px' }}>Local Statistics & Details</h2>
                     {advancedCityDetails}
                 </div>
             )}
@@ -194,29 +204,39 @@ export default function Content({
 
     const activeCityLayout = activeCity ? (
         <div className="Active-City-Container">
+            {cityList && (
+                <button 
+                    className="Back-To-List-Button" 
+                    onClick={() => updateActiveCity ? updateActiveCity(null) : null}
+                    type="button"
+                    aria-label="Back to search results"
+                >
+                    <i className="fa fa-arrow-left"></i> Back to Cities List
+                </button>
+            )}
             {cityImgLayout}
             <h1>{activeCity.name}</h1>
             <div className="Active-City-Column-Container">
                 <div className="Active-City-Column">
                     <p>
-                        <i className="fa fa-globe"></i> <span>Region: {countryString || 'No data on file'}</span>
+                        <i className="fa fa-globe"></i> <span><strong>Region:</strong> {countryString || 'No data on file'}</span>
                     </p>
                     <p>
-                        <i className="fa fa-clock-o"></i> <span>Timezone: {activeCity._links['city:timezone'] ? activeCity._links['city:timezone'].name : 'No Data on File'}</span>
+                        <i className="fa fa-clock-o"></i> <span><strong>Timezone:</strong> {activeCity._links && activeCity._links['city:timezone'] ? activeCity._links['city:timezone'].name : 'No Data on File'}</span>
                     </p>
                     <p>
-                        <i className="fa fa-building-o"></i> <span>Urban Area: {activeCity._links['city:urban_area'] ? activeCity._links['city:urban_area'].name : 'No Urban Area Data on File'}</span>
+                        <i className="fa fa-building-o"></i> <span><strong>Urban Area:</strong> {activeCity._links && activeCity._links['city:urban_area'] ? activeCity._links['city:urban_area'].name : 'No Urban Area Data on File'}</span>
                     </p>
                 </div>
                 <div className="Active-City-Column">
                     <p>
-                        <i className="fa fa-id-badge"></i> <span>Alternate Names: {alternateNames || 'No Alternate Names on File'}</span>
+                        <i className="fa fa-id-badge"></i> <span><strong>Alternate Names:</strong> {alternateNames || 'No Alternate Names on File'}</span>
                     </p>
                     <p>
-                        <i className="fa fa-map-marker"></i> <span>Coordinates: {activeCity.location.latlon.latitude.toFixed(4)}° N, {activeCity.location.latlon.longitude.toFixed(4)}° E</span>
+                        <i className="fa fa-map-marker"></i> <span><strong>Coordinates:</strong> {activeCity.location && activeCity.location.latlon ? `${activeCity.location.latlon.latitude.toFixed(4)}° N, ${activeCity.location.latlon.longitude.toFixed(4)}° E` : 'No Location Data'}</span>
                     </p>
                     <p>
-                        <i className="fa fa-users"></i> <span>Population: {new Intl.NumberFormat('en-US').format(activeCity.population)}</span>
+                        <i className="fa fa-users"></i> <span><strong>Population:</strong> {activeCity.population ? new Intl.NumberFormat('en-US').format(activeCity.population) : 'Unknown'}</span>
                     </p>
                 </div>
             </div>

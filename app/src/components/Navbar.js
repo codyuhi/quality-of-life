@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../App.css';
 
 export default function Navbar({
@@ -12,18 +12,13 @@ export default function Navbar({
     search,
     searchTerm
 }) {
+    const [mobileNavOpen, setMobileNavOpen] = useState(false);
+
     const toggleMobileNav = () => {
         if (searchHistoryOpen) {
             updateSearchHistoryOpen(false);
         }
-        const mobileNavButton = document.getElementById('Mobile-Nav-Button');
-        if (mobileNavButton) {
-            mobileNavButton.classList.toggle('open');
-        }
-        const navbarMobileSearchDropdown = document.getElementById('Navbar-Mobile-Search-Dropdown');
-        if (navbarMobileSearchDropdown) {
-            navbarMobileSearchDropdown.classList.toggle('open');
-        }
+        setMobileNavOpen(!mobileNavOpen);
     };
 
     const setSearchTerm = (e) => {
@@ -33,7 +28,7 @@ export default function Navbar({
     const checkEnterPressed = (e) => {
         if (e.key === 'Enter' || e.keyCode === 13) {
             search();
-            toggleMobileNav();
+            setMobileNavOpen(false);
         }
     };
 
@@ -51,17 +46,17 @@ export default function Navbar({
 
     const mobileClearSearch = () => {
         clearCurrentSearch();
-        toggleMobileNav();
+        setMobileNavOpen(false);
     };
 
     const mobileSearchHistory = () => {
         updateSearchHistory();
-        toggleMobileNav();
+        setMobileNavOpen(false);
     };
 
     const mobileSearch = () => {
         search();
-        toggleMobileNav();
+        setMobileNavOpen(false);
     };
 
     return (
@@ -73,12 +68,18 @@ export default function Navbar({
                     </h1>
                 </div>
                 <div className="Navbar-Mobile-Search">
-                    <div id="Mobile-Nav-Button" className="closed" onClick={toggleMobileNav}>
+                    <button 
+                        id="Mobile-Nav-Button" 
+                        className={mobileNavOpen ? 'open' : 'closed'} 
+                        onClick={toggleMobileNav}
+                        aria-label="Toggle mobile menu"
+                        type="button"
+                    >
                         <span></span>
                         <span></span>
                         <span></span>
-                    </div>
-                    <div id="Navbar-Mobile-Search-Dropdown" className="closed">
+                    </button>
+                    <div id="Navbar-Mobile-Search-Dropdown" className={mobileNavOpen ? 'open' : 'closed'}>
                         <span onClick={mobileClearSearch}>Clear Current Search</span>
                         <hr />
                         <span onClick={mobileSearchHistory}>Search History</span>
@@ -87,7 +88,7 @@ export default function Navbar({
                             value={searchTerm}
                             onChange={setSearchTerm}
                             onKeyDown={checkEnterPressed}
-                            placeholder="Search"
+                            placeholder="Search city..."
                         />
                         <button onClick={mobileSearch}>Search</button>
                     </div>
