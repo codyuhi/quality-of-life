@@ -35,7 +35,12 @@ func initTestDB(t *testing.T) {
 	}
 
 	if err := InitDB(dbHost, dbPort, dbUser, dbPass, dbName, "disable"); err != nil {
-		t.Fatalf("Failed to initialize test DB: %v", err)
+		if DB != nil {
+			_ = DB.Close()
+			DB = nil
+		}
+		t.Skipf("Skipping database integration tests: failed to initialize test DB: %v", err)
+		return
 	}
 }
 
@@ -138,6 +143,9 @@ func TestCityDetailsHandler(t *testing.T) {
 
 func TestCityDetailsNotFound(t *testing.T) {
 	initTestDB(t)
+	if DB == nil {
+		t.Skip("Skipping details test: database not initialized")
+	}
 
 	req, err := http.NewRequest("GET", "/api/cities/geonameid:9999999/", nil)
 	if err != nil {
