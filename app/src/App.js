@@ -22,6 +22,38 @@ function App() {
         }
     }, [])
 
+    // Heartbeat to keep backend alive under Sablier when tab is open (every 10 minutes)
+    useEffect(() => {
+        const HEARTBEAT_INTERVAL_MS = 10 * 60 * 1000;
+        let lastHeartbeat = Date.now();
+        const API_BASE_URL = process.env.REACT_APP_API_URL !== undefined
+            ? process.env.REACT_APP_API_URL
+            : (process.env.NODE_ENV === 'development' ? 'http://localhost:5001' : '');
+
+        const sendHeartbeat = () => {
+            fetch(`${API_BASE_URL}/healthz`, { method: 'GET', cache: 'no-store' })
+                .then(() => {
+                    lastHeartbeat = Date.now();
+                })
+                .catch(() => {});
+        };
+
+        const intervalId = setInterval(sendHeartbeat, HEARTBEAT_INTERVAL_MS);
+
+        const handleVisibilityChange = () => {
+            if (document.visibilityState === 'visible' && Date.now() - lastHeartbeat >= HEARTBEAT_INTERVAL_MS) {
+                sendHeartbeat();
+            }
+        };
+
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+
+        return () => {
+            clearInterval(intervalId);
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+        };
+    }, []);
+
     const search = (term) => {
         const queryTerm = typeof term === 'string' ? term : searchTerm;
         if (!queryTerm) {
