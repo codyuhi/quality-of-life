@@ -14,6 +14,7 @@ function App() {
     const [advancedCityData, setAdvancedCityData] = useState(null)
     const [urbanCityDetails, setUrbanCityDetails] = useState(null)
     const [cityImg, setCityImg] = useState(null)
+    const [cityImgLoading, setCityImgLoading] = useState(false)
     const [activeError, setActiveError] = useState('')
     const [suggestedCities, setSuggestedCities] = useState([])
     const [citiesPagination, setCitiesPagination] = useState(null)
@@ -158,6 +159,11 @@ function App() {
     }
 
     const getCityInfo = (cityUrl) => {
+        setCityImg(null);
+        setAdvancedCityData(null);
+        setUrbanCityDetails(null);
+        setCityImgLoading(true);
+
         axios.get(cityUrl)
             .then((response) => {
                 return response.data;
@@ -169,9 +175,12 @@ function App() {
                     getCityImg(urbanAreaHref);
                     getAdvancedCityInfo(urbanAreaHref);
                     getUrbanCityDetails(urbanAreaHref);
+                } else {
+                    setCityImgLoading(false);
                 }
             })
             .catch((err) => {
+                setCityImgLoading(false);
                 const error = err;
                 console.error(error);
                 setActiveError(typeof (error) === 'string' ? error : error.toString());
@@ -211,18 +220,20 @@ function App() {
     }
 
     const getCityImg = (urbanAreaUrl) => {
+        setCityImgLoading(true);
         const url = urbanAreaUrl.endsWith('/') ? `${urbanAreaUrl}images` : `${urbanAreaUrl}/images`;
         axios.get(url)
             .then((response) => {
                 return response.data;
             })
             .then((data) => {
-                setCityImg(data)
+                setCityImg(data);
+                setCityImgLoading(false);
             })
             .catch((err) => {
-                const error = err;
-                console.error(error);
-                setActiveError(typeof (error) === 'string' ? error : error.toString());
+                setCityImg(null);
+                setCityImgLoading(false);
+                console.error(err);
             })
     }
 
@@ -257,6 +268,7 @@ function App() {
                 updateActiveCity={setActiveCity}
                 urbanCityDetails={urbanCityDetails}
                 cityImg={cityImg}
+                cityImgLoading={cityImgLoading}
                 advancedCityData={advancedCityData}
                 activeError={activeError}
                 suggestedCities={suggestedCities}

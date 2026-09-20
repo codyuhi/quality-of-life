@@ -635,6 +635,27 @@ input[type="text"]:focus {
     background: rgba(255, 255, 255, 0.02);
 }
 
+.City-Image-Loading {
+    height: 380px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    background: rgba(255, 255, 255, 0.02);
+    color: var(--text-secondary);
+    font-size: 15px;
+}
+
+.City-Image-Loading i {
+    font-size: 32px;
+    color: var(--accent-cyan);
+}
+
+.City-Image.visible {
+    animation: fadeIn 0.4s ease forwards;
+}
+
 .Active-City-Container h1 {
     font-size: 38px;
     font-weight: 800;
@@ -902,6 +923,10 @@ input[type="text"]:focus {
     }
 
     .City-Image {
+        height: 240px;
+    }
+
+    .City-Image-Loading {
         height: 240px;
     }
 

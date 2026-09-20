@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import '../App.css';
 
 export default function Content({
@@ -11,6 +11,7 @@ export default function Content({
     updateActiveCity,
     urbanCityDetails,
     cityImg,
+    cityImgLoading = false,
     advancedCityData,
     activeError,
     suggestedCities = [],
@@ -116,17 +117,47 @@ export default function Content({
         }
     }
 
+    const [imageLoaded, setImageLoaded] = useState(false);
+    const [imageFailed, setImageFailed] = useState(false);
+
+    useEffect(() => {
+        setImageLoaded(false);
+        setImageFailed(false);
+    }, [activeCity ? activeCity.geoname_id : null, cityImg]);
+
+    const hasPhoto = Boolean(cityImg && cityImg.photos && cityImg.photos[0] && cityImg.photos[0].image && cityImg.photos[0].image.mobile);
+    const isImgLoading = cityImgLoading || (hasPhoto && !imageLoaded && !imageFailed);
+    const isImgMissing = !cityImgLoading && (!hasPhoto || imageFailed);
+
     const cityImgLayout = (
         <div className="City-Image-Container">
-            {cityImg && cityImg.photos && cityImg.photos[0] ? (
+            {isImgLoading && (
+                <div className="City-Image-Loading">
+                    <i className="fa fa-spinner fa-spin"></i>
+                    <span>Loading image for {activeCity ? activeCity.name : 'city'}...</span>
+                </div>
+            )}
+
+            {hasPhoto && !imageFailed && (
                 <img
-                    className="City-Image"
+                    className={`City-Image ${imageLoaded ? 'visible' : 'hidden'}`}
                     src={cityImg.photos[0].image.mobile}
                     alt={`City by ${cityImg.photos[0].attribution ? cityImg.photos[0].attribution.photographer : 'photographer'}`}
+                    onLoad={() => setImageLoaded(true)}
+                    onError={() => {
+                        setImageFailed(true);
+                        setImageLoaded(false);
+                    }}
+                    style={{ display: imageLoaded ? 'block' : 'none' }}
                 />
-            ) : (
+            )}
+
+            {isImgMissing && (
                 <div className="City-Image-Placeholder">
-                    <p className="Red">No Advanced Data or Images on File for {activeCity ? activeCity.name : 'This City'} <i className="fa fa-frown-o"></i></p>
+                    <p className="Red">
+                        No Advanced Data or Images on File for {activeCity ? activeCity.name : 'This City'}{' '}
+                        <i className="fa fa-frown-o"></i>
+                    </p>
                 </div>
             )}
         </div>

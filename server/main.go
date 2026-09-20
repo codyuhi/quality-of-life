@@ -43,6 +43,20 @@ func main() {
 		}
 	}()
 
+	// Initialize S3/MinIO
+	s3Endpoint := getEnv("S3_ENDPOINT", "")
+	s3AccessKey := getEnv("S3_ACCESS_KEY", "")
+	s3SecretKey := getEnv("S3_SECRET_KEY", "")
+	s3Bucket := getEnv("S3_BUCKET", "quality-of-life")
+	s3SSL := getEnv("S3_USE_SSL", "false") == "true"
+
+	if err := InitS3(s3Endpoint, s3AccessKey, s3SecretKey, s3Bucket, s3SSL); err != nil {
+		log.Printf("MinIO S3 initialization warning: %v", err)
+	}
+
+	// Warm MinIO image cache in background
+	go WarmImageCacheBackground()
+
 	// Bind handlers
 	http.HandleFunc("/healthz", withCORS(HealthzHandler))
 
@@ -68,6 +82,8 @@ func main() {
 			UrbanAreaScoresHandler(w, r)
 		} else if strings.Contains(path, "/details") {
 			UrbanAreaDetailsHandler(w, r)
+		} else if strings.Contains(path, "/image-file") {
+			UrbanAreaImageFileHandler(w, r)
 		} else if strings.Contains(path, "/images") {
 			UrbanAreaImagesHandler(w, r)
 		} else {

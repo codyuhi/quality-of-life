@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"net/url"
@@ -417,22 +418,94 @@ func UrbanAreaImagesHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Fetch city's official name to query Wikipedia correctly
+	// Fetch city's official name
 	var name string
-	err := DB.QueryRow("SELECT name FROM cities WHERE urban_area_slug = $1", slug).Scan(&name)
-	if err == sql.ErrNoRows {
-		writeError(w, http.StatusNotFound, "City slug not found")
-		return
-	} else if err != nil {
-		log.Printf("Error fetching city name for image: %v", err)
-		handleDBError(w, err, "Database error")
+	if DB != nil {
+		err := DB.QueryRow("SELECT name FROM cities WHERE urban_area_slug = $1", slug).Scan(&name)
+		if err == sql.ErrNoRows {
+			writeError(w, http.StatusNotFound, "City slug not found")
+			return
+		} else if err != nil {
+			log.Printf("Error fetching city name for image: %v", err)
+			handleDBError(w, err, "Database error")
+			return
+		}
+	} else {
+		name = strings.ReplaceAll(slug, "-", " ")
+	}
+
+	baseURL := getBaseURL(r)
+	localImageURL := fmt.Sprintf("%s/api/urban_areas/slug:%s/image-file", baseURL, slug)
+
+	res := WikipediaImageResponse{}
+	res.Photos = append(res.Photos, struct {
+		Image struct {
+			Mobile string `json:"mobile"`
+			Web    string `json:"web"`
+		} `json:"image"`
+		Attribution struct {
+			Photographer string `json:"photographer"`
+			Site         string `json:"site"`
+			Source       string `json:"source"`
+			License      string `json:"license"`
+		} `json:"attribution"`
+	}{})
+	res.Photos[0].Image.Mobile = localImageURL
+	res.Photos[0].Image.Web = localImageURL
+	res.Photos[0].Attribution.Photographer = "Wikimedia Contributor / S3 Local Cache"
+	res.Photos[0].Attribution.Site = "MinIO S3"
+	res.Photos[0].Attribution.Source = fmt.Sprintf("https://en.wikipedia.org/wiki/%s", url.QueryEscape(name))
+	res.Photos[0].Attribution.License = "Creative Commons / Public Domain"
+
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(res)
+}
+
+// UrbanAreaImageFileHandler streams cached city images from MinIO S3 or Wikipedia fallback
+func UrbanAreaImageFileHandler(w http.ResponseWriter, r *http.Request) {
+	slug := extractSlugFromPath(r.URL.Path)
+	if slug == "" {
+		writeError(w, http.StatusBadRequest, "Missing slug")
 		return
 	}
 
-	img := getCityWikipediaImage(name)
+	ctx := r.Context()
 
-	w.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(w).Encode(img)
+	// 1. Check if cached in S3
+	if s3Client != nil {
+		reader, contentType, err := GetCachedImage(ctx, slug)
+		if err == nil && reader != nil {
+			defer reader.Close()
+			w.Header().Set("Content-Type", contentType)
+			w.Header().Set("Cache-Control", "public, max-age=31536000, immutable")
+			w.Header().Set("ETag", fmt.Sprintf("\"%s\"", slug))
+			_, _ = io.Copy(w, reader)
+			return
+		}
+	}
+
+	// 2. Not in S3 yet: resolve city name, download, cache and stream
+	var name string
+	if DB != nil {
+		err := DB.QueryRow("SELECT name FROM cities WHERE urban_area_slug = $1", slug).Scan(&name)
+		if err != nil {
+			name = strings.ReplaceAll(slug, "-", " ")
+		}
+	} else {
+		name = strings.ReplaceAll(slug, "-", " ")
+	}
+
+	data, contentType, err := FetchAndCacheCityImage(slug, name)
+	if err != nil {
+		log.Printf("Error fetching and caching image for %s: %v", slug, err)
+		writeError(w, http.StatusNotFound, "Image not found")
+		return
+	}
+
+	w.Header().Set("Content-Type", contentType)
+	w.Header().Set("Cache-Control", "public, max-age=86400")
+	w.Header().Set("ETag", fmt.Sprintf("\"%s\"", slug))
+	_, _ = w.Write(data)
 }
 
 // Extract slug from URL paths like /api/urban_areas/slug:san-francisco-bay-area/scores/

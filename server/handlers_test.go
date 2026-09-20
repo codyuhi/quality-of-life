@@ -6,6 +6,7 @@ import (
 	"net/http/httptest"
 	"os"
 	"strconv"
+	"strings"
 	"testing"
 
 	"github.com/joho/godotenv"
@@ -342,4 +343,37 @@ func TestListCitiesHandler(t *testing.T) {
 		}
 	}
 }
+
+func TestUrbanAreaImageFileHandlerMissingSlug(t *testing.T) {
+	req, _ := http.NewRequest("GET", "/api/urban_areas/image-file", nil)
+	rr := httptest.NewRecorder()
+	UrbanAreaImageFileHandler(rr, req)
+
+	if rr.Code != http.StatusBadRequest {
+		t.Errorf("expected 400 for missing slug, got %d", rr.Code)
+	}
+}
+
+func TestUrbanAreaImagesHandlerFormatting(t *testing.T) {
+	req, _ := http.NewRequest("GET", "/api/urban_areas/slug:san-francisco-bay-area/images/", nil)
+	rr := httptest.NewRecorder()
+	UrbanAreaImagesHandler(rr, req)
+
+	if rr.Code != http.StatusOK {
+		t.Errorf("expected 200 OK, got %d", rr.Code)
+	}
+
+	var resp WikipediaImageResponse
+	if err := json.NewDecoder(rr.Body).Decode(&resp); err != nil {
+		t.Fatalf("failed to decode response: %v", err)
+	}
+	if len(resp.Photos) == 0 {
+		t.Errorf("expected photos array in response")
+	} else {
+		if !strings.Contains(resp.Photos[0].Image.Mobile, "/api/urban_areas/slug:san-francisco-bay-area/image-file") {
+			t.Errorf("expected mobile image URL to point to image-file endpoint, got %s", resp.Photos[0].Image.Mobile)
+		}
+	}
+}
+
 
