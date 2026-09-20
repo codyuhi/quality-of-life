@@ -54,8 +54,8 @@ func main() {
 		log.Printf("MinIO S3 initialization warning: %v", err)
 	}
 
-	// Warm MinIO image cache in background
-	go WarmImageCacheBackground()
+	// Verify MinIO image cache status in background
+	go VerifyCachedImages()
 
 	// Bind handlers
 	http.HandleFunc("/healthz", withCORS(HealthzHandler))

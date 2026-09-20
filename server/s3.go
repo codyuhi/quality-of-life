@@ -123,118 +123,32 @@ func PutCachedImage(ctx context.Context, slug string, data []byte, contentType s
 	return nil
 }
 
-// FetchRemoteImageBytes downloads an image from a remote URL.
-func FetchRemoteImageBytes(imageURL string) ([]byte, string, error) {
-	req, err := http.NewRequest("GET", imageURL, nil)
-	if err != nil {
-		return nil, "", err
-	}
-	req.Header.Set("User-Agent", "QualityOfLifeApp/1.0")
-
-	client := &http.Client{Timeout: 15 * time.Second}
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, "", err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		return nil, "", fmt.Errorf("remote image server returned HTTP %d", resp.StatusCode)
-	}
-
-	data, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, "", err
-	}
-
-	contentType := resp.Header.Get("Content-Type")
-	if contentType == "" {
-		contentType = http.DetectContentType(data)
-	}
-
-	return data, contentType, nil
-}
-
-// FetchAndCacheCityImage fetches the image for a city from Wikipedia (or fallback) and caches it in S3.
-func FetchAndCacheCityImage(slug, cityName string) ([]byte, string, error) {
-	wikiImg := getCityWikipediaImage(cityName)
-	if len(wikiImg.Photos) == 0 || wikiImg.Photos[0].Image.Mobile == "" {
-		return nil, "", fmt.Errorf("no image found for city %s", cityName)
-	}
-
-	remoteURL := wikiImg.Photos[0].Image.Mobile
-	data, contentType, err := FetchRemoteImageBytes(remoteURL)
-	if err != nil {
-		log.Printf("Failed to fetch remote image bytes for %s from %s: %v", cityName, remoteURL, err)
-		// Fallback image
-		fb := getFallbackImage()
-		data, contentType, err = FetchRemoteImageBytes(fb.Photos[0].Image.Mobile)
-		if err != nil {
-			return nil, "", err
-		}
-	}
-
-	if s3Client != nil {
-		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-		defer cancel()
-		_ = PutCachedImage(ctx, slug, data, contentType)
-	}
-
-	return data, contentType, nil
-}
-
-// WarmImageCacheBackground asynchronously loops through all cities and caches missing images in MinIO.
-func WarmImageCacheBackground() {
+// VerifyCachedImages checks S3 cache status for all cities in the DB without making external network calls.
+func VerifyCachedImages() {
 	if s3Client == nil || DB == nil {
 		return
 	}
 
-	log.Println("Starting background S3 image cache warming for all cities...")
-	rows, err := DB.Query("SELECT DISTINCT urban_area_slug, name FROM cities WHERE urban_area_slug IS NOT NULL AND urban_area_slug != '' ORDER BY urban_area_slug")
+	rows, err := DB.Query("SELECT DISTINCT urban_area_slug FROM cities WHERE urban_area_slug IS NOT NULL AND urban_area_slug != ''")
 	if err != nil {
-		log.Printf("Warning: failed to query cities for S3 warming: %v", err)
+		log.Printf("Warning: failed to query cities for S3 verification: %v", err)
 		return
 	}
 	defer rows.Close()
 
-	type CitySlugName struct {
-		slug string
-		name string
-	}
-	var cities []CitySlugName
-
+	total := 0
+	cached := 0
 	for rows.Next() {
-		var c CitySlugName
-		if err := rows.Scan(&c.slug, &c.name); err == nil {
-			cities = append(cities, c)
+		var slug string
+		if err := rows.Scan(&slug); err == nil {
+			total++
+			ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+			if HasCachedImage(ctx, slug) {
+				cached++
+			}
+			cancel()
 		}
 	}
-
-	cachedCount := 0
-	newlyCached := 0
-
-	for _, c := range cities {
-		ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-		hasCached := HasCachedImage(ctx, c.slug)
-		cancel()
-
-		if hasCached {
-			cachedCount++
-			continue
-		}
-
-		// Download and cache
-		_, _, err := FetchAndCacheCityImage(c.slug, c.name)
-		if err == nil {
-			newlyCached++
-		} else {
-			log.Printf("Warning: could not cache image for %s (%s): %v", c.name, c.slug, err)
-		}
-
-		// Gentle delay between requests to respect Wikipedia CDN
-		time.Sleep(300 * time.Millisecond)
-	}
-
-	log.Printf("Completed S3 image cache warming: %d already cached, %d newly cached, total %d cities",
-		cachedCount, newlyCached, len(cities))
+	log.Printf("MinIO S3 image cache status: %d/%d cities cached locally", cached, total)
 }
+

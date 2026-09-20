@@ -363,7 +363,7 @@ func TestUrbanAreaImagesHandlerFormatting(t *testing.T) {
 		t.Errorf("expected 200 OK, got %d", rr.Code)
 	}
 
-	var resp WikipediaImageResponse
+	var resp CityImageResponse
 	if err := json.NewDecoder(rr.Body).Decode(&resp); err != nil {
 		t.Fatalf("failed to decode response: %v", err)
 	}

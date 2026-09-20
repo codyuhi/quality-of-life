@@ -31,7 +31,7 @@ graph TD
   - `GET /api/cities/geonameid::id/` - Returns basic city details, timezone, and population.
   - `GET /api/urban_areas/slug::slug/scores` - Returns the 14 quality-of-life categories and a calculated composite rating.
   - `GET /api/urban_areas/slug::slug/details` - Returns granular local specs (cost of living details, currency conversions, metrics).
-  - `GET /api/urban_areas/slug::slug/images` - Fetches attribution and matching Wikipedia mobile/desktop cover images.
+  - `GET /api/urban_areas/slug::slug/images` - Fetches attribution and matching cover images from local MinIO S3 storage.
 
 ### C. PostgreSQL Database
 * **Relational Schema**: Consists of two core tables:

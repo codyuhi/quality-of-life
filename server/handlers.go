@@ -10,7 +10,6 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
-	"time"
 )
 
 // Helper to write JSON error
@@ -434,10 +433,16 @@ func UrbanAreaImagesHandler(w http.ResponseWriter, r *http.Request) {
 		name = strings.ReplaceAll(slug, "-", " ")
 	}
 
+	ctx := r.Context()
+	if s3Client != nil && !HasCachedImage(ctx, slug) {
+		writeError(w, http.StatusNotFound, "City image not found in storage")
+		return
+	}
+
 	baseURL := getBaseURL(r)
 	localImageURL := fmt.Sprintf("%s/api/urban_areas/slug:%s/image-file", baseURL, slug)
 
-	res := WikipediaImageResponse{}
+	res := CityImageResponse{}
 	res.Photos = append(res.Photos, struct {
 		Image struct {
 			Mobile string `json:"mobile"`
@@ -452,16 +457,16 @@ func UrbanAreaImagesHandler(w http.ResponseWriter, r *http.Request) {
 	}{})
 	res.Photos[0].Image.Mobile = localImageURL
 	res.Photos[0].Image.Web = localImageURL
-	res.Photos[0].Attribution.Photographer = "Wikimedia Contributor / S3 Local Cache"
-	res.Photos[0].Attribution.Site = "MinIO S3"
-	res.Photos[0].Attribution.Source = fmt.Sprintf("https://en.wikipedia.org/wiki/%s", url.QueryEscape(name))
-	res.Photos[0].Attribution.License = "Creative Commons / Public Domain"
+	res.Photos[0].Attribution.Photographer = "Homelab MinIO S3"
+	res.Photos[0].Attribution.Site = "Local Storage"
+	res.Photos[0].Attribution.Source = localImageURL
+	res.Photos[0].Attribution.License = "Local Storage"
 
 	w.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(w).Encode(res)
 }
 
-// UrbanAreaImageFileHandler streams cached city images from MinIO S3 or Wikipedia fallback
+// UrbanAreaImageFileHandler streams cached city images from MinIO S3
 func UrbanAreaImageFileHandler(w http.ResponseWriter, r *http.Request) {
 	slug := extractSlugFromPath(r.URL.Path)
 	if slug == "" {
@@ -471,7 +476,7 @@ func UrbanAreaImageFileHandler(w http.ResponseWriter, r *http.Request) {
 
 	ctx := r.Context()
 
-	// 1. Check if cached in S3
+	// Check if cached in S3
 	if s3Client != nil {
 		reader, contentType, err := GetCachedImage(ctx, slug)
 		if err == nil && reader != nil {
@@ -484,28 +489,7 @@ func UrbanAreaImageFileHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// 2. Not in S3 yet: resolve city name, download, cache and stream
-	var name string
-	if DB != nil {
-		err := DB.QueryRow("SELECT name FROM cities WHERE urban_area_slug = $1", slug).Scan(&name)
-		if err != nil {
-			name = strings.ReplaceAll(slug, "-", " ")
-		}
-	} else {
-		name = strings.ReplaceAll(slug, "-", " ")
-	}
-
-	data, contentType, err := FetchAndCacheCityImage(slug, name)
-	if err != nil {
-		log.Printf("Error fetching and caching image for %s: %v", slug, err)
-		writeError(w, http.StatusNotFound, "Image not found")
-		return
-	}
-
-	w.Header().Set("Content-Type", contentType)
-	w.Header().Set("Cache-Control", "public, max-age=86400")
-	w.Header().Set("ETag", fmt.Sprintf("\"%s\"", slug))
-	_, _ = w.Write(data)
+	writeError(w, http.StatusNotFound, "Image not found")
 }
 
 // Extract slug from URL paths like /api/urban_areas/slug:san-francisco-bay-area/scores/
@@ -523,7 +507,7 @@ func extractSlugFromPath(path string) string {
 	return slugPart
 }
 
-type WikipediaImageResponse struct {
+type CityImageResponse struct {
 	Photos []struct {
 		Image struct {
 			Mobile string `json:"mobile"`
@@ -538,91 +522,6 @@ type WikipediaImageResponse struct {
 	} `json:"photos"`
 }
 
-func getCityWikipediaImage(cityName string) WikipediaImageResponse {
-	// Query Wikipedia API for page image
-	wikiURL := fmt.Sprintf("https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&piprop=original&titles=%s&origin=*", url.QueryEscape(cityName))
-	
-	req, err := http.NewRequest("GET", wikiURL, nil)
-	if err != nil {
-		log.Printf("Wikipedia image request creation failed for %s: %v", cityName, err)
-		return getFallbackImage()
-	}
-	req.Header.Set("User-Agent", "QualityOfLifeApp/1.0")
-
-	client := &http.Client{Timeout: 5 * time.Second}
-	resp, err := client.Do(req)
-	if err != nil {
-		log.Printf("Wikipedia image request failed for %s: %v", cityName, err)
-	} else {
-		defer resp.Body.Close()
-		if resp.StatusCode != http.StatusOK {
-			log.Printf("Wikipedia image request returned status: %d", resp.StatusCode)
-		} else {
-			var wikiResult struct {
-				Query struct {
-					Pages map[string]struct {
-						Original struct {
-							Source string `json:"source"`
-						} `json:"original"`
-					} `json:"pages"`
-				} `json:"query"`
-			}
-			if err := json.NewDecoder(resp.Body).Decode(&wikiResult); err != nil {
-				log.Printf("Wikipedia image response decoding failed: %v", err)
-			} else {
-				for _, page := range wikiResult.Query.Pages {
-					if page.Original.Source != "" {
-						res := WikipediaImageResponse{}
-						res.Photos = append(res.Photos, struct {
-							Image struct {
-								Mobile string `json:"mobile"`
-								Web    string `json:"web"`
-							} `json:"image"`
-							Attribution struct {
-								Photographer string `json:"photographer"`
-								Site         string `json:"site"`
-								Source       string `json:"source"`
-								License      string `json:"license"`
-							} `json:"attribution"`
-						}{})
-						res.Photos[0].Image.Mobile = page.Original.Source
-						res.Photos[0].Image.Web = page.Original.Source
-						res.Photos[0].Attribution.Photographer = "Wikimedia Contributor"
-						res.Photos[0].Attribution.Site = "Wikipedia"
-						res.Photos[0].Attribution.Source = fmt.Sprintf("https://en.wikipedia.org/wiki/%s", url.QueryEscape(cityName))
-						res.Photos[0].Attribution.License = "Creative Commons / Public Domain"
-						return res
-					}
-				}
-			}
-		}
-	}
-
-	return getFallbackImage()
-}
-
-func getFallbackImage() WikipediaImageResponse {
-	res := WikipediaImageResponse{}
-	res.Photos = append(res.Photos, struct {
-		Image struct {
-			Mobile string `json:"mobile"`
-			Web    string `json:"web"`
-		} `json:"image"`
-		Attribution struct {
-			Photographer string `json:"photographer"`
-			Site         string `json:"site"`
-			Source       string `json:"source"`
-			License      string `json:"license"`
-		} `json:"attribution"`
-	}{})
-	res.Photos[0].Image.Mobile = "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=800"
-	res.Photos[0].Image.Web = "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1200"
-	res.Photos[0].Attribution.Photographer = "Unknown"
-	res.Photos[0].Attribution.Site = "Unsplash"
-	res.Photos[0].Attribution.Source = "https://unsplash.com"
-	res.Photos[0].Attribution.License = "Unsplash License"
-	return res
-}
 
 // ListCitiesHandler handles GET /api/cities/ with pagination and optional lat/lon location-based sorting
 func ListCitiesHandler(w http.ResponseWriter, r *http.Request) {
