@@ -46,16 +46,21 @@ func main() {
 	// Bind handlers
 	http.HandleFunc("/healthz", withCORS(HealthzHandler))
 
-	http.HandleFunc("/api/cities/", withCORS(func(w http.ResponseWriter, r *http.Request) {
+	citiesHandler := withCORS(func(w http.ResponseWriter, r *http.Request) {
 		path := strings.TrimSuffix(r.URL.Path, "/")
-		if path == "/api/cities/count" || r.URL.Query().Get("count") != "" || (path == "/api/cities" && r.URL.Query().Get("search") == "") {
+		if path == "/api/cities/count" || r.URL.Query().Get("count") != "" {
 			CityCountHandler(w, r)
 		} else if r.URL.Query().Get("search") != "" {
 			SearchCitiesHandler(w, r)
+		} else if path == "/api/cities" {
+			ListCitiesHandler(w, r)
 		} else {
 			CityDetailsHandler(w, r)
 		}
-	}))
+	})
+
+	http.HandleFunc("/api/cities", citiesHandler)
+	http.HandleFunc("/api/cities/", citiesHandler)
 
 	http.HandleFunc("/api/urban_areas/", withCORS(func(w http.ResponseWriter, r *http.Request) {
 		path := r.URL.Path

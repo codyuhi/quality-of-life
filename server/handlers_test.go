@@ -268,3 +268,78 @@ func TestCityCountHandlerNilDB(t *testing.T) {
 		t.Errorf("expected 500 or 503 for nil DB, got %d", rr.Code)
 	}
 }
+
+func TestListCitiesHandlerNilDB(t *testing.T) {
+	origDB := DB
+	DB = nil
+	defer func() { DB = origDB }()
+
+	req, _ := http.NewRequest("GET", "/api/cities", nil)
+	rr := httptest.NewRecorder()
+	ListCitiesHandler(rr, req)
+
+	if rr.Code != http.StatusServiceUnavailable {
+		t.Errorf("expected 503 for nil DB, got %d", rr.Code)
+	}
+}
+
+func TestListCitiesHandler(t *testing.T) {
+	initTestDB(t)
+	if DB == nil {
+		t.Skip("Skipping list cities test: database not initialized")
+	}
+
+	// Test default population sorting
+	req, err := http.NewRequest("GET", "/api/cities?page=1&limit=5", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	rr := httptest.NewRecorder()
+	ListCitiesHandler(rr, req)
+
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusOK)
+	}
+
+	var resp map[string]interface{}
+	if err := json.NewDecoder(rr.Body).Decode(&resp); err != nil {
+		t.Fatalf("Failed to decode response: %v", err)
+	}
+
+	cities, ok := resp["cities"].([]interface{})
+	if !ok || len(cities) == 0 {
+		t.Errorf("expected non-empty cities array in response")
+	}
+	pagination, ok := resp["pagination"].(map[string]interface{})
+	if !ok {
+		t.Errorf("expected pagination object in response")
+	} else {
+		if sortBy, ok := pagination["sort_by"].(string); !ok || sortBy != "population" {
+			t.Errorf("expected sort_by population, got %v", pagination["sort_by"])
+		}
+	}
+
+	// Test distance sorting with lat/lon
+	reqGeo, err := http.NewRequest("GET", "/api/cities?page=1&limit=5&lat=40.7128&lon=-74.0060", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	rrGeo := httptest.NewRecorder()
+	ListCitiesHandler(rrGeo, reqGeo)
+
+	if status := rrGeo.Code; status != http.StatusOK {
+		t.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusOK)
+	}
+
+	var respGeo map[string]interface{}
+	if err := json.NewDecoder(rrGeo.Body).Decode(&respGeo); err != nil {
+		t.Fatalf("Failed to decode response: %v", err)
+	}
+	paginationGeo, ok := respGeo["pagination"].(map[string]interface{})
+	if ok {
+		if sortBy, ok := paginationGeo["sort_by"].(string); !ok || sortBy != "distance" {
+			t.Errorf("expected sort_by distance, got %v", paginationGeo["sort_by"])
+		}
+	}
+}
+

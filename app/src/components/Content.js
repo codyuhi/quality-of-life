@@ -12,7 +12,12 @@ export default function Content({
     urbanCityDetails,
     cityImg,
     advancedCityData,
-    activeError
+    activeError,
+    suggestedCities = [],
+    citiesPagination,
+    citiesLoading,
+    locationStatus,
+    onPageChange
 }) {
     const cityIndexRef = useRef(-1);
 
@@ -202,18 +207,145 @@ export default function Content({
         </div>
     ) : null;
 
+    const formatNumber = (num) => {
+        if (!num && num !== 0) return 'Unknown';
+        return new Intl.NumberFormat('en-US').format(num);
+    };
+
+    const formatDistance = (km) => {
+        if (km == null) return null;
+        if (km < 1) return '< 1 km away';
+        return `${Math.round(km)} km away`;
+    };
+
+    const totalCities = (citiesPagination && citiesPagination.total_cities) || 266;
+    const dbStatusBadge = (
+        <div className="Db-Status-Badge glass-panel" title="Database Seed Status">
+            <div className="Db-Status-Left">
+                <i className="fa fa-database"></i>
+                <span className="Db-Status-Count"><strong>{totalCities}</strong> cities available in database</span>
+            </div>
+            <div className="Db-Status-Right">
+                <span className="Db-Status-Pill"><i className="fa fa-check-circle"></i> Seeded &amp; Ready</span>
+            </div>
+        </div>
+    );
+
+    const isLocationSorted = citiesPagination && citiesPagination.sort_by === 'distance';
+    const suggestedSection = (
+        <div className="Suggested-Cities-Section">
+            <div className="Suggested-Header">
+                <div className="Suggested-Title-Group">
+                    <h2>
+                        <i className={isLocationSorted ? "fa fa-location-arrow" : "fa fa-globe"}></i>{' '}
+                        {isLocationSorted ? "Cities Near You" : "Major World Cities"}
+                    </h2>
+                    <p className="Suggested-Subtitle">
+                        {isLocationSorted
+                            ? "Ordered by proximity to your detected location"
+                            : (locationStatus === 'denied' || locationStatus === 'unavailable'
+                                ? "Ordered by population (location access disabled)"
+                                : "Ordered by population")}
+                    </p>
+                </div>
+                {locationStatus === 'granted' && (
+                    <span className="Location-Active-Badge">
+                        <i className="fa fa-crosshairs"></i> Location Active
+                    </span>
+                )}
+            </div>
+
+            {citiesLoading ? (
+                <div className="Cities-Loading-State glass-panel">
+                    <i className="fa fa-spinner fa-spin"></i>
+                    <span>Loading cities...</span>
+                </div>
+            ) : (
+                <>
+                    <div className="City-Card-Grid">
+                        {suggestedCities.map((city) => (
+                            <div
+                                key={'city-card-' + city.geoname_id}
+                                className="City-Card glass-panel"
+                                onClick={() => {
+                                    if (city._links && city._links['city:item']) {
+                                        getCityInfo(city._links['city:item'].href);
+                                    }
+                                }}
+                                role="button"
+                                tabIndex={0}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter' || e.keyCode === 13) {
+                                        if (city._links && city._links['city:item']) {
+                                            getCityInfo(city._links['city:item'].href);
+                                        }
+                                    }
+                                }}
+                            >
+                                <div className="City-Card-Top">
+                                    <h3 className="City-Card-Name">{city.name}</h3>
+                                    <span className="City-Card-Country">{city.country}</span>
+                                </div>
+                                <div className="City-Card-Meta">
+                                    <span className="City-Card-Tag">{city.continent}</span>
+                                    {city.distance_km != null && (
+                                        <span className="City-Card-Distance">
+                                            <i className="fa fa-map-marker"></i> {formatDistance(city.distance_km)}
+                                        </span>
+                                    )}
+                                </div>
+                                <div className="City-Card-Bottom">
+                                    <span className="City-Card-Population">
+                                        <i className="fa fa-users"></i> {formatNumber(city.population)}
+                                    </span>
+                                    <span className="City-Card-Action">
+                                        View <i className="fa fa-chevron-right"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    {citiesPagination && citiesPagination.total_pages > 1 && (
+                        <div className="Pagination-Container glass-panel">
+                            <button
+                                type="button"
+                                className="Pagination-Button"
+                                disabled={!citiesPagination.has_prev}
+                                onClick={() => onPageChange(citiesPagination.page - 1)}
+                                aria-label="Previous page"
+                            >
+                                <i className="fa fa-chevron-left"></i> Prev
+                            </button>
+                            <span className="Pagination-Info">
+                                Page <strong>{citiesPagination.page}</strong> of <strong>{citiesPagination.total_pages}</strong>
+                            </span>
+                            <button
+                                type="button"
+                                className="Pagination-Button"
+                                disabled={!citiesPagination.has_next}
+                                onClick={() => onPageChange(citiesPagination.page + 1)}
+                                aria-label="Next page"
+                            >
+                                Next <i className="fa fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    )}
+                </>
+            )}
+        </div>
+    );
+
     const activeCityLayout = activeCity ? (
         <div className="Active-City-Container">
-            {cityList && (
-                <button 
-                    className="Back-To-List-Button" 
-                    onClick={() => updateActiveCity ? updateActiveCity(null) : null}
-                    type="button"
-                    aria-label="Back to search results"
-                >
-                    <i className="fa fa-arrow-left"></i> Back to Cities List
-                </button>
-            )}
+            <button 
+                className="Back-To-List-Button" 
+                onClick={() => updateActiveCity ? updateActiveCity(null) : null}
+                type="button"
+                aria-label="Back to cities"
+            >
+                <i className="fa fa-arrow-left"></i> {cityList ? 'Back to Search Results' : 'Back to Cities'}
+            </button>
             {cityImgLayout}
             <h1>{activeCity.name}</h1>
             <div className="Active-City-Column-Container">
@@ -248,11 +380,17 @@ export default function Content({
         <div className="Content-Container">
             <div className="Content center">
                 {
-                    cityList ?
-                        activeCity ?
-                            activeCityLayout :
-                            cityListLayout :
-                        hero
+                    activeCity ? (
+                        activeCityLayout
+                    ) : cityList ? (
+                        cityListLayout
+                    ) : (
+                        <div className="Home-View">
+                            {hero}
+                            {dbStatusBadge}
+                            {suggestedSection}
+                        </div>
+                    )
                 }
                 <p className={activeError ? "Error-Display-Active" : "Error-Display-Inactive"}>{activeError}</p>
                 <p className="Footer">&copy; Copyright Cody Uhi {new Date().getFullYear()}</p>

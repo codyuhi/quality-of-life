@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 import 'App.css';
 import Navbar from 'components/Navbar';
@@ -15,12 +15,81 @@ function App() {
     const [urbanCityDetails, setUrbanCityDetails] = useState(null)
     const [cityImg, setCityImg] = useState(null)
     const [activeError, setActiveError] = useState('')
+    const [suggestedCities, setSuggestedCities] = useState([])
+    const [citiesPagination, setCitiesPagination] = useState(null)
+    const [citiesLoading, setCitiesLoading] = useState(false)
+    const [userLocation, setUserLocation] = useState(null)
+    const [locationStatus, setLocationStatus] = useState('prompting')
+
+    const isMountedRef = useRef(true);
+    useEffect(() => {
+        isMountedRef.current = true;
+        return () => {
+            isMountedRef.current = false;
+        };
+    }, []);
+
+    const fetchSuggestedCities = (page = 1, coords = userLocation) => {
+        setCitiesLoading(true);
+        const API_BASE_URL = process.env.REACT_APP_API_URL !== undefined
+            ? process.env.REACT_APP_API_URL
+            : (process.env.NODE_ENV === 'development' ? 'http://localhost:5001' : '');
+
+        let url = `${API_BASE_URL}/api/cities?page=${page}&limit=12`;
+        if (coords && coords.lat != null && coords.lon != null) {
+            url += `&lat=${coords.lat}&lon=${coords.lon}`;
+        }
+
+        axios.get(url)
+            .then((response) => {
+                if (!isMountedRef.current) return;
+                if (response.data && response.data.cities) {
+                    setSuggestedCities(response.data.cities);
+                    setCitiesPagination(response.data.pagination);
+                }
+                setCitiesLoading(false);
+            })
+            .catch((err) => {
+                if (!isMountedRef.current) return;
+                console.error('Error fetching suggested cities:', err);
+                setCitiesLoading(false);
+            });
+    };
 
     useEffect(() => {
         if (localStorage.history) {
             setSearchHistory(() => JSON.parse(localStorage.history))
         }
+
+        if (typeof navigator !== 'undefined' && 'geolocation' in navigator) {
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    const coords = {
+                        lat: pos.coords.latitude,
+                        lon: pos.coords.longitude
+                    };
+                    setUserLocation(coords);
+                    setLocationStatus('granted');
+                    fetchSuggestedCities(1, coords);
+                },
+                (err) => {
+                    console.warn('Geolocation denied or unavailable:', err.message);
+                    setLocationStatus('denied');
+                    fetchSuggestedCities(1, null);
+                },
+                { timeout: 6000, enableHighAccuracy: false }
+            );
+        } else {
+            setLocationStatus('unavailable');
+            fetchSuggestedCities(1, null);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    const handlePageChange = (newPage) => {
+        fetchSuggestedCities(newPage, userLocation);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
 
     // Heartbeat to keep backend alive under Sablier when tab is open (every 10 minutes)
     useEffect(() => {
@@ -190,6 +259,11 @@ function App() {
                 cityImg={cityImg}
                 advancedCityData={advancedCityData}
                 activeError={activeError}
+                suggestedCities={suggestedCities}
+                citiesPagination={citiesPagination}
+                citiesLoading={citiesLoading}
+                locationStatus={locationStatus}
+                onPageChange={handlePageChange}
             />
         </div>
     );

@@ -550,3 +550,148 @@ func getFallbackImage() WikipediaImageResponse {
 	res.Photos[0].Attribution.License = "Unsplash License"
 	return res
 }
+
+// ListCitiesHandler handles GET /api/cities/ with pagination and optional lat/lon location-based sorting
+func ListCitiesHandler(w http.ResponseWriter, r *http.Request) {
+	if DB == nil {
+		writeError(w, http.StatusServiceUnavailable, "Database not connected")
+		return
+	}
+
+	page := 1
+	limit := 12
+	if pStr := r.URL.Query().Get("page"); pStr != "" {
+		if p, err := strconv.Atoi(pStr); err == nil && p > 0 {
+			page = p
+		}
+	}
+	if lStr := r.URL.Query().Get("limit"); lStr != "" {
+		if l, err := strconv.Atoi(lStr); err == nil && l > 0 && l <= 100 {
+			limit = l
+		}
+	}
+	offset := (page - 1) * limit
+
+	var totalCities int
+	err := DB.QueryRow("SELECT COUNT(*) FROM cities").Scan(&totalCities)
+	if err != nil {
+		log.Printf("Error counting cities in ListCitiesHandler: %v", err)
+		handleDBError(w, err, "Database error counting cities")
+		return
+	}
+
+	latStr := r.URL.Query().Get("lat")
+	lonStr := r.URL.Query().Get("lon")
+	sortBy := "population"
+
+	var rows *sql.Rows
+	baseURL := getBaseURL(r)
+
+	type CityItemLink struct {
+		Href string `json:"href"`
+	}
+	type CityLinks struct {
+		CityItem CityItemLink `json:"city:item"`
+	}
+	type CitySummaryItem struct {
+		GeonameID     int       `json:"geoname_id"`
+		Name          string    `json:"name"`
+		FullName      string    `json:"full_name"`
+		Country       string    `json:"country"`
+		Continent     string    `json:"continent"`
+		Population    int       `json:"population"`
+		Latitude      float64   `json:"latitude"`
+		Longitude     float64   `json:"longitude"`
+		UrbanAreaSlug string    `json:"urban_area_slug"`
+		DistanceKM    *float64  `json:"distance_km,omitempty"`
+		Links         CityLinks `json:"_links"`
+	}
+
+	cities := []CitySummaryItem{}
+
+	if latStr != "" && lonStr != "" {
+		userLat, errLat := strconv.ParseFloat(latStr, 64)
+		userLon, errLon := strconv.ParseFloat(lonStr, 64)
+
+		if errLat == nil && errLon == nil {
+			sortBy = "distance"
+			query := `
+				SELECT geoname_id, name, full_name, country, continent, population, latitude, longitude, urban_area_slug,
+				       ROUND((6371 * 2 * ASIN(SQRT(
+				           POWER(SIN(RADIANS(($1 - latitude) / 2)), 2) +
+				           COS(RADIANS($1)) * COS(RADIANS(latitude)) *
+				           POWER(SIN(RADIANS(($2 - longitude) / 2)), 2)
+				       )))::numeric, 1) AS distance_km
+				FROM cities
+				ORDER BY distance_km ASC, population DESC NULLS LAST
+				LIMIT $3 OFFSET $4
+			`
+			rows, err = DB.Query(query, userLat, userLon, limit, offset)
+		}
+	}
+
+	if rows == nil {
+		sortBy = "population"
+		query := `
+			SELECT geoname_id, name, full_name, country, continent, population, latitude, longitude, urban_area_slug, NULL::numeric as distance_km
+			FROM cities
+			ORDER BY population DESC NULLS LAST, name ASC
+			LIMIT $1 OFFSET $2
+		`
+		rows, err = DB.Query(query, limit, offset)
+	}
+
+	if err != nil {
+		log.Printf("Error querying cities list: %v", err)
+		handleDBError(w, err, "Database error querying cities")
+		return
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var item CitySummaryItem
+		var distNull sql.NullFloat64
+		if err := rows.Scan(
+			&item.GeonameID,
+			&item.Name,
+			&item.FullName,
+			&item.Country,
+			&item.Continent,
+			&item.Population,
+			&item.Latitude,
+			&item.Longitude,
+			&item.UrbanAreaSlug,
+			&distNull,
+		); err != nil {
+			log.Printf("Error scanning city row: %v", err)
+			continue
+		}
+		if distNull.Valid {
+			distVal := distNull.Float64
+			item.DistanceKM = &distVal
+		}
+		item.Links.CityItem.Href = fmt.Sprintf("%s/api/cities/geonameid:%d/", baseURL, item.GeonameID)
+		cities = append(cities, item)
+	}
+
+	totalPages := 0
+	if limit > 0 {
+		totalPages = (totalCities + limit - 1) / limit
+	}
+
+	response := map[string]interface{}{
+		"cities": cities,
+		"pagination": map[string]interface{}{
+			"total_cities": totalCities,
+			"page":         page,
+			"limit":        limit,
+			"total_pages":  totalPages,
+			"has_next":     page < totalPages,
+			"has_prev":     page > 1,
+			"sort_by":      sortBy,
+		},
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(response)
+}
