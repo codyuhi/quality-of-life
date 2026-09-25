@@ -120,10 +120,11 @@ export default function Content({
     const [imageLoaded, setImageLoaded] = useState(false);
     const [imageFailed, setImageFailed] = useState(false);
 
+    const activeCityId = activeCity ? activeCity.geoname_id : null;
     useEffect(() => {
         setImageLoaded(false);
         setImageFailed(false);
-    }, [activeCity ? activeCity.geoname_id : null, cityImg]);
+    }, [activeCityId, cityImg]);
 
     const hasPhoto = Boolean(cityImg && cityImg.photos && cityImg.photos[0] && cityImg.photos[0].image && cityImg.photos[0].image.mobile);
     const isImgLoading = cityImgLoading || (hasPhoto && !imageLoaded && !imageFailed);
