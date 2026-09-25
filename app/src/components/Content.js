@@ -40,11 +40,11 @@ export default function Content({
 
     const generateRating = (number) => {
         const percentage = Math.min(100, Math.max(0, number * 10));
-        let color = 'var(--accent-pink)';
+        let color = 'var(--cdr-score-low)';
         if (number >= 7.5) {
-            color = 'var(--accent-cyan)';
+            color = 'var(--cdr-score-high)';
         } else if (number >= 5.0) {
-            color = 'var(--accent-blue)';
+            color = 'var(--cdr-score-mid)';
         }
         return (
             <div className="Score-Bar-Container">
@@ -83,7 +83,7 @@ export default function Content({
             cityListDivs.push(
                 <div key={'city-list-' + i} className="City-List-Item" onClick={() => handleCityClick(i)} role="button" tabIndex={0}>
                     <span className="City-Item-Name">{item.matching_full_name}</span>
-                    <i className="fa fa-chevron-right" style={{ color: 'var(--accent-cyan)', fontSize: '14px', flexShrink: 0, marginLeft: '8px' }}></i>
+                    <i className="fa fa-chevron-right City-Item-Chevron"></i>
                 </div>
             );
         });

@@ -2,9 +2,13 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <!-- SVG favicon only: it adapts to the browser chrome via prefers-color-scheme.
+         favicon.ico stays in public/ for legacy clients but is intentionally not linked. -->
     <link rel="icon" type="image/svg+xml" href="%PUBLIC_URL%/favicon.svg" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#0a0f1d" />
+    <meta name="theme-color" content="#ebe7df" />
+    <meta name="color-scheme" content="light dark" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -12,35 +16,30 @@
       name="description"
       content="Compare cost of living, safety, healthcare, and quality of life metrics across 260+ major cities globally."
     />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
-
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
+    <!-- Cedar typography: Source Serif 4 (headings), Plus Jakarta Sans (UI), JetBrains Mono (data) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet" />
+    <!-- Apply the saved (or OS) theme before first paint to prevent a theme flash -->
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem('cdr_qol_theme');
+          var theme = saved === 'light' || saved === 'dark'
+            ? saved
+            : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+          var root = document.documentElement;
+          root.classList.add(theme === 'light' ? 'cdr-theme-light' : 'cdr-theme-dark');
+          root.classList.remove(theme === 'light' ? 'cdr-theme-dark' : 'cdr-theme-light');
+          document.querySelector('meta[name="theme-color"]').content = theme === 'light' ? '#ebe7df' : '#161614';
+        } catch (e) {}
+      })();
+    </script>
     <title>Quality of Life</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
   </body>
 </html>

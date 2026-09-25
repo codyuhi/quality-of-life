@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../App.css';
+import ThemeToggle from 'components/ThemeToggle';
 
 export default function Navbar({
     searchHistoryOpen,
@@ -67,44 +68,47 @@ export default function Navbar({
                         <i className="fa fa-heartbeat"></i> Quality Of Life
                     </h1>
                 </div>
-                <div className="Navbar-Mobile-Search">
-                    <button 
-                        id="Mobile-Nav-Button" 
-                        className={mobileNavOpen ? 'open' : 'closed'} 
-                        onClick={toggleMobileNav}
-                        aria-label="Toggle mobile menu"
-                        type="button"
-                    >
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </button>
-                    <div id="Navbar-Mobile-Search-Dropdown" className={mobileNavOpen ? 'open' : 'closed'}>
-                        <span onClick={mobileClearSearch}>Clear Current Search</span>
-                        <hr />
-                        <span onClick={mobileSearchHistory}>Search History</span>
+                <div className="Navbar-Right-Aligned-Items">
+                    <div className="Navbar-Search">
+                        <span onClick={clearCurrentSearch}>Clear Current Search</span>
+                        <p>|</p>
+                        <span onClick={updateSearchHistory}>Search History</span>
                         <input
                             type="text"
                             value={searchTerm}
                             onChange={setSearchTerm}
                             onKeyDown={checkEnterPressed}
-                            placeholder="Search city..."
+                            placeholder="Search"
                         />
-                        <button onClick={mobileSearch}>Search</button>
+                        <button onClick={search}>Search</button>
                     </div>
-                </div>
-                <div className="Navbar-Search">
-                    <span onClick={clearCurrentSearch}>Clear Current Search</span>
-                    <p>|</p>
-                    <span onClick={updateSearchHistory}>Search History</span>
-                    <input
-                        type="text"
-                        value={searchTerm}
-                        onChange={setSearchTerm}
-                        onKeyDown={checkEnterPressed}
-                        placeholder="Search"
-                    />
-                    <button onClick={search}>Search</button>
+                    <ThemeToggle />
+                    <div className="Navbar-Mobile-Search">
+                        <button 
+                            id="Mobile-Nav-Button" 
+                            className={mobileNavOpen ? 'open' : 'closed'} 
+                            onClick={toggleMobileNav}
+                            aria-label="Toggle mobile menu"
+                            type="button"
+                        >
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </button>
+                        <div id="Navbar-Mobile-Search-Dropdown" className={mobileNavOpen ? 'open' : 'closed'}>
+                            <span onClick={mobileClearSearch}>Clear Current Search</span>
+                            <hr />
+                            <span onClick={mobileSearchHistory}>Search History</span>
+                            <input
+                                type="text"
+                                value={searchTerm}
+                                onChange={setSearchTerm}
+                                onKeyDown={checkEnterPressed}
+                                placeholder="Search city..."
+                            />
+                            <button onClick={mobileSearch}>Search</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

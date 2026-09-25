@@ -11,7 +11,8 @@ export default function Sidebar({
 }) {
     const clearHistory = () => {
         clearSearchHistory([]);
-        localStorage.clear();
+        // Remove only the history key; clearing all storage would also wipe the theme preference.
+        localStorage.removeItem('history');
     };
 
     const handleCloseHistory = () => {
