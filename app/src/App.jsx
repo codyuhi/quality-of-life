@@ -5,6 +5,18 @@ import Navbar from 'components/Navbar';
 import Sidebar from 'components/Sidebar';
 import Content from 'components/Content';
 
+const getApiBaseUrl = () => {
+    if (typeof import.meta !== 'undefined' && import.meta.env) {
+        if (import.meta.env.VITE_API_URL !== undefined) return import.meta.env.VITE_API_URL;
+        if (import.meta.env.DEV) return 'http://localhost:5001';
+    }
+    if (typeof process !== 'undefined' && process.env) {
+        if (process.env.REACT_APP_API_URL !== undefined) return process.env.REACT_APP_API_URL;
+        if (process.env.NODE_ENV === 'development') return 'http://localhost:5001';
+    }
+    return '';
+};
+
 function App() {
     const [searchTerm, setSearchTerm] = useState('')
     const [searchHistory, setSearchHistory] = useState([])
@@ -32,9 +44,7 @@ function App() {
 
     const fetchSuggestedCities = (page = 1, coords = userLocation) => {
         setCitiesLoading(true);
-        const API_BASE_URL = process.env.REACT_APP_API_URL !== undefined
-            ? process.env.REACT_APP_API_URL
-            : (process.env.NODE_ENV === 'development' ? 'http://localhost:5001' : '');
+        const API_BASE_URL = getApiBaseUrl();
 
         let url = `${API_BASE_URL}/api/cities?page=${page}&limit=12`;
         if (coords && coords.lat != null && coords.lon != null) {
@@ -58,8 +68,12 @@ function App() {
     };
 
     useEffect(() => {
-        if (localStorage.history) {
-            setSearchHistory(() => JSON.parse(localStorage.history))
+        try {
+            if (typeof window !== 'undefined' && window.localStorage && window.localStorage.history) {
+                setSearchHistory(() => JSON.parse(window.localStorage.history))
+            }
+        } catch (e) {
+            console.warn('Could not read search history from localStorage:', e);
         }
 
         if (typeof navigator !== 'undefined' && 'geolocation' in navigator) {
@@ -96,9 +110,7 @@ function App() {
     useEffect(() => {
         const HEARTBEAT_INTERVAL_MS = 10 * 60 * 1000;
         let lastHeartbeat = Date.now();
-        const API_BASE_URL = process.env.REACT_APP_API_URL !== undefined
-            ? process.env.REACT_APP_API_URL
-            : (process.env.NODE_ENV === 'development' ? 'http://localhost:5001' : '');
+        const API_BASE_URL = getApiBaseUrl();
 
         const sendHeartbeat = () => {
             fetch(`${API_BASE_URL}/healthz`, { method: 'GET', cache: 'no-store' })
@@ -130,9 +142,7 @@ function App() {
             return;
         }
         setActiveCity(null)
-        const API_BASE_URL = process.env.REACT_APP_API_URL !== undefined
-            ? process.env.REACT_APP_API_URL
-            : (process.env.NODE_ENV === 'development' ? 'http://localhost:5001' : '');
+        const API_BASE_URL = getApiBaseUrl();
         axios.get(`${API_BASE_URL}/api/cities/?search=${encodeURIComponent(queryTerm)}`)
             .then((response) => {
                 return response.data;
@@ -141,12 +151,23 @@ function App() {
                 if (data.count < 1) {
                     throw Error(`No cities found with the name "${queryTerm}"`)
                 }
-                const history = localStorage.history ? JSON.parse(localStorage.history) : [];
+                let history = [];
+                try {
+                    const storage = typeof window !== 'undefined' ? window.localStorage : null;
+                    if (storage && storage.history) {
+                        history = JSON.parse(storage.history);
+                    }
+                } catch (e) {}
                 if (history.includes(queryTerm)) {
                     history.splice(history.indexOf(queryTerm), 1);
                 }
                 history.push(queryTerm);
-                localStorage.history = JSON.stringify(history);
+                try {
+                    const storage = typeof window !== 'undefined' ? window.localStorage : null;
+                    if (storage) {
+                        storage.history = JSON.stringify(history);
+                    }
+                } catch (e) {}
                 setSearchHistory(history);
                 setCityList(data);
                 setActiveError('');

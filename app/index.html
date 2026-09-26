@@ -4,8 +4,8 @@
     <meta charset="utf-8" />
     <!-- SVG favicon only: it adapts to the browser chrome via prefers-color-scheme.
          favicon.ico stays in public/ for legacy clients but is intentionally not linked. -->
-    <link rel="icon" type="image/svg+xml" href="%PUBLIC_URL%/favicon.svg" />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/apple-touch-icon.png" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#ebe7df" />
     <meta name="color-scheme" content="light dark" />
@@ -16,7 +16,7 @@
       name="description"
       content="Compare cost of living, safety, healthcare, and quality of life metrics across 260+ major cities globally."
     />
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link rel="manifest" href="/manifest.json" />
     <!-- Cedar typography: Source Serif 4 (headings), Plus Jakarta Sans (UI), JetBrains Mono (data) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -41,5 +41,6 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+    <script type="module" src="/src/index.jsx"></script>
   </body>
 </html>

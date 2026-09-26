@@ -1,8 +1,9 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { beforeEach, afterEach, test, expect, vi } from 'vitest';
 import axios from 'axios';
 import App from './App';
 
-jest.mock('axios');
+vi.mock('axios');
 
 const mockCitiesResponse = {
   data: {
@@ -55,7 +56,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
 });
 
 test('renders quality of life title', async () => {
@@ -85,8 +86,8 @@ test('toggles mobile navigation button and search history', async () => {
   expect(mobileNavBtn).toBeInTheDocument();
   expect(mobileNavBtn).toHaveClass('closed');
 
-  mobileNavBtn.click();
-  expect(mobileNavBtn).toHaveClass('open');
+  fireEvent.click(mobileNavBtn);
+  await waitFor(() => expect(mobileNavBtn).toHaveClass('open'));
 
   // Verify mobile search dropdown is open
   const dropdown = document.getElementById('Navbar-Mobile-Search-Dropdown');
