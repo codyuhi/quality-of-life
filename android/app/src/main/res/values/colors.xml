@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="cedar_spruce">#1F513F</color>
+    <color name="canvas">#EBE7DF</color>
+    <color name="glyph">#1F513F</color>
+    <color name="glyph_accent">#C7370F</color>
+</resources>

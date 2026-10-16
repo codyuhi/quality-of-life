@@ -1,0 +1,4260 @@
+{
+  "cities": [
+    {
+      "geoname_id": 5779,
+      "name": "Shanghai",
+      "full_name": "Shanghai, People's Republic of China",
+      "country": "People's Republic of China",
+      "continent": "Asia",
+      "population": 24870895,
+      "latitude": 31.2325,
+      "longitude": 121.469166666,
+      "urban_area_slug": "shanghai-china",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:5779/"
+        }
+      }
+    },
+    {
+      "geoname_id": 11068,
+      "name": "Beijing",
+      "full_name": "Beijing, People's Republic of China",
+      "country": "People's Republic of China",
+      "continent": "Asia",
+      "population": 21893095,
+      "latitude": 39.90403,
+      "longitude": 116.407526,
+      "urban_area_slug": "beijing-china",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:11068/"
+        }
+      }
+    },
+    {
+      "geoname_id": 2098,
+      "name": "Istanbul",
+      "full_name": "Istanbul, Turkey",
+      "country": "Turkey",
+      "continent": "Asia",
+      "population": 15655924,
+      "latitude": 41.01,
+      "longitude": 28.960277777,
+      "urban_area_slug": "istanbul-turkey",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:2098/"
+        }
+      }
+    },
+    {
+      "geoname_id": 18599,
+      "name": "Mumbai",
+      "full_name": "Mumbai, India",
+      "country": "India",
+      "continent": "Asia",
+      "population": 15414288,
+      "latitude": 19.075833333,
+      "longitude": 72.8775,
+      "urban_area_slug": "mumbai-india",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:18599/"
+        }
+      }
+    },
+    {
+      "geoname_id": 5913,
+      "name": "Lagos",
+      "full_name": "Lagos, Nigeria",
+      "country": "Nigeria",
+      "continent": "Africa",
+      "population": 15070000,
+      "latitude": 6.456111111,
+      "longitude": 3.393611111,
+      "urban_area_slug": "lagos-nigeria",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:5913/"
+        }
+      }
+    },
+    {
+      "geoname_id": 5560,
+      "name": "Tokyo",
+      "full_name": "Tokyo, Japan",
+      "country": "Japan",
+      "continent": "Asia",
+      "population": 14264798,
+      "latitude": 35.689444444,
+      "longitude": 139.691666666,
+      "urban_area_slug": "tokyo-japan",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:5560/"
+        }
+      }
+    },
+    {
+      "geoname_id": 3417,
+      "name": "Ho Chi Minh City",
+      "full_name": "Ho Chi Minh City, Vietnam",
+      "country": "Vietnam",
+      "continent": "Asia",
+      "population": 14002598,
+      "latitude": 10.82302,
+      "longitude": 106.62965,
+      "urban_area_slug": "ho-chi-minh-city-vietnam",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:3417/"
+        }
+      }
+    },
+    {
+      "geoname_id": 8887,
+      "name": "Moscow",
+      "full_name": "Moscow, Russia",
+      "country": "Russia",
+      "continent": "Europe",
+      "population": 13274285,
+      "latitude": 55.750555555,
+      "longitude": 37.6175,
+      "urban_area_slug": "moscow-russia",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:8887/"
+        }
+      }
+    },
+    {
+      "geoname_id": 20083,
+      "name": "Bengaluru",
+      "full_name": "Bengaluru, India",
+      "country": "India",
+      "continent": "Asia",
+      "population": 12327000,
+      "latitude": 12.97194,
+      "longitude": 77.59369,
+      "urban_area_slug": "bengaluru-india",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:20083/"
+        }
+      }
+    },
+    {
+      "geoname_id": 269,
+      "name": "Sao Paulo",
+      "full_name": "Sao Paulo, Brazil",
+      "country": "Brazil",
+      "continent": "South America",
+      "population": 11904961,
+      "latitude": -23.550394444,
+      "longitude": -46.633947222,
+      "urban_area_slug": "sao-paulo-brazil",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:269/"
+        }
+      }
+    },
+    {
+      "geoname_id": 622906,
+      "name": "Rio De Janeiro",
+      "full_name": "Rio De Janeiro, Brazil",
+      "country": "Brazil",
+      "continent": "South America",
+      "population": 11900000,
+      "latitude": -22.9028,
+      "longitude": -43.2078,
+      "urban_area_slug": "rio-de-janeiro-brazil",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:622906/"
+        }
+      }
+    },
+    {
+      "geoname_id": 972,
+      "name": "Lima",
+      "full_name": "Lima, Peru",
+      "country": "Peru",
+      "continent": "South America",
+      "population": 9943800,
+      "latitude": -12.04318,
+      "longitude": -77.02824,
+      "urban_area_slug": "lima-peru",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:972/"
+        }
+      }
+    },
+    {
+      "geoname_id": 7175,
+      "name": "Cairo",
+      "full_name": "Cairo, Egypt",
+      "country": "Egypt",
+      "continent": "Africa",
+      "population": 9801536,
+      "latitude": 30.044444444,
+      "longitude": 31.235833333,
+      "urban_area_slug": "cairo-egypt",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:7175/"
+        }
+      }
+    },
+    {
+      "geoname_id": 5783,
+      "name": "Seoul",
+      "full_name": "Seoul, South Korea",
+      "country": "South Korea",
+      "continent": "Asia",
+      "population": 9668465,
+      "latitude": 37.56,
+      "longitude": 126.99,
+      "urban_area_slug": "seoul-south-korea",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:5783/"
+        }
+      }
+    },
+    {
+      "geoname_id": 20065,
+      "name": "Hyderabad",
+      "full_name": "Hyderabad, India",
+      "country": "India",
+      "continent": "Asia",
+      "population": 9305000,
+      "latitude": 17.361666666,
+      "longitude": 78.474722222,
+      "urban_area_slug": "hyderabad-india",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:20065/"
+        }
+      }
+    },
+    {
+      "geoname_id": 5739,
+      "name": "Mexico City",
+      "full_name": "Mexico City, Mexico",
+      "country": "Mexico",
+      "continent": "North America",
+      "population": 9209944,
+      "latitude": 19.353773,
+      "longitude": -99.13589,
+      "urban_area_slug": "mexico-city-mexico",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:5739/"
+        }
+      }
+    },
+    {
+      "geoname_id": 3383,
+      "name": "Kuala Lumpur",
+      "full_name": "Kuala Lumpur, Malaysia",
+      "country": "Malaysia",
+      "continent": "Asia",
+      "population": 9000280,
+      "latitude": 3.147777777,
+      "longitude": 101.695277777,
+      "urban_area_slug": "kuala-lumpur-malaysia",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:3383/"
+        }
+      }
+    },
+    {
+      "geoname_id": 17190,
+      "name": "London",
+      "full_name": "London, United Kingdom",
+      "country": "United Kingdom",
+      "continent": "Europe",
+      "population": 8866180,
+      "latitude": 51.52,
+      "longitude": -0.1,
+      "urban_area_slug": "london-united-kingdom",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:17190/"
+        }
+      }
+    },
+    {
+      "geoname_id": 20015,
+      "name": "Tehran",
+      "full_name": "Tehran, Iran",
+      "country": "Iran",
+      "continent": "Asia",
+      "population": 8693706,
+      "latitude": 35.688888888,
+      "longitude": 51.389722222,
+      "urban_area_slug": "tehran-iran",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:20015/"
+        }
+      }
+    },
+    {
+      "geoname_id": 5886,
+      "name": "Hong Kong",
+      "full_name": "Hong Kong, Hong Kong",
+      "country": "Hong Kong",
+      "continent": "Asia",
+      "population": 7413070,
+      "latitude": 22.278333333,
+      "longitude": 114.158611111,
+      "urban_area_slug": "hong-kong-hong-kong",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:5886/"
+        }
+      }
+    },
+    {
+      "geoname_id": 20445,
+      "name": "Riyadh",
+      "full_name": "Riyadh, Saudi Arabia",
+      "country": "Saudi Arabia",
+      "continent": "Asia",
+      "population": 7009100,
+      "latitude": 24.65,
+      "longitude": 46.71,
+      "urban_area_slug": "riyadh-saudi-arabia",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:20445/"
+        }
+      }
+    },
+    {
+      "geoname_id": 20081,
+      "name": "Chennai",
+      "full_name": "Chennai, India",
+      "country": "India",
+      "continent": "Asia",
+      "population": 6599000,
+      "latitude": 13.0825,
+      "longitude": 80.275,
+      "urban_area_slug": "chennai-india",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:20081/"
+        }
+      }
+    },
+    {
+      "geoname_id": 1015,
+      "name": "Santiago",
+      "full_name": "Santiago, Chile",
+      "country": "Chile",
+      "continent": "South America",
+      "population": 6257516,
+      "latitude": -33.4375,
+      "longitude": -70.65,
+      "urban_area_slug": "santiago-chile",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:1015/"
+        }
+      }
+    },
+    {
+      "geoname_id": 1614,
+      "name": "Singapore",
+      "full_name": "Singapore, Singapore",
+      "country": "Singapore",
+      "continent": "Asia",
+      "population": 5866139,
+      "latitude": 1.3,
+      "longitude": 103.8,
+      "urban_area_slug": "singapore-singapore",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:1614/"
+        }
+      }
+    },
+    {
+      "geoname_id": 20365,
+      "name": "Ankara",
+      "full_name": "Ankara, Turkey",
+      "country": "Turkey",
+      "continent": "Asia",
+      "population": 5803482,
+      "latitude": 39.93576,
+      "longitude": 32.83869,
+      "urban_area_slug": "ankara-turkey",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:20365/"
+        }
+      }
+    },
+    {
+      "geoname_id": 3404,
+      "name": "Bangkok",
+      "full_name": "Bangkok, Thailand",
+      "country": "Thailand",
+      "continent": "Asia",
+      "population": 5676648,
+      "latitude": 13.75,
+      "longitude": 100.516666666,
+      "urban_area_slug": "bangkok-thailand",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:3404/"
+        }
+      }
+    },
+    {
+      "geoname_id": 22041,
+      "name": "Nairobi",
+      "full_name": "Nairobi, Kenya",
+      "country": "Kenya",
+      "continent": "Africa",
+      "population": 5545000,
+      "latitude": -1.286388888,
+      "longitude": 36.817222222,
+      "urban_area_slug": "nairobi-kenya",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:22041/"
+        }
+      }
+    },
+    {
+      "geoname_id": 21342,
+      "name": "Johannesburg",
+      "full_name": "Johannesburg, South Africa",
+      "country": "South Africa",
+      "continent": "Africa",
+      "population": 4949347,
+      "latitude": -26.204970437,
+      "longitude": 28.040605722,
+      "urban_area_slug": "johannesburg-south-africa",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:21342/"
+        }
+      }
+    },
+    {
+      "geoname_id": 2662,
+      "name": "Dar es Salaam",
+      "full_name": "Dar es Salaam, Tanzania",
+      "country": "Tanzania",
+      "continent": "Africa",
+      "population": 4715000,
+      "latitude": -6.816111111,
+      "longitude": 39.280277777,
+      "urban_area_slug": "dar-es-salaam-tanzania",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:2662/"
+        }
+      }
+    },
+    {
+      "geoname_id": 14387,
+      "name": "Taipei",
+      "full_name": "Taipei, Taiwan",
+      "country": "Taiwan",
+      "continent": "Asia",
+      "population": 4046037,
+      "latitude": 25.0125,
+      "longitude": 121.465,
+      "urban_area_slug": "taipei-taiwan",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:14387/"
+        }
+      }
+    },
+    {
+      "geoname_id": 8817,
+      "name": "Dubai",
+      "full_name": "Dubai, United Arab Emirates",
+      "country": "United Arab Emirates",
+      "continent": "Asia",
+      "population": 3944751,
+      "latitude": 25.269722222,
+      "longitude": 55.309444444,
+      "urban_area_slug": "dubai-united-arab-emirates",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:8817/"
+        }
+      }
+    },
+    {
+      "geoname_id": 7118,
+      "name": "Berlin",
+      "full_name": "Berlin, Germany",
+      "country": "Germany",
+      "continent": "Europe",
+      "population": 3913644,
+      "latitude": 52.516666666,
+      "longitude": 13.383333333,
+      "urban_area_slug": "berlin-germany",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:7118/"
+        }
+      }
+    },
+    {
+      "geoname_id": 17976,
+      "name": "Cape Town",
+      "full_name": "Cape Town, South Africa",
+      "country": "South Africa",
+      "continent": "Africa",
+      "population": 3776313,
+      "latitude": -33.925277777,
+      "longitude": 18.423888888,
+      "urban_area_slug": "cape-town-south-africa",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:17976/"
+        }
+      }
+    },
+    {
+      "geoname_id": 16230,
+      "name": "Milan",
+      "full_name": "Milan, Italy",
+      "country": "Italy",
+      "continent": "Europe",
+      "population": 3247623,
+      "latitude": 45.4642,
+      "longitude": 9.19034,
+      "urban_area_slug": "milan-italy",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:16230/"
+        }
+      }
+    },
+    {
+      "geoname_id": 19133,
+      "name": "Casablanca",
+      "full_name": "Casablanca, Morocco",
+      "country": "Morocco",
+      "continent": "Africa",
+      "population": 3215935,
+      "latitude": 33.599166666,
+      "longitude": -7.62,
+      "urban_area_slug": "casablanca-morocco",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:19133/"
+        }
+      }
+    },
+    {
+      "geoname_id": 5744,
+      "name": "Buenos Aires",
+      "full_name": "Buenos Aires, Argentina",
+      "country": "Argentina",
+      "continent": "South America",
+      "population": 3121707,
+      "latitude": -34.599722222,
+      "longitude": -58.381944444,
+      "urban_area_slug": "buenos-aires-argentina",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:5744/"
+        }
+      }
+    },
+    {
+      "geoname_id": 15275,
+      "name": "Naples",
+      "full_name": "Naples, Italy",
+      "country": "Italy",
+      "continent": "Europe",
+      "population": 3107006,
+      "latitude": 40.8333,
+      "longitude": 14.25,
+      "urban_area_slug": "naples-italy",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:15275/"
+        }
+      }
+    },
+    {
+      "geoname_id": 889,
+      "name": "Tashkent",
+      "full_name": "Tashkent, Uzbekistan",
+      "country": "Uzbekistan",
+      "continent": "Asia",
+      "population": 2956384,
+      "latitude": 41.311111111,
+      "longitude": 69.279722222,
+      "urban_area_slug": "tashkent-uzbekistan",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:889/"
+        }
+      }
+    },
+    {
+      "geoname_id": 279,
+      "name": "Toronto",
+      "full_name": "Toronto, Canada",
+      "country": "Canada",
+      "continent": "North America",
+      "population": 2794356,
+      "latitude": 43.670277777,
+      "longitude": -79.386666666,
+      "urban_area_slug": "toronto-canada",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:279/"
+        }
+      }
+    },
+    {
+      "geoname_id": 6626,
+      "name": "Osaka",
+      "full_name": "Osaka, Japan",
+      "country": "Japan",
+      "continent": "Asia",
+      "population": 2751862,
+      "latitude": 34.69375,
+      "longitude": 135.502111111,
+      "urban_area_slug": "osaka-japan",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:6626/"
+        }
+      }
+    },
+    {
+      "geoname_id": 787,
+      "name": "Rome",
+      "full_name": "Rome, Italy",
+      "country": "Italy",
+      "continent": "Europe",
+      "population": 2748109,
+      "latitude": 41.89193,
+      "longitude": 12.51133,
+      "urban_area_slug": "rome-italy",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:787/"
+        }
+      }
+    },
+    {
+      "geoname_id": 19211,
+      "name": "Chicago",
+      "full_name": "Chicago, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 2746388,
+      "latitude": 41.881944444,
+      "longitude": -87.627777777,
+      "urban_area_slug": "chicago-illinois",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:19211/"
+        }
+      }
+    },
+    {
+      "geoname_id": 10363,
+      "name": "Brisbane",
+      "full_name": "Brisbane, Australia",
+      "country": "Australia",
+      "continent": "Oceania",
+      "population": 2706966,
+      "latitude": -27.467777777,
+      "longitude": 153.027777777,
+      "urban_area_slug": "brisbane-australia",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:10363/"
+        }
+      }
+    },
+    {
+      "geoname_id": 18954,
+      "name": "Medellin",
+      "full_name": "Medellin, Colombia",
+      "country": "Colombia",
+      "continent": "South America",
+      "population": 2529403,
+      "latitude": 6.250200154,
+      "longitude": -75.5675845,
+      "urban_area_slug": "medellin-colombia",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:18954/"
+        }
+      }
+    },
+    {
+      "geoname_id": 5814,
+      "name": "Havana",
+      "full_name": "Havana, Cuba",
+      "country": "Cuba",
+      "continent": "North America",
+      "population": 2492618,
+      "latitude": 23.136666666,
+      "longitude": -82.358888888,
+      "urban_area_slug": "havana-cuba",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:5814/"
+        }
+      }
+    },
+    {
+      "geoname_id": 21181,
+      "name": "Vancouver",
+      "full_name": "Vancouver, Canada",
+      "country": "Canada",
+      "continent": "North America",
+      "population": 2463431,
+      "latitude": 49.2494,
+      "longitude": -122.98,
+      "urban_area_slug": "vancouver-canada",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:21181/"
+        }
+      }
+    },
+    {
+      "geoname_id": 21402,
+      "name": "Beirut",
+      "full_name": "Beirut, Lebanon",
+      "country": "Lebanon",
+      "continent": "Asia",
+      "population": 2421354,
+      "latitude": 33.886944444,
+      "longitude": 35.513055555,
+      "urban_area_slug": "beirut-lebanon",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:21402/"
+        }
+      }
+    },
+    {
+      "geoname_id": 18911,
+      "name": "Houston",
+      "full_name": "Houston, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 2304580,
+      "latitude": 29.762777777,
+      "longitude": -95.383055555,
+      "urban_area_slug": "houston-texas",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:18911/"
+        }
+      }
+    },
+    {
+      "geoname_id": 21621,
+      "name": "Baku",
+      "full_name": "Baku, Azerbaijan",
+      "country": "Azerbaijan",
+      "continent": "Asia",
+      "population": 2300500,
+      "latitude": 40.366655555,
+      "longitude": 49.835183333,
+      "urban_area_slug": "baku-azerbaijan",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:21621/"
+        }
+      }
+    },
+    {
+      "geoname_id": 5796,
+      "name": "Caracas",
+      "full_name": "Caracas, Venezuela",
+      "country": "Venezuela",
+      "continent": "South America",
+      "population": 2245744,
+      "latitude": 10.506111111,
+      "longitude": -66.914444444,
+      "urban_area_slug": "caracas-venezuela",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:5796/"
+        }
+      }
+    },
+    {
+      "geoname_id": 5428,
+      "name": "Almaty",
+      "full_name": "Almaty, Kazakhstan",
+      "country": "Kazakhstan",
+      "continent": "Asia",
+      "population": 2228675,
+      "latitude": 43.24,
+      "longitude": 76.915,
+      "urban_area_slug": "almaty-kazakhstan",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:5428/"
+        }
+      }
+    },
+    {
+      "geoname_id": 16210,
+      "name": "Turin",
+      "full_name": "Turin, Italy",
+      "country": "Italy",
+      "continent": "Europe",
+      "population": 2205104,
+      "latitude": 45.0667,
+      "longitude": 7.7,
+      "urban_area_slug": "turin-italy",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:16210/"
+        }
+      }
+    },
+    {
+      "geoname_id": 3428,
+      "name": "Phnom Penh",
+      "full_name": "Phnom Penh, Cambodia",
+      "country": "Cambodia",
+      "continent": "Asia",
+      "population": 2129371,
+      "latitude": 11.569583333,
+      "longitude": 104.921027777,
+      "urban_area_slug": "phnom-penh-cambodia",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:3428/"
+        }
+      }
+    },
+    {
+      "geoname_id": 4137,
+      "name": "Vienna",
+      "full_name": "Vienna, Austria",
+      "country": "Austria",
+      "continent": "Europe",
+      "population": 2028289,
+      "latitude": 48.208333333,
+      "longitude": 16.3725,
+      "urban_area_slug": "vienna-austria",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:4137/"
+        }
+      }
+    },
+    {
+      "geoname_id": 21481,
+      "name": "Minsk",
+      "full_name": "Minsk, Belarus",
+      "country": "Belarus",
+      "continent": "Europe",
+      "population": 1996730,
+      "latitude": 53.9,
+      "longitude": 27.56667,
+      "urban_area_slug": "minsk-belarus",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:21481/"
+        }
+      }
+    },
+    {
+      "geoname_id": 17553,
+      "name": "Hamburg",
+      "full_name": "Hamburg, Germany",
+      "country": "Germany",
+      "continent": "Europe",
+      "population": 1910160,
+      "latitude": 53.55,
+      "longitude": 10,
+      "urban_area_slug": "hamburg-germany",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:17553/"
+        }
+      }
+    },
+    {
+      "geoname_id": 5677,
+      "name": "Manila",
+      "full_name": "Manila, Philippines",
+      "country": "Philippines",
+      "continent": "Asia",
+      "population": 1902590,
+      "latitude": 14.6042,
+      "longitude": 120.9822,
+      "urban_area_slug": "manila-philippines",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:5677/"
+        }
+      }
+    },
+    {
+      "geoname_id": 1628,
+      "name": "Montreal",
+      "full_name": "Montreal, Canada",
+      "country": "Canada",
+      "continent": "North America",
+      "population": 1895211,
+      "latitude": 45.50884,
+      "longitude": -73.58781,
+      "urban_area_slug": "montreal-canada",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:1628/"
+        }
+      }
+    },
+    {
+      "geoname_id": 915,
+      "name": "Warsaw",
+      "full_name": "Warsaw, Poland",
+      "country": "Poland",
+      "continent": "Europe",
+      "population": 1862402,
+      "latitude": 52.23,
+      "longitude": 21.011111111,
+      "urban_area_slug": "warsaw-poland",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:915/"
+        }
+      }
+    },
+    {
+      "geoname_id": 14829,
+      "name": "Curitiba",
+      "full_name": "Curitiba, Brazil",
+      "country": "Brazil",
+      "continent": "South America",
+      "population": 1830795,
+      "latitude": -25.429722222,
+      "longitude": -49.271944444,
+      "urban_area_slug": "curitiba-brazil",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:14829/"
+        }
+      }
+    },
+    {
+      "geoname_id": 96,
+      "name": "Quito",
+      "full_name": "Quito, Ecuador",
+      "country": "Ecuador",
+      "continent": "South America",
+      "population": 1763275,
+      "latitude": -0.22,
+      "longitude": -78.5125,
+      "urban_area_slug": "quito-ecuador",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:96/"
+        }
+      }
+    },
+    {
+      "geoname_id": 5562,
+      "name": "Barcelona",
+      "full_name": "Barcelona, Spain",
+      "country": "Spain",
+      "continent": "Europe",
+      "population": 1731649,
+      "latitude": 41.3825,
+      "longitude": 2.176944444,
+      "urban_area_slug": "barcelona-spain",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:5562/"
+        }
+      }
+    },
+    {
+      "geoname_id": 15668,
+      "name": "Bucharest",
+      "full_name": "Bucharest, Romania",
+      "country": "Romania",
+      "continent": "Europe",
+      "population": 1716961,
+      "latitude": 44.413361111,
+      "longitude": 26.097777777,
+      "urban_area_slug": "bucharest-romania",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:15668/"
+        }
+      }
+    },
+    {
+      "geoname_id": 18913,
+      "name": "Phoenix",
+      "full_name": "Phoenix, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 1608139,
+      "latitude": 33.44838,
+      "longitude": -112.07404,
+      "urban_area_slug": "phoenix-arizona",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:18913/"
+        }
+      }
+    },
+    {
+      "geoname_id": 20038,
+      "name": "Philadelphia",
+      "full_name": "Philadelphia, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 1603797,
+      "latitude": 39.952777777,
+      "longitude": -75.163611111,
+      "urban_area_slug": "philadelphia-pennsylvania",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:20038/"
+        }
+      }
+    },
+    {
+      "geoname_id": 10317,
+      "name": "Fukuoka",
+      "full_name": "Fukuoka, Japan",
+      "country": "Japan",
+      "continent": "Asia",
+      "population": 1603043,
+      "latitude": 33.59,
+      "longitude": 130.401666666,
+      "urban_area_slug": "fukuoka-japan",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:10317/"
+        }
+      }
+    },
+    {
+      "geoname_id": 17947,
+      "name": "Panama",
+      "full_name": "Panama, Panama",
+      "country": "Panama",
+      "continent": "North America",
+      "population": 1540000,
+      "latitude": 8.971111111,
+      "longitude": -79.534722222,
+      "urban_area_slug": "panama-panama",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:17947/"
+        }
+      }
+    },
+    {
+      "geoname_id": 4424,
+      "name": "Munich",
+      "full_name": "Munich, Germany",
+      "country": "Germany",
+      "continent": "Europe",
+      "population": 1510378,
+      "latitude": 48.15389,
+      "longitude": 11.54806,
+      "urban_area_slug": "munich-germany",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:4424/"
+        }
+      }
+    },
+    {
+      "geoname_id": 23118,
+      "name": "Auckland",
+      "full_name": "Auckland, New Zealand",
+      "country": "New Zealand",
+      "continent": "Oceania",
+      "population": 1470100,
+      "latitude": -36.849166666,
+      "longitude": 174.765277777,
+      "urban_area_slug": "auckland-new-zealand",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:23118/"
+        }
+      }
+    },
+    {
+      "geoname_id": 8408,
+      "name": "Kyoto",
+      "full_name": "Kyoto, Japan",
+      "country": "Japan",
+      "continent": "Asia",
+      "population": 1448964,
+      "latitude": 35.011611111,
+      "longitude": 135.768111111,
+      "urban_area_slug": "kyoto-japan",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:8408/"
+        }
+      }
+    },
+    {
+      "geoname_id": 11032,
+      "name": "San Antonio",
+      "full_name": "San Antonio, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 1434625,
+      "latitude": 29.425,
+      "longitude": -98.493888888,
+      "urban_area_slug": "san-antonio-texas",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:11032/"
+        }
+      }
+    },
+    {
+      "geoname_id": 17462,
+      "name": "Prague",
+      "full_name": "Prague, Czech Republic",
+      "country": "Czech Republic",
+      "continent": "Europe",
+      "population": 1397880,
+      "latitude": 50.08804,
+      "longitude": 14.42076,
+      "urban_area_slug": "prague-czechia",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:17462/"
+        }
+      }
+    },
+    {
+      "geoname_id": 13378,
+      "name": "Porto Alegre",
+      "full_name": "Porto Alegre, Brazil",
+      "country": "Brazil",
+      "continent": "South America",
+      "population": 1388794,
+      "latitude": -30.032777777,
+      "longitude": -51.23,
+      "urban_area_slug": "porto-alegre-brazil",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:13378/"
+        }
+      }
+    },
+    {
+      "geoname_id": 20454,
+      "name": "Adelaide",
+      "full_name": "Adelaide, Australia",
+      "country": "Australia",
+      "continent": "Oceania",
+      "population": 1387290,
+      "latitude": -34.9275,
+      "longitude": 138.6,
+      "urban_area_slug": "adelaide-australia",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:20454/"
+        }
+      }
+    },
+    {
+      "geoname_id": 18897,
+      "name": "San Diego",
+      "full_name": "San Diego, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 1386932,
+      "latitude": 32.715,
+      "longitude": -117.1625,
+      "urban_area_slug": "san-diego-california",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:18897/"
+        }
+      }
+    },
+    {
+      "geoname_id": 23161,
+      "name": "Guadalajara",
+      "full_name": "Guadalajara, Mexico",
+      "country": "Mexico",
+      "continent": "North America",
+      "population": 1385621,
+      "latitude": 20.676388888,
+      "longitude": -103.342222222,
+      "urban_area_slug": "guadalajara-mexico",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:23161/"
+        }
+      }
+    },
+    {
+      "geoname_id": 1051,
+      "name": "Calgary",
+      "full_name": "Calgary, Canada",
+      "country": "Canada",
+      "continent": "North America",
+      "population": 1306784,
+      "latitude": 51.05011,
+      "longitude": -114.08529,
+      "urban_area_slug": "calgary-canada",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:1051/"
+        }
+      }
+    },
+    {
+      "geoname_id": 18902,
+      "name": "Dallas",
+      "full_name": "Dallas, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 1304379,
+      "latitude": 32.779166666,
+      "longitude": -96.808888888,
+      "urban_area_slug": "dallas-texas",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:18902/"
+        }
+      }
+    },
+    {
+      "geoname_id": 20063,
+      "name": "Montevideo",
+      "full_name": "Montevideo, Uruguay",
+      "country": "Uruguay",
+      "continent": "South America",
+      "population": 1302954,
+      "latitude": -34.905916666,
+      "longitude": -56.191311111,
+      "urban_area_slug": "montevideo-uruguay",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:20063/"
+        }
+      }
+    },
+    {
+      "geoname_id": 10962,
+      "name": "Tbilisi",
+      "full_name": "Tbilisi, Georgia",
+      "country": "Georgia",
+      "continent": "Europe",
+      "population": 1258526,
+      "latitude": 41.69143,
+      "longitude": 44.83412,
+      "urban_area_slug": "tbilisi-georgia",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:10962/"
+        }
+      }
+    },
+    {
+      "geoname_id": 9660,
+      "name": "Utrecht",
+      "full_name": "Utrecht, Netherlands",
+      "country": "Netherlands",
+      "continent": "Europe",
+      "population": 1253672,
+      "latitude": 52.103333333,
+      "longitude": 5.179166666,
+      "urban_area_slug": "utrecht-netherlands",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:9660/"
+        }
+      }
+    },
+    {
+      "geoname_id": 20382,
+      "name": "Brussels",
+      "full_name": "Brussels, Belgium",
+      "country": "Belgium",
+      "continent": "Europe",
+      "population": 1219970,
+      "latitude": 50.85,
+      "longitude": 4.35,
+      "urban_area_slug": "brussels-belgium",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:20382/"
+        }
+      }
+    },
+    {
+      "geoname_id": 2383,
+      "name": "Sofia",
+      "full_name": "Sofia, Bulgaria",
+      "country": "Bulgaria",
+      "continent": "Europe",
+      "population": 1205548,
+      "latitude": 42.697886,
+      "longitude": 23.321726,
+      "urban_area_slug": "sofia-bulgaria",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:2383/"
+        }
+      }
+    },
+    {
+      "geoname_id": 11950,
+      "name": "Chiang Mai",
+      "full_name": "Chiang Mai, Thailand",
+      "country": "Thailand",
+      "continent": "Asia",
+      "population": 1198000,
+      "latitude": 18.788888888,
+      "longitude": 98.983333333,
+      "urban_area_slug": "chiang-mai-thailand",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:11950/"
+        }
+      }
+    },
+    {
+      "geoname_id": 20680,
+      "name": "Belgrade",
+      "full_name": "Belgrade, Serbia",
+      "country": "Serbia",
+      "continent": "Europe",
+      "population": 1197714,
+      "latitude": 44.817777777,
+      "longitude": 20.456944444,
+      "urban_area_slug": "belgrade-serbia",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:20680/"
+        }
+      }
+    },
+    {
+      "geoname_id": 21508,
+      "name": "Doha",
+      "full_name": "Doha, Qatar",
+      "country": "Qatar",
+      "continent": "Asia",
+      "population": 1186023,
+      "latitude": 25.286111111,
+      "longitude": 51.529444444,
+      "urban_area_slug": "doha-qatar",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:21508/"
+        }
+      }
+    },
+    {
+      "geoname_id": 21588,
+      "name": "Birmingham",
+      "full_name": "Birmingham, United Kingdom",
+      "country": "United Kingdom",
+      "continent": "Europe",
+      "population": 1137100,
+      "latitude": 52.48,
+      "longitude": -1.9025,
+      "urban_area_slug": "birmingham-united-kingdom",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:21588/"
+        }
+      }
+    },
+    {
+      "geoname_id": 2614,
+      "name": "Yerevan",
+      "full_name": "Yerevan, Armenia",
+      "country": "Armenia",
+      "continent": "Asia",
+      "population": 1106300,
+      "latitude": 40.16667,
+      "longitude": 44.5,
+      "urban_area_slug": "yerevan-armenia",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:2614/"
+        }
+      }
+    },
+    {
+      "geoname_id": 1597,
+      "name": "Cologne",
+      "full_name": "Cologne, Germany",
+      "country": "Germany",
+      "continent": "Europe",
+      "population": 1087353,
+      "latitude": 50.942222222,
+      "longitude": 6.957777777,
+      "urban_area_slug": "cologne-germany",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:1597/"
+        }
+      }
+    },
+    {
+      "geoname_id": 2576,
+      "name": "Ottawa",
+      "full_name": "Ottawa, Canada",
+      "country": "Canada",
+      "continent": "North America",
+      "population": 1017449,
+      "latitude": 45.424722222,
+      "longitude": -75.695,
+      "urban_area_slug": "ottawa-canada",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:2576/"
+        }
+      }
+    },
+    {
+      "geoname_id": 22954,
+      "name": "Edmonton",
+      "full_name": "Edmonton, Canada",
+      "country": "Canada",
+      "continent": "North America",
+      "population": 1010899,
+      "latitude": 53.533333333,
+      "longitude": -113.5,
+      "urban_area_slug": "edmonton-canada",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:22954/"
+        }
+      }
+    },
+    {
+      "geoname_id": 10655,
+      "name": "Guatemala City",
+      "full_name": "Guatemala City, Guatemala",
+      "country": "Guatemala",
+      "continent": "North America",
+      "population": 994938,
+      "latitude": 14.61382,
+      "longitude": -90.5409,
+      "urban_area_slug": "guatemala-city-guatemala",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:10655/"
+        }
+      }
+    },
+    {
+      "geoname_id": 4196,
+      "name": "Stockholm",
+      "full_name": "Stockholm, Sweden",
+      "country": "Sweden",
+      "continent": "Europe",
+      "population": 984748,
+      "latitude": 59.329444444,
+      "longitude": 18.068611111,
+      "urban_area_slug": "stockholm-sweden",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:4196/"
+        }
+      }
+    },
+    {
+      "geoname_id": 17412,
+      "name": "Managua",
+      "full_name": "Managua, Nicaragua",
+      "country": "Nicaragua",
+      "continent": "North America",
+      "population": 973087,
+      "latitude": 12.154680555,
+      "longitude": -86.273725,
+      "urban_area_slug": "managua-nicaragua",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:17412/"
+        }
+      }
+    },
+    {
+      "geoname_id": 18906,
+      "name": "Austin",
+      "full_name": "Austin, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 961855,
+      "latitude": 30.3,
+      "longitude": -97.733333333,
+      "urban_area_slug": "austin-texas",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:18906/"
+        }
+      }
+    },
+    {
+      "geoname_id": 18942,
+      "name": "Jacksonville",
+      "full_name": "Jacksonville, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 949611,
+      "latitude": 30.316666666,
+      "longitude": -81.65,
+      "urban_area_slug": "jacksonville-florida",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:18942/"
+        }
+      }
+    },
+    {
+      "geoname_id": 8621,
+      "name": "Kingston",
+      "full_name": "Kingston, Jamaica",
+      "country": "Jamaica",
+      "continent": "North America",
+      "population": 937700,
+      "latitude": 17.971388888,
+      "longitude": -76.793055555,
+      "urban_area_slug": "kingston-jamaica",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:8621/"
+        }
+      }
+    },
+    {
+      "geoname_id": 9543,
+      "name": "Amsterdam",
+      "full_name": "Amsterdam, Netherlands",
+      "country": "Netherlands",
+      "continent": "Europe",
+      "population": 921468,
+      "latitude": 52.37403,
+      "longitude": 4.88969,
+      "urban_area_slug": "amsterdam-netherlands",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:9543/"
+        }
+      }
+    },
+    {
+      "geoname_id": 12274,
+      "name": "Jakarta",
+      "full_name": "Jakarta, Indonesia",
+      "country": "Indonesia",
+      "continent": "Asia",
+      "population": 914283,
+      "latitude": -6.18333,
+      "longitude": 106.83333,
+      "urban_area_slug": "jakarta-indonesia",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:12274/"
+        }
+      }
+    },
+    {
+      "geoname_id": 18944,
+      "name": "Columbus",
+      "full_name": "Columbus, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 905748,
+      "latitude": 39.962222222,
+      "longitude": -83.000555555,
+      "urban_area_slug": "columbus-ohio",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:18944/"
+        }
+      }
+    },
+    {
+      "geoname_id": 22988,
+      "name": "Indianapolis",
+      "full_name": "Indianapolis, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 887642,
+      "latitude": 39.768611111,
+      "longitude": -86.158055555,
+      "urban_area_slug": "indianapolis-indiana",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:22988/"
+        }
+      }
+    },
+    {
+      "geoname_id": 18948,
+      "name": "Charlotte",
+      "full_name": "Charlotte, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 879709,
+      "latitude": 35.226944444,
+      "longitude": -80.843333333,
+      "urban_area_slug": "charlotte-north-carolina",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:18948/"
+        }
+      }
+    },
+    {
+      "geoname_id": 16132,
+      "name": "Kathmandu",
+      "full_name": "Kathmandu, Nepal",
+      "country": "Nepal",
+      "continent": "Asia",
+      "population": 845767,
+      "latitude": 27.71,
+      "longitude": 85.32,
+      "urban_area_slug": "kathmandu-nepal",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:16132/"
+        }
+      }
+    },
+    {
+      "geoname_id": 15044,
+      "name": "Krakow",
+      "full_name": "Krakow, Poland",
+      "country": "Poland",
+      "continent": "Europe",
+      "population": 804237,
+      "latitude": 50.061388888,
+      "longitude": 19.937222222,
+      "urban_area_slug": "krakow-poland",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:15044/"
+        }
+      }
+    },
+    {
+      "geoname_id": 4285,
+      "name": "Frankfurt",
+      "full_name": "Frankfurt, Germany",
+      "country": "Germany",
+      "continent": "Europe",
+      "population": 775790,
+      "latitude": 50.110555555,
+      "longitude": 8.682222222,
+      "urban_area_slug": "frankfurt-germany",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:4285/"
+        }
+      }
+    },
+    {
+      "geoname_id": 19234,
+      "name": "Valencia",
+      "full_name": "Valencia, Spain",
+      "country": "Spain",
+      "continent": "Europe",
+      "population": 769128,
+      "latitude": 39.45612,
+      "longitude": -0.35457,
+      "urban_area_slug": "valencia-spain",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:19234/"
+        }
+      }
+    },
+    {
+      "geoname_id": 5561,
+      "name": "La Paz",
+      "full_name": "La Paz, Bolivia",
+      "country": "Bolivia",
+      "continent": "South America",
+      "population": 755732,
+      "latitude": -16.495833333,
+      "longitude": -68.133333333,
+      "urban_area_slug": "la-paz-bolivia",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:5561/"
+        }
+      }
+    },
+    {
+      "geoname_id": 20750,
+      "name": "Winnipeg",
+      "full_name": "Winnipeg, Canada",
+      "country": "Canada",
+      "continent": "North America",
+      "population": 749607,
+      "latitude": 49.895555555,
+      "longitude": -97.138611111,
+      "urban_area_slug": "winnipeg-canada",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:20750/"
+        }
+      }
+    },
+    {
+      "geoname_id": 21513,
+      "name": "Seattle",
+      "full_name": "Seattle, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 737015,
+      "latitude": 47.605,
+      "longitude": -122.33,
+      "urban_area_slug": "seattle-washington",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:21513/"
+        }
+      }
+    },
+    {
+      "geoname_id": 22802,
+      "name": "Lviv",
+      "full_name": "Lviv, Ukraine",
+      "country": "Ukraine",
+      "continent": "Europe",
+      "population": 717273,
+      "latitude": 49.8425,
+      "longitude": 24.032222222,
+      "urban_area_slug": "lviv-ukraine",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:22802/"
+        }
+      }
+    },
+    {
+      "geoname_id": 18909,
+      "name": "Denver",
+      "full_name": "Denver, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 715522,
+      "latitude": 39.739166666,
+      "longitude": -104.984722222,
+      "urban_area_slug": "denver-colorado",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:18909/"
+        }
+      }
+    },
+    {
+      "geoname_id": 7123,
+      "name": "Washington",
+      "full_name": "Washington, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 689545,
+      "latitude": 38.90477,
+      "longitude": -77.01629,
+      "urban_area_slug": "washington-district-of-columbia",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:7123/"
+        }
+      }
+    },
+    {
+      "geoname_id": 21823,
+      "name": "Nashville",
+      "full_name": "Nashville, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 689447,
+      "latitude": 36.162222222,
+      "longitude": -86.774444444,
+      "urban_area_slug": "nashville-tennessee",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:21823/"
+        }
+      }
+    },
+    {
+      "geoname_id": 3180,
+      "name": "Seville",
+      "full_name": "Seville, Spain",
+      "country": "Spain",
+      "continent": "Europe",
+      "population": 689423,
+      "latitude": 37.388611111,
+      "longitude": -5.995555555,
+      "urban_area_slug": "seville-spain",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:3180/"
+        }
+      }
+    },
+    {
+      "geoname_id": 9550,
+      "name": "Oklahoma City",
+      "full_name": "Oklahoma City, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 681054,
+      "latitude": 35.482222222,
+      "longitude": -97.535277777,
+      "urban_area_slug": "oklahoma-city-oklahoma",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:9550/"
+        }
+      }
+    },
+    {
+      "geoname_id": 83,
+      "name": "Boston",
+      "full_name": "Boston, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 675647,
+      "latitude": 42.360277777,
+      "longitude": -71.057777777,
+      "urban_area_slug": "boston-massachusetts",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:83/"
+        }
+      }
+    },
+    {
+      "geoname_id": 4135,
+      "name": "Copenhagen",
+      "full_name": "Copenhagen, Denmark",
+      "country": "Denmark",
+      "continent": "Europe",
+      "population": 667099,
+      "latitude": 55.676111111,
+      "longitude": 12.568888888,
+      "urban_area_slug": "copenhagen-denmark",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:4135/"
+        }
+      }
+    },
+    {
+      "geoname_id": 6569,
+      "name": "Rotterdam",
+      "full_name": "Rotterdam, Netherlands",
+      "country": "Netherlands",
+      "continent": "Europe",
+      "population": 664311,
+      "latitude": 51.9225,
+      "longitude": 4.47917,
+      "urban_area_slug": "rotterdam-netherlands",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:6569/"
+        }
+      }
+    },
+    {
+      "geoname_id": 81,
+      "name": "Portland",
+      "full_name": "Portland, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 652503,
+      "latitude": 45.516666666,
+      "longitude": -122.666666666,
+      "urban_area_slug": "portland-oregon",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:81/"
+        }
+      }
+    },
+    {
+      "geoname_id": 5931,
+      "name": "Athens",
+      "full_name": "Athens, Greece",
+      "country": "Greece",
+      "continent": "Europe",
+      "population": 643452,
+      "latitude": 37.98376,
+      "longitude": 23.72784,
+      "urban_area_slug": "athens-greece",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:5931/"
+        }
+      }
+    },
+    {
+      "geoname_id": 14252,
+      "name": "Las Vegas",
+      "full_name": "Las Vegas, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 641903,
+      "latitude": 36.17497,
+      "longitude": -115.13722,
+      "urban_area_slug": "las-vegas-nevada",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:14252/"
+        }
+      }
+    },
+    {
+      "geoname_id": 18488,
+      "name": "Detroit",
+      "full_name": "Detroit, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 639111,
+      "latitude": 42.331666666,
+      "longitude": -83.0475,
+      "urban_area_slug": "detroit-michigan",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:18488/"
+        }
+      }
+    },
+    {
+      "geoname_id": 12423,
+      "name": "Glasgow",
+      "full_name": "Glasgow, United Kingdom",
+      "country": "United Kingdom",
+      "continent": "Europe",
+      "population": 635640,
+      "latitude": 55.861111111,
+      "longitude": -4.25,
+      "urban_area_slug": "glasgow-united-kingdom",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:12423/"
+        }
+      }
+    },
+    {
+      "geoname_id": 18933,
+      "name": "Memphis",
+      "full_name": "Memphis, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 633104,
+      "latitude": 35.146111111,
+      "longitude": -90.051944444,
+      "urban_area_slug": "memphis-tennessee",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:18933/"
+        }
+      }
+    },
+    {
+      "geoname_id": 4452,
+      "name": "Dusseldorf",
+      "full_name": "Dusseldorf, Germany",
+      "country": "Germany",
+      "continent": "Europe",
+      "population": 631217,
+      "latitude": 51.225555555,
+      "longitude": 6.776666666,
+      "urban_area_slug": "dusseldorf-germany",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:4452/"
+        }
+      }
+    },
+    {
+      "geoname_id": 18771,
+      "name": "Stuttgart",
+      "full_name": "Stuttgart, Germany",
+      "country": "Germany",
+      "continent": "Europe",
+      "population": 612663,
+      "latitude": 48.7825,
+      "longitude": 9.17694,
+      "urban_area_slug": "stuttgart-germany",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:18771/"
+        }
+      }
+    },
+    {
+      "geoname_id": 1542,
+      "name": "Leipzig",
+      "full_name": "Leipzig, Germany",
+      "country": "Germany",
+      "continent": "Europe",
+      "population": 611850,
+      "latitude": 51.34198,
+      "longitude": 12.37498,
+      "urban_area_slug": "leipzig-germany",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:1542/"
+        }
+      }
+    },
+    {
+      "geoname_id": 19447,
+      "name": "Tunis",
+      "full_name": "Tunis, Tunisia",
+      "country": "Tunisia",
+      "continent": "Africa",
+      "population": 602560,
+      "latitude": 36.800833333,
+      "longitude": 10.18,
+      "urban_area_slug": "tunis-tunisia",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:19447/"
+        }
+      }
+    },
+    {
+      "geoname_id": 4023,
+      "name": "Malaga",
+      "full_name": "Malaga, Spain",
+      "country": "Spain",
+      "continent": "Europe",
+      "population": 599063,
+      "latitude": 36.716666666,
+      "longitude": -4.416666666,
+      "urban_area_slug": "malaga-spain",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:4023/"
+        }
+      }
+    },
+    {
+      "geoname_id": 514,
+      "name": "Bali",
+      "full_name": "Bali, Indonesia",
+      "country": "Indonesia",
+      "continent": "Asia",
+      "population": 598043,
+      "latitude": -1.148888888,
+      "longitude": 116.903055555,
+      "urban_area_slug": "bali-indonesia",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:514/"
+        }
+      }
+    },
+    {
+      "geoname_id": 4235,
+      "name": "Riga",
+      "full_name": "Riga, Latvia",
+      "country": "Latvia",
+      "continent": "Europe",
+      "population": 595053,
+      "latitude": 56.9475,
+      "longitude": 24.106944444,
+      "urban_area_slug": "riga-latvia",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:4235/"
+        }
+      }
+    },
+    {
+      "geoname_id": 4174,
+      "name": "Dublin",
+      "full_name": "Dublin, Ireland",
+      "country": "Ireland",
+      "continent": "Europe",
+      "population": 592713,
+      "latitude": 53.349722222,
+      "longitude": -6.260277777,
+      "urban_area_slug": "dublin-ireland",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:4174/"
+        }
+      }
+    },
+    {
+      "geoname_id": 7213,
+      "name": "Florianopolis",
+      "full_name": "Florianopolis, Brazil",
+      "country": "Brazil",
+      "continent": "South America",
+      "population": 587486,
+      "latitude": -27.61455,
+      "longitude": -48.50116,
+      "urban_area_slug": "florianopolis-brazil",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:7213/"
+        }
+      }
+    },
+    {
+      "geoname_id": 21516,
+      "name": "Baltimore",
+      "full_name": "Baltimore, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 585708,
+      "latitude": 39.286388888,
+      "longitude": -76.615,
+      "urban_area_slug": "baltimore-maryland",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:21516/"
+        }
+      }
+    },
+    {
+      "geoname_id": 21558,
+      "name": "Delhi",
+      "full_name": "Delhi, India",
+      "country": "India",
+      "continent": "Asia",
+      "population": 582320,
+      "latitude": 28.645,
+      "longitude": 77.245,
+      "urban_area_slug": "delhi-india",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:21558/"
+        }
+      }
+    },
+    {
+      "geoname_id": 790,
+      "name": "Vilnius",
+      "full_name": "Vilnius, Lithuania",
+      "country": "Lithuania",
+      "continent": "Europe",
+      "population": 581475,
+      "latitude": 54.687222222,
+      "longitude": 25.28,
+      "urban_area_slug": "vilnius-lithuania",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:790/"
+        }
+      }
+    },
+    {
+      "geoname_id": 1424,
+      "name": "Milwaukee",
+      "full_name": "Milwaukee, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 577222,
+      "latitude": 43.05,
+      "longitude": -87.95,
+      "urban_area_slug": "milwaukee-wisconsin",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:1424/"
+        }
+      }
+    },
+    {
+      "geoname_id": 11761,
+      "name": "Chisinau",
+      "full_name": "Chisinau, Moldova",
+      "country": "Moldova",
+      "continent": "Europe",
+      "population": 567038,
+      "latitude": 47.022777777,
+      "longitude": 28.835277777,
+      "urban_area_slug": "chisinau-moldova",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:11761/"
+        }
+      }
+    },
+    {
+      "geoname_id": 2815,
+      "name": "Dresden",
+      "full_name": "Dresden, Germany",
+      "country": "Germany",
+      "continent": "Europe",
+      "population": 564904,
+      "latitude": 51.05,
+      "longitude": 13.75,
+      "urban_area_slug": "dresden-germany",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:2815/"
+        }
+      }
+    },
+    {
+      "geoname_id": 9835,
+      "name": "Albuquerque",
+      "full_name": "Albuquerque, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 564559,
+      "latitude": 35.084444444,
+      "longitude": -106.650277777,
+      "urban_area_slug": "albuquerque-new-mexico",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:9835/"
+        }
+      }
+    },
+    {
+      "geoname_id": 5257,
+      "name": "The Hague",
+      "full_name": "The Hague, Netherlands",
+      "country": "Netherlands",
+      "continent": "Europe",
+      "population": 548320,
+      "latitude": 52.08,
+      "longitude": 4.31,
+      "urban_area_slug": "the-hague-netherlands",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:5257/"
+        }
+      }
+    },
+    {
+      "geoname_id": 6175,
+      "name": "Manchester",
+      "full_name": "Manchester, United Kingdom",
+      "country": "United Kingdom",
+      "continent": "Europe",
+      "population": 547627,
+      "latitude": 53.466666666,
+      "longitude": -2.233333333,
+      "urban_area_slug": "manchester-united-kingdom",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:6175/"
+        }
+      }
+    },
+    {
+      "geoname_id": 9413,
+      "name": "Lisbon",
+      "full_name": "Lisbon, Portugal",
+      "country": "Portugal",
+      "continent": "Europe",
+      "population": 545796,
+      "latitude": 38.72509,
+      "longitude": -9.1498,
+      "urban_area_slug": "lisbon-portugal",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:9413/"
+        }
+      }
+    },
+    {
+      "geoname_id": 22371,
+      "name": "Leeds",
+      "full_name": "Leeds, United Kingdom",
+      "country": "United Kingdom",
+      "continent": "Europe",
+      "population": 536280,
+      "latitude": 53.7975,
+      "longitude": -1.543611111,
+      "urban_area_slug": "leeds-united-kingdom",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:22371/"
+        }
+      }
+    },
+    {
+      "geoname_id": 7165,
+      "name": "Edinburgh",
+      "full_name": "Edinburgh, United Kingdom",
+      "country": "United Kingdom",
+      "continent": "Europe",
+      "population": 524930,
+      "latitude": 55.94973,
+      "longitude": -3.19333,
+      "urban_area_slug": "edinburgh-united-kingdom",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:7165/"
+        }
+      }
+    },
+    {
+      "geoname_id": 19925,
+      "name": "Toulouse",
+      "full_name": "Toulouse, France",
+      "country": "France",
+      "continent": "Europe",
+      "population": 514819,
+      "latitude": 43.604444444,
+      "longitude": 1.443333333,
+      "urban_area_slug": "toulouse-france",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:19925/"
+        }
+      }
+    },
+    {
+      "geoname_id": 17572,
+      "name": "Liverpool",
+      "full_name": "Liverpool, United Kingdom",
+      "country": "United Kingdom",
+      "continent": "Europe",
+      "population": 513441,
+      "latitude": 53.407222222,
+      "longitude": -2.991666666,
+      "urban_area_slug": "liverpool-united-kingdom",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:17572/"
+        }
+      }
+    },
+    {
+      "geoname_id": 10085,
+      "name": "Kansas City",
+      "full_name": "Kansas City, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 508090,
+      "latitude": 39.09973,
+      "longitude": -94.57857,
+      "urban_area_slug": "kansas-city-missouri",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:10085/"
+        }
+      }
+    },
+    {
+      "geoname_id": 1000006,
+      "name": "Andorra",
+      "full_name": "Andorra, Andorra",
+      "country": "Andorra",
+      "continent": "Europe",
+      "population": 500000,
+      "latitude": 37,
+      "longitude": -122,
+      "urban_area_slug": "andorra-andorra",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:1000006/"
+        }
+      }
+    },
+    {
+      "geoname_id": 1000095,
+      "name": "Gibraltar",
+      "full_name": "Gibraltar, Gibraltar",
+      "country": "Gibraltar",
+      "continent": "Europe",
+      "population": 500000,
+      "latitude": 37,
+      "longitude": -122,
+      "urban_area_slug": "gibraltar-gibraltar",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:1000095/"
+        }
+      }
+    },
+    {
+      "geoname_id": 1000103,
+      "name": "Hannover",
+      "full_name": "Hannover, Germany",
+      "country": "Germany",
+      "continent": "Europe",
+      "population": 500000,
+      "latitude": 37,
+      "longitude": -122,
+      "urban_area_slug": "hannover-germany",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:1000103/"
+        }
+      }
+    },
+    {
+      "geoname_id": 1000120,
+      "name": "Kiev",
+      "full_name": "Kiev, Ukraine",
+      "country": "Ukraine",
+      "continent": "Europe",
+      "population": 500000,
+      "latitude": 37,
+      "longitude": -122,
+      "urban_area_slug": "kiev-ukraine",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:1000120/"
+        }
+      }
+    },
+    {
+      "geoname_id": 1000159,
+      "name": "Minneapolis-Saint Paul",
+      "full_name": "Minneapolis-Saint Paul, Minnesota",
+      "country": "Minnesota",
+      "continent": "North America",
+      "population": 500000,
+      "latitude": 37,
+      "longitude": -122,
+      "urban_area_slug": "minneapolis-saint-paul-minnesota",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:1000159/"
+        }
+      }
+    },
+    {
+      "geoname_id": 1000212,
+      "name": "San Francisco Bay Area",
+      "full_name": "San Francisco Bay Area, California",
+      "country": "California",
+      "continent": "North America",
+      "population": 500000,
+      "latitude": 37,
+      "longitude": -122,
+      "urban_area_slug": "san-francisco-bay-area-california",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:1000212/"
+        }
+      }
+    },
+    {
+      "geoname_id": 1000214,
+      "name": "San Juan",
+      "full_name": "San Juan, Puerto Rico",
+      "country": "Puerto Rico",
+      "continent": "North America",
+      "population": 500000,
+      "latitude": 37,
+      "longitude": -122,
+      "urban_area_slug": "san-juan-puerto-rico",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:1000214/"
+        }
+      }
+    },
+    {
+      "geoname_id": 1000235,
+      "name": "Tampa Bay Area",
+      "full_name": "Tampa Bay Area, Florida",
+      "country": "Florida",
+      "continent": "North America",
+      "population": 500000,
+      "latitude": 37,
+      "longitude": -122,
+      "urban_area_slug": "tampa-bay-area-florida",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:1000235/"
+        }
+      }
+    },
+    {
+      "geoname_id": 1000253,
+      "name": "Valletta",
+      "full_name": "Valletta, Malta",
+      "country": "Malta",
+      "continent": "Europe",
+      "population": 500000,
+      "latitude": 37,
+      "longitude": -122,
+      "urban_area_slug": "valletta-malta",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:1000253/"
+        }
+      }
+    },
+    {
+      "geoname_id": 1000262,
+      "name": "Wroclaw",
+      "full_name": "Wroclaw, Poland",
+      "country": "Poland",
+      "continent": "Europe",
+      "population": 500000,
+      "latitude": 37,
+      "longitude": -122,
+      "urban_area_slug": "wroclaw-poland",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:1000262/"
+        }
+      }
+    },
+    {
+      "geoname_id": 18616,
+      "name": "Atlanta",
+      "full_name": "Atlanta, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 498715,
+      "latitude": 33.756944444,
+      "longitude": -84.390277777,
+      "urban_area_slug": "atlanta-georgia",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:18616/"
+        }
+      }
+    },
+    {
+      "geoname_id": 4281,
+      "name": "Gdansk",
+      "full_name": "Gdansk, Poland",
+      "country": "Poland",
+      "continent": "Europe",
+      "population": 487834,
+      "latitude": 54.35,
+      "longitude": 18.666666666,
+      "urban_area_slug": "gdansk-poland",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:4281/"
+        }
+      }
+    },
+    {
+      "geoname_id": 20353,
+      "name": "Omaha",
+      "full_name": "Omaha, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 486051,
+      "latitude": 41.258611111,
+      "longitude": -95.9375,
+      "urban_area_slug": "omaha-nebraska",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:20353/"
+        }
+      }
+    },
+    {
+      "geoname_id": 4216,
+      "name": "Bratislava",
+      "full_name": "Bratislava, Slovakia",
+      "country": "Slovakia",
+      "continent": "Europe",
+      "population": 479389,
+      "latitude": 48.144722222,
+      "longitude": 17.112777777,
+      "urban_area_slug": "bratislava-slovakia",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:4216/"
+        }
+      }
+    },
+    {
+      "geoname_id": 4960,
+      "name": "Colorado Springs",
+      "full_name": "Colorado Springs, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 478961,
+      "latitude": 38.863333333,
+      "longitude": -104.791944444,
+      "urban_area_slug": "colorado-springs-colorado",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:4960/"
+        }
+      }
+    },
+    {
+      "geoname_id": 21726,
+      "name": "Bristol",
+      "full_name": "Bristol, United Kingdom",
+      "country": "United Kingdom",
+      "continent": "Europe",
+      "population": 472465,
+      "latitude": 51.45523,
+      "longitude": -2.59665,
+      "urban_area_slug": "bristol-united-kingdom",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:21726/"
+        }
+      }
+    },
+    {
+      "geoname_id": 13452,
+      "name": "Tel Aviv",
+      "full_name": "Tel Aviv, Israel",
+      "country": "Israel",
+      "continent": "Asia",
+      "population": 467875,
+      "latitude": 32.08,
+      "longitude": 34.78,
+      "urban_area_slug": "tel-aviv-israel",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:13452/"
+        }
+      }
+    },
+    {
+      "geoname_id": 1736,
+      "name": "Raleigh",
+      "full_name": "Raleigh, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 467665,
+      "latitude": 35.78,
+      "longitude": -78.64,
+      "urban_area_slug": "raleigh-north-carolina",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:1736/"
+        }
+      }
+    },
+    {
+      "geoname_id": 14,
+      "name": "Asuncion",
+      "full_name": "Asuncion, Paraguay",
+      "country": "Paraguay",
+      "continent": "South America",
+      "population": 462241,
+      "latitude": -25.28,
+      "longitude": -57.634444444,
+      "urban_area_slug": "asuncion-paraguay",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:14/"
+        }
+      }
+    },
+    {
+      "geoname_id": 4239,
+      "name": "Tallinn",
+      "full_name": "Tallinn, Estonia",
+      "country": "Estonia",
+      "continent": "Europe",
+      "population": 457572,
+      "latitude": 59.437222222,
+      "longitude": 24.745,
+      "urban_area_slug": "tallinn-estonia",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:4239/"
+        }
+      }
+    },
+    {
+      "geoname_id": 7151,
+      "name": "Zurich",
+      "full_name": "Zurich, Switzerland",
+      "country": "Switzerland",
+      "continent": "Europe",
+      "population": 452421,
+      "latitude": 47.374444444,
+      "longitude": 8.541111111,
+      "urban_area_slug": "zurich-switzerland",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:7151/"
+        }
+      }
+    },
+    {
+      "geoname_id": 5852,
+      "name": "Miami",
+      "full_name": "Miami, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 449514,
+      "latitude": 25.783333333,
+      "longitude": -80.216666666,
+      "urban_area_slug": "miami-florida",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:5852/"
+        }
+      }
+    },
+    {
+      "geoname_id": 20693,
+      "name": "Halifax",
+      "full_name": "Halifax, Canada",
+      "country": "Canada",
+      "continent": "North America",
+      "population": 440072,
+      "latitude": 44.86685,
+      "longitude": -63.71541,
+      "urban_area_slug": "halifax-canada",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:20693/"
+        }
+      }
+    },
+    {
+      "geoname_id": 1566,
+      "name": "Skopje",
+      "full_name": "Skopje, North Macedonia",
+      "country": "North Macedonia",
+      "continent": "Europe",
+      "population": 422540,
+      "latitude": 41.996111111,
+      "longitude": 21.431666666,
+      "urban_area_slug": "skopje-macedonia",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:1566/"
+        }
+      }
+    },
+    {
+      "geoname_id": 11744,
+      "name": "Bern",
+      "full_name": "Bern, Switzerland",
+      "country": "Switzerland",
+      "continent": "Europe",
+      "population": 414658,
+      "latitude": 46.9546,
+      "longitude": 7.3949,
+      "urban_area_slug": "bern-switzerland",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:11744/"
+        }
+      }
+    },
+    {
+      "geoname_id": 20375,
+      "name": "Brno",
+      "full_name": "Brno, Czech Republic",
+      "country": "Czech Republic",
+      "continent": "Europe",
+      "population": 402739,
+      "latitude": 49.195277777,
+      "longitude": 16.608333333,
+      "urban_area_slug": "brno-czechia",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:20375/"
+        }
+      }
+    },
+    {
+      "geoname_id": 3508,
+      "name": "Bologna",
+      "full_name": "Bologna, Italy",
+      "country": "Italy",
+      "continent": "Europe",
+      "population": 387971,
+      "latitude": 44.493888888,
+      "longitude": 11.342777777,
+      "urban_area_slug": "bologna-italy",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:3508/"
+        }
+      }
+    },
+    {
+      "geoname_id": 7092,
+      "name": "New Orleans",
+      "full_name": "New Orleans, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 383997,
+      "latitude": 29.976111111,
+      "longitude": -90.078333333,
+      "urban_area_slug": "new-orleans-louisiana",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:7092/"
+        }
+      }
+    },
+    {
+      "geoname_id": 2406,
+      "name": "Christchurch",
+      "full_name": "Christchurch, New Zealand",
+      "country": "New Zealand",
+      "continent": "Oceania",
+      "population": 383200,
+      "latitude": -43.531111111,
+      "longitude": 172.636111111,
+      "urban_area_slug": "christchurch-new-zealand",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:2406/"
+        }
+      }
+    },
+    {
+      "geoname_id": 21611,
+      "name": "Cleveland",
+      "full_name": "Cleveland, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 372624,
+      "latitude": 41.499166666,
+      "longitude": -81.694722222,
+      "urban_area_slug": "cleveland-ohio",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:21611/"
+        }
+      }
+    },
+    {
+      "geoname_id": 612,
+      "name": "Cardiff",
+      "full_name": "Cardiff, United Kingdom",
+      "country": "United Kingdom",
+      "continent": "Europe",
+      "population": 364248,
+      "latitude": 51.5,
+      "longitude": -3.16667,
+      "urban_area_slug": "cardiff-united-kingdom",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:612/"
+        }
+      }
+    },
+    {
+      "geoname_id": 22831,
+      "name": "Florence",
+      "full_name": "Florence, Italy",
+      "country": "Italy",
+      "continent": "Europe",
+      "population": 360930,
+      "latitude": 43.771388888,
+      "longitude": 11.254166666,
+      "urban_area_slug": "florence-italy",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:22831/"
+        }
+      }
+    },
+    {
+      "geoname_id": 13404,
+      "name": "Nice",
+      "full_name": "Nice, France",
+      "country": "France",
+      "continent": "Europe",
+      "population": 357737,
+      "latitude": 43.701944444,
+      "longitude": 7.268333333,
+      "urban_area_slug": "nice-france",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:13404/"
+        }
+      }
+    },
+    {
+      "geoname_id": 5760,
+      "name": "Bilbao",
+      "full_name": "Bilbao, Spain",
+      "country": "Spain",
+      "continent": "Europe",
+      "population": 351124,
+      "latitude": 43.263055555,
+      "longitude": -2.935,
+      "urban_area_slug": "bilbao-spain",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:5760/"
+        }
+      }
+    },
+    {
+      "geoname_id": 7329,
+      "name": "Honolulu",
+      "full_name": "Honolulu, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 350964,
+      "latitude": 21.304722222,
+      "longitude": -157.857222222,
+      "urban_area_slug": "honolulu-hawaii",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:7329/"
+        }
+      }
+    },
+    {
+      "geoname_id": 3780,
+      "name": "Belfast",
+      "full_name": "Belfast, United Kingdom",
+      "country": "United Kingdom",
+      "continent": "Europe",
+      "population": 341877,
+      "latitude": 54.58333,
+      "longitude": -5.91667,
+      "urban_area_slug": "belfast-united-kingdom",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:3780/"
+        }
+      }
+    },
+    {
+      "geoname_id": 16032,
+      "name": "San Jose",
+      "full_name": "San Jose, Costa Rica",
+      "country": "Costa Rica",
+      "continent": "North America",
+      "population": 335007,
+      "latitude": 9.932738888,
+      "longitude": -84.079613888,
+      "urban_area_slug": "san-jose-costa-rica",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:16032/"
+        }
+      }
+    },
+    {
+      "geoname_id": 5637,
+      "name": "Orlando",
+      "full_name": "Orlando, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 334854,
+      "latitude": 28.533611111,
+      "longitude": -81.386666666,
+      "urban_area_slug": "orlando-florida",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:5637/"
+        }
+      }
+    },
+    {
+      "geoname_id": 16953,
+      "name": "San Salvador",
+      "full_name": "San Salvador, El Salvador",
+      "country": "El Salvador",
+      "continent": "North America",
+      "population": 330543,
+      "latitude": 13.697597222,
+      "longitude": -89.191155555,
+      "urban_area_slug": "san-salvador-el-salvador",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:16953/"
+        }
+      }
+    },
+    {
+      "geoname_id": 19063,
+      "name": "Nantes",
+      "full_name": "Nantes, France",
+      "country": "France",
+      "continent": "Europe",
+      "population": 327734,
+      "latitude": 47.217222222,
+      "longitude": -1.553888888,
+      "urban_area_slug": "nantes-france",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:19063/"
+        }
+      }
+    },
+    {
+      "geoname_id": 21674,
+      "name": "Malmo",
+      "full_name": "Malmo, Sweden",
+      "country": "Sweden",
+      "continent": "Europe",
+      "population": 326860,
+      "latitude": 55.583333333,
+      "longitude": 13,
+      "urban_area_slug": "malmo-sweden",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:21674/"
+        }
+      }
+    },
+    {
+      "geoname_id": 17790,
+      "name": "Karlsruhe",
+      "full_name": "Karlsruhe, Germany",
+      "country": "Germany",
+      "continent": "Europe",
+      "population": 309964,
+      "latitude": 49.00937,
+      "longitude": 8.40444,
+      "urban_area_slug": "karlsruhe-germany",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:17790/"
+        }
+      }
+    },
+    {
+      "geoname_id": 13010,
+      "name": "Thessaloniki",
+      "full_name": "Thessaloniki, Greece",
+      "country": "Greece",
+      "continent": "Europe",
+      "population": 309617,
+      "latitude": 40.640277777,
+      "longitude": 22.935555555,
+      "urban_area_slug": "thessaloniki-greece",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:13010/"
+        }
+      }
+    },
+    {
+      "geoname_id": 20350,
+      "name": "Cincinnati",
+      "full_name": "Cincinnati, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 309317,
+      "latitude": 39.1,
+      "longitude": -84.5125,
+      "urban_area_slug": "cincinnati-ohio",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:20350/"
+        }
+      }
+    },
+    {
+      "geoname_id": 20036,
+      "name": "Pittsburgh",
+      "full_name": "Pittsburgh, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 302971,
+      "latitude": 40.43962,
+      "longitude": -79.97626,
+      "urban_area_slug": "pittsburgh-pennsylvania",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:20036/"
+        }
+      }
+    },
+    {
+      "geoname_id": 22256,
+      "name": "St. Louis",
+      "full_name": "St. Louis, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 301578,
+      "latitude": 38.62727,
+      "longitude": -90.19789,
+      "urban_area_slug": "st-louis-missouri",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:22256/"
+        }
+      }
+    },
+    {
+      "geoname_id": 11935,
+      "name": "Las Palmas de Gran Canaria",
+      "full_name": "Las Palmas de Gran Canaria, Spain",
+      "country": "Spain",
+      "continent": "Europe",
+      "population": 297682,
+      "latitude": 28.099722222,
+      "longitude": -15.413333333,
+      "urban_area_slug": "las-palmas-de-gran-canaria-spain",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:11935/"
+        }
+      }
+    },
+    {
+      "geoname_id": 13526,
+      "name": "Bergen",
+      "full_name": "Bergen, Norway",
+      "country": "Norway",
+      "continent": "Europe",
+      "population": 291189,
+      "latitude": 60.3925,
+      "longitude": 5.323333333,
+      "urban_area_slug": "bergen-norway",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:13526/"
+        }
+      }
+    },
+    {
+      "geoname_id": 1294,
+      "name": "Aarhus",
+      "full_name": "Aarhus, Denmark",
+      "country": "Denmark",
+      "continent": "Europe",
+      "population": 290598,
+      "latitude": 56.156388888,
+      "longitude": 10.209722222,
+      "urban_area_slug": "aarhus-denmark",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:1294/"
+        }
+      }
+    },
+    {
+      "geoname_id": 21685,
+      "name": "Anchorage",
+      "full_name": "Anchorage, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 289600,
+      "latitude": 61.216666666,
+      "longitude": -149.893611111,
+      "urban_area_slug": "anchorage-alaska",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:21685/"
+        }
+      }
+    },
+    {
+      "geoname_id": 22708,
+      "name": "Cluj-Napoca",
+      "full_name": "Cluj-Napoca, Romania",
+      "country": "Romania",
+      "continent": "Europe",
+      "population": 286598,
+      "latitude": 46.76667,
+      "longitude": 23.6,
+      "urban_area_slug": "cluj-napoca-romania",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:22708/"
+        }
+      }
+    },
+    {
+      "geoname_id": 2014,
+      "name": "Ljubljana",
+      "full_name": "Ljubljana, Slovenia",
+      "country": "Slovenia",
+      "continent": "Europe",
+      "population": 284293,
+      "latitude": 46.051388888,
+      "longitude": 14.506111111,
+      "urban_area_slug": "ljubljana-slovenia",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:2014/"
+        }
+      }
+    },
+    {
+      "geoname_id": 12088,
+      "name": "Buffalo",
+      "full_name": "Buffalo, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 278349,
+      "latitude": 42.886388888,
+      "longitude": -78.878055555,
+      "urban_area_slug": "buffalo-new-york",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:12088/"
+        }
+      }
+    },
+    {
+      "geoname_id": 15028,
+      "name": "Galway",
+      "full_name": "Galway, Ireland",
+      "country": "Ireland",
+      "continent": "Europe",
+      "population": 277737,
+      "latitude": 53.3645,
+      "longitude": -9.45028,
+      "urban_area_slug": "galway-ireland",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:15028/"
+        }
+      }
+    },
+    {
+      "geoname_id": 5500,
+      "name": "Madison",
+      "full_name": "Madison, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 269840,
+      "latitude": 43.074722222,
+      "longitude": -89.384166666,
+      "urban_area_slug": "madison-wisconsin",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:5500/"
+        }
+      }
+    },
+    {
+      "geoname_id": 5706,
+      "name": "Bordeaux",
+      "full_name": "Bordeaux, France",
+      "country": "France",
+      "continent": "Europe",
+      "population": 267991,
+      "latitude": 44.837777777,
+      "longitude": -0.579444444,
+      "urban_area_slug": "bordeaux-france",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:5706/"
+        }
+      }
+    },
+    {
+      "geoname_id": 21111,
+      "name": "Saskatoon",
+      "full_name": "Saskatoon, Canada",
+      "country": "Canada",
+      "continent": "North America",
+      "population": 266141,
+      "latitude": 52.133333333,
+      "longitude": -106.683333333,
+      "urban_area_slug": "saskatoon-canada",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:21111/"
+        }
+      }
+    },
+    {
+      "geoname_id": 15251,
+      "name": "Tampere",
+      "full_name": "Tampere, Finland",
+      "country": "Finland",
+      "continent": "Europe",
+      "population": 255333,
+      "latitude": 61.498055555,
+      "longitude": 23.76,
+      "urban_area_slug": "tampere-finland",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:15251/"
+        }
+      }
+    },
+    {
+      "geoname_id": 7050,
+      "name": "Quebec",
+      "full_name": "Quebec, Canada",
+      "country": "Canada",
+      "continent": "Europe",
+      "population": 250445,
+      "latitude": 46.283333333,
+      "longitude": -72.066666666,
+      "urban_area_slug": "quebec-canada",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:7050/"
+        }
+      }
+    },
+    {
+      "geoname_id": 10485,
+      "name": "Phuket",
+      "full_name": "Phuket, Thailand",
+      "country": "Thailand",
+      "continent": "Asia",
+      "population": 247115,
+      "latitude": 7.89,
+      "longitude": 98.385,
+      "urban_area_slug": "phuket-thailand",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:10485/"
+        }
+      }
+    },
+    {
+      "geoname_id": 4545,
+      "name": "Louisville",
+      "full_name": "Louisville, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 246161,
+      "latitude": 38.256111111,
+      "longitude": -85.751388888,
+      "urban_area_slug": "louisville-kentucky",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:4545/"
+        }
+      }
+    },
+    {
+      "geoname_id": 17123,
+      "name": "Eindhoven",
+      "full_name": "Eindhoven, Netherlands",
+      "country": "Netherlands",
+      "continent": "Europe",
+      "population": 243730,
+      "latitude": 51.434444444,
+      "longitude": 5.484166666,
+      "urban_area_slug": "eindhoven-netherlands",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:17123/"
+        }
+      }
+    },
+    {
+      "geoname_id": 8886,
+      "name": "Lille",
+      "full_name": "Lille, France",
+      "country": "France",
+      "continent": "Europe",
+      "population": 238246,
+      "latitude": 50.631944444,
+      "longitude": 3.0575,
+      "urban_area_slug": "lille-france",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:8886/"
+        }
+      }
+    },
+    {
+      "geoname_id": 6595,
+      "name": "Boise",
+      "full_name": "Boise, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 235684,
+      "latitude": 43.613611111,
+      "longitude": -116.237777777,
+      "urban_area_slug": "boise-idaho",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:6595/"
+        }
+      }
+    },
+    {
+      "geoname_id": 379,
+      "name": "Porto",
+      "full_name": "Porto, Portugal",
+      "country": "Portugal",
+      "continent": "Europe",
+      "population": 231800,
+      "latitude": 41.15556,
+      "longitude": -8.62672,
+      "urban_area_slug": "porto-portugal",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:379/"
+        }
+      }
+    },
+    {
+      "geoname_id": 219,
+      "name": "Richmond",
+      "full_name": "Richmond, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 226610,
+      "latitude": 37.540833333,
+      "longitude": -77.436666666,
+      "urban_area_slug": "richmond-virginia",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:219/"
+        }
+      }
+    },
+    {
+      "geoname_id": 4458,
+      "name": "Cork",
+      "full_name": "Cork, Ireland",
+      "country": "Ireland",
+      "continent": "Europe",
+      "population": 222333,
+      "latitude": 51.9,
+      "longitude": -8.473055555,
+      "urban_area_slug": "cork-ireland",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:4458/"
+        }
+      }
+    },
+    {
+      "geoname_id": 15656,
+      "name": "Wellington",
+      "full_name": "Wellington, New Zealand",
+      "country": "New Zealand",
+      "continent": "Oceania",
+      "population": 216200,
+      "latitude": -41.288888888,
+      "longitude": 174.777222222,
+      "urban_area_slug": "wellington-new-zealand",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:15656/"
+        }
+      }
+    },
+    {
+      "geoname_id": 17725,
+      "name": "Oulu",
+      "full_name": "Oulu, Finland",
+      "country": "Finland",
+      "continent": "Europe",
+      "population": 214814,
+      "latitude": 65.014166666,
+      "longitude": 25.471944444,
+      "urban_area_slug": "oulu-finland",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:17725/"
+        }
+      }
+    },
+    {
+      "geoname_id": 21475,
+      "name": "Saint Petersburg",
+      "full_name": "Saint Petersburg, Russia",
+      "country": "Russia",
+      "continent": "Europe",
+      "population": 214625,
+      "latitude": 59.93902778,
+      "longitude": 30.31577778,
+      "urban_area_slug": "saint-petersburg-russia",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:21475/"
+        }
+      }
+    },
+    {
+      "geoname_id": 19506,
+      "name": "Des Moines",
+      "full_name": "Des Moines, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 214133,
+      "latitude": 41.590833333,
+      "longitude": -93.620833333,
+      "urban_area_slug": "des-moines-iowa",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:19506/"
+        }
+      }
+    },
+    {
+      "geoname_id": 1610,
+      "name": "Sydney",
+      "full_name": "Sydney, Australia",
+      "country": "Australia",
+      "continent": "Oceania",
+      "population": 211632,
+      "latitude": -33.866666666,
+      "longitude": 151.2,
+      "urban_area_slug": "sydney-australia",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:1610/"
+        }
+      }
+    },
+    {
+      "geoname_id": 5699,
+      "name": "Rochester",
+      "full_name": "Rochester, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 211328,
+      "latitude": 43.165555555,
+      "longitude": -77.611388888,
+      "urban_area_slug": "rochester-new-york",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:5699/"
+        }
+      }
+    },
+    {
+      "geoname_id": 7150,
+      "name": "Geneva",
+      "full_name": "Geneva, Switzerland",
+      "country": "Switzerland",
+      "continent": "Europe",
+      "population": 209061,
+      "latitude": 46.2,
+      "longitude": 6.15,
+      "urban_area_slug": "geneva-switzerland",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:7150/"
+        }
+      }
+    },
+    {
+      "geoname_id": 18692,
+      "name": "Turku",
+      "full_name": "Turku, Finland",
+      "country": "Finland",
+      "continent": "Europe",
+      "population": 206420,
+      "latitude": 60.53333,
+      "longitude": 22.33333,
+      "urban_area_slug": "turku-finland",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:18692/"
+        }
+      }
+    },
+    {
+      "geoname_id": 1693,
+      "name": "Birmingham",
+      "full_name": "Birmingham, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 200733,
+      "latitude": 33.5175,
+      "longitude": -86.809444444,
+      "urban_area_slug": "birmingham-alabama",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:1693/"
+        }
+      }
+    },
+    {
+      "geoname_id": 17152,
+      "name": "Salt Lake City",
+      "full_name": "Salt Lake City, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 199723,
+      "latitude": 40.75,
+      "longitude": -111.883333333,
+      "urban_area_slug": "salt-lake-city-utah",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:17152/"
+        }
+      }
+    },
+    {
+      "geoname_id": 18254,
+      "name": "Knoxville",
+      "full_name": "Knoxville, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 190740,
+      "latitude": 35.961666666,
+      "longitude": -83.923333333,
+      "urban_area_slug": "knoxville-tennessee",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:18254/"
+        }
+      }
+    },
+    {
+      "geoname_id": 14544,
+      "name": "New York",
+      "full_name": "New York, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 183000,
+      "latitude": 40.66677,
+      "longitude": -73.88236,
+      "urban_area_slug": "new-york-new-york",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:14544/"
+        }
+      }
+    },
+    {
+      "geoname_id": 3451,
+      "name": "Chattanooga",
+      "full_name": "Chattanooga, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 181099,
+      "latitude": 35.045555555,
+      "longitude": -85.267222222,
+      "urban_area_slug": "chattanooga-tennessee",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:3451/"
+        }
+      }
+    },
+    {
+      "geoname_id": 2695,
+      "name": "Eugene",
+      "full_name": "Eugene, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 176654,
+      "latitude": 44.052222222,
+      "longitude": -123.0925,
+      "urban_area_slug": "eugene-oregon",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:2695/"
+        }
+      }
+    },
+    {
+      "geoname_id": 1092,
+      "name": "Uppsala",
+      "full_name": "Uppsala, Sweden",
+      "country": "Sweden",
+      "continent": "Europe",
+      "population": 174982,
+      "latitude": 59.849760548,
+      "longitude": 17.638946597,
+      "urban_area_slug": "uppsala-sweden",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:1092/"
+        }
+      }
+    },
+    {
+      "geoname_id": 20364,
+      "name": "Helsinki",
+      "full_name": "Helsinki, Finland",
+      "country": "Finland",
+      "continent": "Europe",
+      "population": 170557,
+      "latitude": 60.21043,
+      "longitude": 25.08289,
+      "urban_area_slug": "helsinki-finland",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:20364/"
+        }
+      }
+    },
+    {
+      "geoname_id": 12184,
+      "name": "Fort Collins",
+      "full_name": "Fort Collins, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 169810,
+      "latitude": 40.566666666,
+      "longitude": -105.083333333,
+      "urban_area_slug": "fort-collins-colorado",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:12184/"
+        }
+      }
+    },
+    {
+      "geoname_id": 19218,
+      "name": "Grenoble",
+      "full_name": "Grenoble, France",
+      "country": "France",
+      "continent": "Europe",
+      "population": 156140,
+      "latitude": 45.186944444,
+      "longitude": 5.726388888,
+      "urban_area_slug": "grenoble-france",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:19218/"
+        }
+      }
+    },
+    {
+      "geoname_id": 14192,
+      "name": "Charleston",
+      "full_name": "Charleston, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 150227,
+      "latitude": 32.783333333,
+      "longitude": -79.931944444,
+      "urban_area_slug": "charleston-south-carolina",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:14192/"
+        }
+      }
+    },
+    {
+      "geoname_id": 22254,
+      "name": "Melbourne",
+      "full_name": "Melbourne, Australia",
+      "country": "Australia",
+      "continent": "Oceania",
+      "population": 149615,
+      "latitude": -37.81306,
+      "longitude": 144.94422,
+      "urban_area_slug": "melbourne-australia",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:22254/"
+        }
+      }
+    },
+    {
+      "geoname_id": 5681,
+      "name": "Oxford",
+      "full_name": "Oxford, United Kingdom",
+      "country": "United Kingdom",
+      "continent": "Europe",
+      "population": 147500,
+      "latitude": 51.751944444,
+      "longitude": -1.257777777,
+      "urban_area_slug": "oxford-united-kingdom",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:5681/"
+        }
+      }
+    },
+    {
+      "geoname_id": 19817,
+      "name": "Cambridge",
+      "full_name": "Cambridge, United Kingdom",
+      "country": "United Kingdom",
+      "continent": "Europe",
+      "population": 146995,
+      "latitude": 52.19714,
+      "longitude": 0.12823,
+      "urban_area_slug": "cambridge-united-kingdom",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:19817/"
+        }
+      }
+    },
+    {
+      "geoname_id": 10356,
+      "name": "Lausanne",
+      "full_name": "Lausanne, Switzerland",
+      "country": "Switzerland",
+      "continent": "Europe",
+      "population": 144873,
+      "latitude": 46.533333333,
+      "longitude": 6.633333333,
+      "urban_area_slug": "lausanne-switzerland",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:10356/"
+        }
+      }
+    },
+    {
+      "geoname_id": 4167,
+      "name": "Reykjavik",
+      "full_name": "Reykjavik, Iceland",
+      "country": "Iceland",
+      "continent": "Europe",
+      "population": 138772,
+      "latitude": 64.1475,
+      "longitude": -21.935,
+      "urban_area_slug": "reykjavik-iceland",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:4167/"
+        }
+      }
+    },
+    {
+      "geoname_id": 3659,
+      "name": "Luxembourg",
+      "full_name": "Luxembourg, Luxembourg",
+      "country": "Luxembourg",
+      "continent": "Europe",
+      "population": 137696,
+      "latitude": 49.60982,
+      "longitude": 6.13268,
+      "urban_area_slug": "luxembourg-luxembourg",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:3659/"
+        }
+      }
+    },
+    {
+      "geoname_id": 15858,
+      "name": "Brighton",
+      "full_name": "Brighton, United Kingdom",
+      "country": "United Kingdom",
+      "continent": "Europe",
+      "population": 134293,
+      "latitude": 50.820833333,
+      "longitude": -0.1375,
+      "urban_area_slug": "brighton-united-kingdom",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:15858/"
+        }
+      }
+    },
+    {
+      "geoname_id": 4150,
+      "name": "Innsbruck",
+      "full_name": "Innsbruck, Austria",
+      "country": "Austria",
+      "continent": "Europe",
+      "population": 130585,
+      "latitude": 47.268333333,
+      "longitude": 11.393333333,
+      "urban_area_slug": "innsbruck-austria",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:4150/"
+        }
+      }
+    },
+    {
+      "geoname_id": 10897,
+      "name": "Boulder",
+      "full_name": "Boulder, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 108250,
+      "latitude": 40.019444444,
+      "longitude": -105.292777777,
+      "urban_area_slug": "boulder-colorado",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:10897/"
+        }
+      }
+    },
+    {
+      "geoname_id": 18046,
+      "name": "Lyon",
+      "full_name": "Lyon, France",
+      "country": "France",
+      "continent": "Europe",
+      "population": 100679,
+      "latitude": 45.7586,
+      "longitude": 4.855822222,
+      "urban_area_slug": "lyon-france",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:18046/"
+        }
+      }
+    },
+    {
+      "geoname_id": 18284,
+      "name": "Tartu",
+      "full_name": "Tartu, Estonia",
+      "country": "Estonia",
+      "continent": "Europe",
+      "population": 97759,
+      "latitude": 58.38,
+      "longitude": 26.7225,
+      "urban_area_slug": "tartu-estonia",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:18284/"
+        }
+      }
+    },
+    {
+      "geoname_id": 17529,
+      "name": "Asheville",
+      "full_name": "Asheville, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 94589,
+      "latitude": 35.595555555,
+      "longitude": -82.551944444,
+      "urban_area_slug": "asheville-north-carolina",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:17529/"
+        }
+      }
+    },
+    {
+      "geoname_id": 20749,
+      "name": "Victoria",
+      "full_name": "Victoria, Canada",
+      "country": "Canada",
+      "continent": "North America",
+      "population": 91867,
+      "latitude": 48.422151,
+      "longitude": -123.3657,
+      "urban_area_slug": "victoria-canada",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:20749/"
+        }
+      }
+    },
+    {
+      "geoname_id": 317558,
+      "name": "Los Angeles",
+      "full_name": "Los Angeles, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 85000,
+      "latitude": 34.057,
+      "longitude": -118.238,
+      "urban_area_slug": "los-angeles-california",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:317558/"
+        }
+      }
+    },
+    {
+      "geoname_id": 646756,
+      "name": "Paris",
+      "full_name": "Paris, France",
+      "country": "France",
+      "continent": "Europe",
+      "population": 83873,
+      "latitude": 48.8709,
+      "longitude": 2.3561,
+      "urban_area_slug": "paris-france",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:646756/"
+        }
+      }
+    },
+    {
+      "geoname_id": 10414,
+      "name": "Santo Domingo",
+      "full_name": "Santo Domingo, Dominican Republic",
+      "country": "Dominican Republic",
+      "continent": "North America",
+      "population": 72950,
+      "latitude": 18.80588,
+      "longitude": -71.22991,
+      "urban_area_slug": "santo-domingo-dominican-republic",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:10414/"
+        }
+      }
+    },
+    {
+      "geoname_id": 22189,
+      "name": "Palo Alto",
+      "full_name": "Palo Alto, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 68572,
+      "latitude": 37.429166666,
+      "longitude": -122.138055555,
+      "urban_area_slug": "palo-alto-california",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:22189/"
+        }
+      }
+    },
+    {
+      "geoname_id": 5738,
+      "name": "Portland",
+      "full_name": "Portland, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 68408,
+      "latitude": 43.66,
+      "longitude": -70.255,
+      "urban_area_slug": "portland-maine",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:5738/"
+        }
+      }
+    },
+    {
+      "geoname_id": 14791,
+      "name": "Belize City",
+      "full_name": "Belize City, Belize",
+      "country": "Belize",
+      "continent": "North America",
+      "population": 63999,
+      "latitude": 17.498611111,
+      "longitude": -88.188611111,
+      "urban_area_slug": "belize-city-belize",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:14791/"
+        }
+      }
+    },
+    {
+      "geoname_id": 1079,
+      "name": "Gothenburg",
+      "full_name": "Gothenburg, Sweden",
+      "country": "Sweden",
+      "continent": "Europe",
+      "population": 63901,
+      "latitude": 57.70716,
+      "longitude": 11.96679,
+      "urban_area_slug": "gothenburg-sweden",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:1079/"
+        }
+      }
+    },
+    {
+      "geoname_id": 10043,
+      "name": "Oslo",
+      "full_name": "Oslo, Norway",
+      "country": "Norway",
+      "continent": "Europe",
+      "population": 61756,
+      "latitude": 59.912858333,
+      "longitude": 10.781858333,
+      "urban_area_slug": "oslo-norway",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:10043/"
+        }
+      }
+    },
+    {
+      "geoname_id": 766585,
+      "name": "Sarajevo",
+      "full_name": "Sarajevo, Bosnia and Herzegovina",
+      "country": "Bosnia and Herzegovina",
+      "continent": "Europe",
+      "population": 61516,
+      "latitude": 43.826111111,
+      "longitude": 18.351666666,
+      "urban_area_slug": "sarajevo-bosnia-and-herzegovina",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:766585/"
+        }
+      }
+    },
+    {
+      "geoname_id": 17699,
+      "name": "Marseille",
+      "full_name": "Marseille, France",
+      "country": "France",
+      "continent": "Europe",
+      "population": 60317,
+      "latitude": 43.27889,
+      "longitude": 5.41523,
+      "urban_area_slug": "marseille-france",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:17699/"
+        }
+      }
+    },
+    {
+      "geoname_id": 22740,
+      "name": "Zagreb",
+      "full_name": "Zagreb, Croatia",
+      "country": "Croatia",
+      "continent": "Europe",
+      "population": 59055,
+      "latitude": 45.7607044,
+      "longitude": 16.0094535,
+      "urban_area_slug": "zagreb-croatia",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:22740/"
+        }
+      }
+    },
+    {
+      "geoname_id": 6603,
+      "name": "Budapest",
+      "full_name": "Budapest, Hungary",
+      "country": "Hungary",
+      "continent": "Europe",
+      "population": 57459,
+      "latitude": 47.45,
+      "longitude": 19.133333333,
+      "urban_area_slug": "budapest-hungary",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:6603/"
+        }
+      }
+    },
+    {
+      "geoname_id": 21468,
+      "name": "Nicosia",
+      "full_name": "Nicosia, Cyprus",
+      "country": "Cyprus",
+      "continent": "Europe",
+      "population": 56848,
+      "latitude": 35.1725,
+      "longitude": 33.365,
+      "urban_area_slug": "nicosia-cyprus",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:21468/"
+        }
+      }
+    },
+    {
+      "geoname_id": 5329,
+      "name": "Bozeman",
+      "full_name": "Bozeman, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 53293,
+      "latitude": 45.679444444,
+      "longitude": -111.037222222,
+      "urban_area_slug": "bozeman-montana",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:5329/"
+        }
+      }
+    },
+    {
+      "geoname_id": 3761,
+      "name": "Madrid",
+      "full_name": "Madrid, Spain",
+      "country": "Spain",
+      "continent": "Europe",
+      "population": 50961,
+      "latitude": 40.52673,
+      "longitude": -3.903,
+      "urban_area_slug": "madrid-spain",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:3761/"
+        }
+      }
+    },
+    {
+      "geoname_id": 11879,
+      "name": "Providence",
+      "full_name": "Providence, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 47139,
+      "latitude": 41.813611111,
+      "longitude": -71.37,
+      "urban_area_slug": "providence-rhode-island",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:11879/"
+        }
+      }
+    },
+    {
+      "geoname_id": 3458,
+      "name": "San Luis Obispo",
+      "full_name": "San Luis Obispo, United States",
+      "country": "United States",
+      "continent": "North America",
+      "population": 47063,
+      "latitude": 35.274166666,
+      "longitude": -120.663055555,
+      "urban_area_slug": "san-luis-obispo-california",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:3458/"
+        }
+      }
+    },
+    {
+      "geoname_id": 4297,
+      "name": "Bogota",
+      "full_name": "Bogota, Colombia",
+      "country": "Colombia",
+      "continent": "South America",
+      "population": 44721,
+      "latitude": 4.916666666,
+      "longitude": -74.025,
+      "urban_area_slug": "bogota-colombia",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:4297/"
+        }
+      }
+    },
+    {
+      "geoname_id": 98,
+      "name": "Perth",
+      "full_name": "Perth, Australia",
+      "country": "Australia",
+      "continent": "Oceania",
+      "population": 43405,
+      "latitude": -31.982,
+      "longitude": 115.863,
+      "urban_area_slug": "perth-australia",
+      "_links": {
+        "city:item": {
+          "href": "https://quality-of-life.lan.codyuhi.online/api/cities/geonameid:98/"
+        }
+      }
+    }
+  ]
+}
