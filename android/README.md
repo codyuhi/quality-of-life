@@ -54,7 +54,19 @@ python3 ~/dev/repos/skills/skills/create-android-app/scripts/install_apk.py --de
 # Push changes to git, then trigger Argo Workflow:
 argo submit -n argo-workflows \
   --from workflowtemplate/android-build-apk \
+  -p repo-name=quality-of-life \
   -p app-name=quality-of-life \
-  -p app-version=1.0.0 \
+  -p version=1.0.0 \
+  -p repo-revision=main \
+  -p android-dir=android \
   --watch
 ```
+
+### Install Release APK from Harbor
+```bash
+python3 ~/dev/repos/skills/skills/create-android-app/scripts/install_apk.py quality-of-life 1.0.0
+```
+
+### Signing Certificate
+- **Signer #1 Certificate SHA-256**: `2e17886b27435fc142a0fb0a89b2d6f942ef6ab8f5bcbdd6b19317ce0f803270`
+
