@@ -62,7 +62,7 @@ func HealthzHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var exists bool
-	err := DB.QueryRow("SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_name = 'cities')").Scan(&exists)
+	err := DB.QueryRow("SELECT EXISTS (SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = 'cities')").Scan(&exists)
 	if err != nil || !exists {
 		log.Println("Health check - cities table missing, triggering background initialization")
 		go func() {
@@ -80,7 +80,7 @@ func HealthzHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleDBError(w http.ResponseWriter, err error, defaultMsg string) {
-	if strings.Contains(err.Error(), "does not exist") || strings.Contains(err.Error(), "42P01") {
+	if strings.Contains(err.Error(), "no such table") || strings.Contains(err.Error(), "does not exist") || strings.Contains(err.Error(), "42P01") {
 		go func() {
 			if err := SeedDatabase(); err != nil {
 				log.Printf("Seeder warnings or errors: %v", err)
@@ -127,13 +127,14 @@ func SearchCitiesHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	searchPattern := "%" + strings.ToLower(searchTerm) + "%"
 	query := `
 		SELECT geoname_id, name, full_name
 		FROM cities
-		WHERE name ILIKE $1 OR country ILIKE $1 OR full_name ILIKE $1
+		WHERE LOWER(name) LIKE ?1 OR LOWER(country) LIKE ?1 OR LOWER(full_name) LIKE ?1
 		LIMIT 10
 	`
-	rows, err := DB.Query(query, "%"+searchTerm+"%")
+	rows, err := DB.Query(query, searchPattern)
 	if err != nil {
 		log.Printf("Error searching cities: %v", err)
 		handleDBError(w, err, "Database search failed")
@@ -208,7 +209,7 @@ func CityDetailsHandler(w http.ResponseWriter, r *http.Request) {
 	query := `
 		SELECT name, full_name, latitude, longitude, population, timezone, country, continent, urban_area_slug
 		FROM cities
-		WHERE geoname_id = $1
+		WHERE geoname_id = ?
 	`
 	err = DB.QueryRow(query, id).Scan(&name, &fullName, &lat, &lon, &population, &timezone, &country, &continent, &slug)
 	if err == sql.ErrNoRows {
@@ -271,7 +272,7 @@ func UrbanAreaScoresHandler(w http.ResponseWriter, r *http.Request) {
 		       business_freedom, safety, healthcare, education, environmental_quality, economy,
 		       taxation, internet_access, leisure_and_culture, tolerance, outdoors, summary, teleport_city_score
 		FROM scores
-		WHERE urban_area_slug = $1
+		WHERE urban_area_slug = ?
 	`
 	err := DB.QueryRow(query, slug).Scan(
 		&housing, &costOfLiving, &startups, &ventureCapital, &travelConnectivity, &commute,
@@ -331,7 +332,7 @@ func UrbanAreaDetailsHandler(w http.ResponseWriter, r *http.Request) {
 	query := `
 		SELECT housing, cost_of_living, safety, healthcare, education, environmental_quality, economy, business_freedom
 		FROM scores
-		WHERE urban_area_slug = $1
+		WHERE urban_area_slug = ?
 	`
 	err := DB.QueryRow(query, slug).Scan(
 		&housing, &costOfLiving, &safety, &healthcare, &education, &environmentalQuality, &economy, &businessFreedom,
@@ -420,7 +421,7 @@ func UrbanAreaImagesHandler(w http.ResponseWriter, r *http.Request) {
 	// Fetch city's official name
 	var name string
 	if DB != nil {
-		err := DB.QueryRow("SELECT name FROM cities WHERE urban_area_slug = $1", slug).Scan(&name)
+		err := DB.QueryRow("SELECT name FROM cities WHERE urban_area_slug = ?", slug).Scan(&name)
 		if err == sql.ErrNoRows {
 			writeError(w, http.StatusNotFound, "City slug not found")
 			return
@@ -589,14 +590,14 @@ func ListCitiesHandler(w http.ResponseWriter, r *http.Request) {
 			sortBy = "distance"
 			query := `
 				SELECT geoname_id, name, full_name, country, continent, population, latitude, longitude, urban_area_slug,
-				       ROUND((6371 * 2 * ASIN(SQRT(
-				           POWER(SIN(RADIANS(($1 - latitude) / 2)), 2) +
-				           COS(RADIANS($1)) * COS(RADIANS(latitude)) *
-				           POWER(SIN(RADIANS(($2 - longitude) / 2)), 2)
-				       )))::numeric, 1) AS distance_km
+				       ROUND(6371 * 2 * ASIN(SQRT(
+				           POWER(SIN(RADIANS((?1 - latitude) / 2)), 2) +
+				           COS(RADIANS(?1)) * COS(RADIANS(latitude)) *
+				           POWER(SIN(RADIANS((?2 - longitude) / 2)), 2)
+				       )), 1) AS distance_km
 				FROM cities
 				ORDER BY distance_km ASC, population DESC NULLS LAST
-				LIMIT $3 OFFSET $4
+				LIMIT ?3 OFFSET ?4
 			`
 			rows, err = DB.Query(query, userLat, userLon, limit, offset)
 		}
@@ -605,10 +606,10 @@ func ListCitiesHandler(w http.ResponseWriter, r *http.Request) {
 	if rows == nil {
 		sortBy = "population"
 		query := `
-			SELECT geoname_id, name, full_name, country, continent, population, latitude, longitude, urban_area_slug, NULL::numeric as distance_km
+			SELECT geoname_id, name, full_name, country, continent, population, latitude, longitude, urban_area_slug, NULL as distance_km
 			FROM cities
 			ORDER BY population DESC NULLS LAST, name ASC
-			LIMIT $1 OFFSET $2
+			LIMIT ?1 OFFSET ?2
 		`
 		rows, err = DB.Query(query, limit, offset)
 	}

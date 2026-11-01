@@ -2,7 +2,7 @@
 
 A premium, modern web application that allows users to search for cities around the world and view detailed ratings and statistics regarding their quality of life.
 
-Historically built on the defunct Teleport API, the application has been refactored to run fully self-hosted using a React SPA frontend, a Go (Golang) REST API backend, and a PostgreSQL database.
+Historically built on the defunct Teleport API, the application has been refactored to run fully self-hosted using a React SPA frontend, a Go (Golang) REST API backend, and an embedded SQLite database.
 
 ---
 
@@ -13,7 +13,7 @@ The application is split into three main components:
 ```mermaid
 graph TD
     Client[React SPA Frontend] -->|HTTP Requests| GoServer[Go REST API Backend]
-    GoServer -->|Queries & Inserts| Postgres[(PostgreSQL Database)]
+    GoServer -->|Queries & Inserts| SQLite[(Embedded SQLite Database)]
     GoServer -->|ARFF Data Source| OpenML[OpenML Dataset Archive]
     GoServer -->|Geographic Specs| GeoDB[GeoDB Cities API]
 ```
@@ -24,8 +24,8 @@ graph TD
 * **Client**: Axios is used to fetch city ratings and data dynamically from the Go REST API.
 
 ### B. Go REST API Backend (`/server`)
-* **Language**: Go (Golang) 1.22+ utilizing the high-performance standard library `net/http` server.
-* **Security**: Zero hardcoded credential defaults. Strict environment variable validation (`DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`) immediately aborts startup if configurations are missing.
+* **Language**: Go (Golang) 1.22+ utilizing the high-performance standard library `net/http` server with `modernc.org/sqlite` (pure Go, CGO-free).
+* **Storage**: Embedded SQLite with WAL mode, foreign keys enabled, and local file storage (`DB_PATH`).
 * **Endpoints**: Exposes mock-compatible routes matching the original Teleport URL structure:
   - `GET /api/cities/?search=:query` - Searches for cities matching the pattern.
   - `GET /api/cities/geonameid::id/` - Returns basic city details, timezone, and population.
@@ -33,7 +33,7 @@ graph TD
   - `GET /api/urban_areas/slug::slug/details` - Returns granular local specs (cost of living details, currency conversions, metrics).
   - `GET /api/urban_areas/slug::slug/images` - Fetches attribution and matching cover images from local MinIO S3 storage.
 
-### C. PostgreSQL Database
+### C. SQLite Database
 * **Relational Schema**: Consists of two core tables:
   - `cities`: Stores coordinates, timezones, country mappings, populations, and unique slugs.
   - `scores`: Holds category ratings, custom summaries, and final composite quality-of-life metrics.
@@ -86,35 +86,17 @@ When the Go backend starts up and detects that the `cities` table is empty (`cou
 ## 4. Local Development & Setup
 
 ### Prerequisites
-* [Docker](https://www.docker.com/) (to run PostgreSQL locally)
 * [Go 1.22+](https://go.dev/)
 * [NodeJS & Yarn](https://yarnpkg.com/)
 
-### Step 1: Start PostgreSQL
-Run a local PostgreSQL instance in Docker:
-```bash
-docker run -d \
-  --name quality-of-life-db \
-  -p 5432:5432 \
-  -e POSTGRES_DB=quality_of_life \
-  -e POSTGRES_USER=postgres \
-  -e POSTGRES_PASSWORD=postgres \
-  postgres:15
-```
-
-### Step 2: Configure and Run the Go Backend
+### Step 1: Run the Go Backend
 1. Navigate to the server directory:
    ```bash
    cd server
    ```
-2. Create a `.env` file containing configuration variables:
+2. (Optional) Set `DB_PATH` in `.env` (defaults to `/app/data/quality-of-life.db` or `./quality-of-life.db`):
    ```env
-   DB_HOST=localhost
-   DB_PORT=5432
-   DB_USER=postgres
-   DB_PASSWORD=postgres
-   DB_NAME=quality_of_life
-   DB_SSLMODE=disable
+   DB_PATH=./quality-of-life.db
    ```
 3. Run the Go server:
    ```bash
@@ -122,7 +104,7 @@ docker run -d \
    ```
    *Note: On first launch, the seeder will start downloading and populating the database. It sleeps 1.2s between cities to prevent GeoDB rate-limiting, taking ~5 minutes to complete.*
 
-### Step 3: Run the React Frontend
+### Step 2: Run the React Frontend
 1. Navigate to the app directory:
    ```bash
    cd app

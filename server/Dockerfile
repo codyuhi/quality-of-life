@@ -10,11 +10,12 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o main .
 FROM alpine:3.24
 RUN apk --no-cache add ca-certificates tzdata
 WORKDIR /app
+RUN addgroup -S -g 10001 app && adduser -S -D -H -u 10001 -G app -h /app app
+RUN mkdir -p /app/data && chown -R 10001:10001 /app /app/data
 COPY --from=build-stage /app/main .
 EXPOSE 5001
 # Run as a fixed non-root user (INFRA-19, PSA restricted). Mounted volumes are
 # made writable by the pod's fsGroup.
-RUN addgroup -S -g 10001 app && adduser -S -D -H -u 10001 -G app -h /app app
 USER 10001:10001
 
 CMD ["./main"]

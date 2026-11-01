@@ -19,21 +19,30 @@ FALLBACK_IMAGE_SIZE = 143044
 FALLBACK_ETAG = "501f897c5d573dec27b2aef0575e7d8c"
 
 def get_db_cities():
-    cmd = [
-        "kubectl", "exec", "-n", "quality-of-life", "deployment/quality-of-life-db",
-        "--", "psql", "-U", "postgres", "-d", "quality_of_life", "-t", "-A", "-F,",
-        "-c", "SELECT urban_area_slug, name, country FROM cities ORDER BY name;"
-    ]
-    res = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, text=True)
-    cities = []
-    for line in res.stdout.strip().splitlines():
-        parts = line.strip().split(",")
-        if len(parts) >= 3:
-            slug = parts[0]
-            name = parts[1]
-            country = parts[2]
-            cities.append({"slug": slug, "name": name, "country": country})
-    return cities
+    url = "https://quality-of-life.lan.codyuhi.online/api/cities?limit=500"
+    req = urllib.request.Request(url, headers={"User-Agent": "ImageCurator/1.0"})
+    try:
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+            return [
+                {"slug": c["urban_area_slug"], "name": c["name"], "country": c["country"]}
+                for c in data.get("cities", [])
+                if c.get("urban_area_slug")
+            ]
+    except Exception as e:
+        print(f"Failed to fetch cities from API ({e}), falling back to backend container...")
+        cmd = [
+            "kubectl", "exec", "-n", "quality-of-life", "deployment/quality-of-life-backend",
+            "--", "sqlite3", "/app/data/quality-of-life.db", "-csv",
+            "SELECT urban_area_slug, name, country FROM cities ORDER BY name;"
+        ]
+        res = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, text=True)
+        cities = []
+        for line in res.stdout.strip().splitlines():
+            parts = line.strip().split(",")
+            if len(parts) >= 3:
+                cities.append({"slug": parts[0], "name": parts[1], "country": parts[2]})
+        return cities
 
 def get_minio_stat(slug):
     cmd = [
@@ -101,7 +110,7 @@ def upload_to_minio(slug, jpeg_bytes):
 
 def main():
     force = "--force" in sys.argv
-    print("Fetching cities from PostgreSQL...")
+    print("Fetching cities...")
     cities = get_db_cities()
     print(f"Loaded {len(cities)} cities.")
 

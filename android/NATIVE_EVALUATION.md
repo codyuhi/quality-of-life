@@ -1,7 +1,7 @@
 # Native Capability Evaluation: quality-of-life
 
 - **Date**: 2026-10-15
-- **Web app**: https://quality-of-life.lan.codyuhi.online (backend-backed: Go REST API + PostgreSQL + MinIO S3 image storage; Sablier scale-to-zero enabled)
+- **Web app**: https://quality-of-life.lan.codyuhi.online (backend-backed: Go REST API + SQLite + MinIO S3 image storage; Sablier scale-to-zero enabled)
 - **Primary users / devices**: Cody (Galaxy Z Fold 8 Ultra), Lena (Galaxy S26+)
 
 ## How the app is used today

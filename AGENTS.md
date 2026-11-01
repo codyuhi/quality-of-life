@@ -4,7 +4,7 @@
 Quality of Life is a self-hosted full-stack homelab application enabling exploration and comparison of global city statistics across 14 quality-of-life categories (housing, cost of living, safety, healthcare, economy, commute, etc.).
 
 - **Web Frontend**: `/app` — React 18 SPA built with Vite, themed with Cedar (`cdr-theme-light` / `cdr-theme-dark`).
-- **Backend API**: `/server` — High-performance Go REST API backed by PostgreSQL and MinIO S3 for city cover images.
+- **Backend API**: `/server` — High-performance Go REST API backed by embedded SQLite and MinIO S3 for city cover images.
 - **Native Android Client**: `/android` — Jetpack Compose + Material 3 client styled with Cedar, supporting Galaxy Z Fold 8 Ultra and Galaxy S26+.
 
 ---

@@ -5,7 +5,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strconv"
 	"strings"
 
 	"github.com/joho/godotenv"
@@ -18,20 +17,10 @@ func main() {
 	}
 
 	// Read database config
-	dbHost := requireEnv("DB_HOST")
-	dbPortStr := requireEnv("DB_PORT")
-	dbUser := requireEnv("DB_USER")
-	dbPass := requireEnv("DB_PASSWORD")
-	dbName := requireEnv("DB_NAME")
-	dbSSL := getEnv("DB_SSLMODE", "disable")
-
-	dbPort, err := strconv.Atoi(dbPortStr)
-	if err != nil {
-		log.Fatalf("Invalid DB_PORT: %s", dbPortStr)
-	}
+	dbPath := getEnv("DB_PATH", "/app/data/quality-of-life.db")
 
 	// Initialize database
-	if err := InitDB(dbHost, dbPort, dbUser, dbPass, dbName, dbSSL); err != nil {
+	if err := InitDB(dbPath); err != nil {
 		log.Fatalf("Database initialization failed: %v", err)
 	}
 	defer DB.Close()
@@ -104,12 +93,4 @@ func getEnv(key, defaultVal string) string {
 		return val
 	}
 	return defaultVal
-}
-
-func requireEnv(key string) string {
-	val := os.Getenv(key)
-	if val == "" {
-		log.Fatalf("Required environment variable %s is not set", key)
-	}
-	return val
 }

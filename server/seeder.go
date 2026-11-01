@@ -79,7 +79,7 @@ func SeedDatabase() error {
 	for i, city := range citiesData {
 		slug := generateSlug(city.Name + "-" + city.Country)
 		var existingCount int
-		_ = DB.QueryRow("SELECT COUNT(*) FROM cities WHERE urban_area_slug = $1", slug).Scan(&existingCount)
+		_ = DB.QueryRow("SELECT COUNT(*) FROM cities WHERE urban_area_slug = ?", slug).Scan(&existingCount)
 		if existingCount > 0 {
 			continue
 		}
@@ -333,7 +333,7 @@ func generateSlug(name string) string {
 func insertCityData(city *ParsedCity) error {
 	// If this geoname_id is already used by a DIFFERENT urban_area_slug, generate a fallback ID
 	var existingSlug string
-	err := DB.QueryRow("SELECT urban_area_slug FROM cities WHERE geoname_id = $1", city.GeonameID).Scan(&existingSlug)
+	err := DB.QueryRow("SELECT urban_area_slug FROM cities WHERE geoname_id = ?", city.GeonameID).Scan(&existingSlug)
 	if err == nil && existingSlug != "" && existingSlug != city.Slug {
 		var maxID int
 		_ = DB.QueryRow("SELECT COALESCE(MAX(geoname_id), 2000000) FROM cities").Scan(&maxID)
@@ -345,7 +345,7 @@ func insertCityData(city *ParsedCity) error {
 
 	// If this urban_area_slug already exists in cities with another geoname_id, reuse that geoname_id
 	var existingID int
-	err = DB.QueryRow("SELECT geoname_id FROM cities WHERE urban_area_slug = $1", city.Slug).Scan(&existingID)
+	err = DB.QueryRow("SELECT geoname_id FROM cities WHERE urban_area_slug = ?", city.Slug).Scan(&existingID)
 	if err == nil && existingID > 0 {
 		city.GeonameID = existingID
 	}
@@ -359,7 +359,7 @@ func insertCityData(city *ParsedCity) error {
 	// 1. Insert into cities
 	_, err = tx.Exec(`
 		INSERT INTO cities (geoname_id, name, full_name, latitude, longitude, population, timezone, country, continent, urban_area_slug)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 		ON CONFLICT (geoname_id) DO UPDATE SET
 			name = EXCLUDED.name,
 			full_name = EXCLUDED.full_name,
@@ -393,7 +393,7 @@ func insertCityData(city *ParsedCity) error {
 			education, environmental_quality, economy, taxation, internet_access,
 			leisure_and_culture, tolerance, outdoors, summary, teleport_city_score
 		) VALUES (
-			$1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20
+			?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
 		) ON CONFLICT (urban_area_slug) DO UPDATE SET
 			housing = EXCLUDED.housing,
 			cost_of_living = EXCLUDED.cost_of_living,

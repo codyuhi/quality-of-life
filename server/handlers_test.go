@@ -4,44 +4,46 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
-	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"testing"
-
-	"github.com/joho/godotenv"
 )
 
 func initTestDB(t *testing.T) {
 	if DB != nil {
 		return
 	}
-	// Load .env if it exists
-	_ = godotenv.Load()
 
-	dbHost := os.Getenv("DB_HOST")
-	dbPortStr := os.Getenv("DB_PORT")
-	dbUser := os.Getenv("DB_USER")
-	dbPass := os.Getenv("DB_PASSWORD")
-	dbName := os.Getenv("DB_NAME")
-
-	if dbHost == "" || dbPortStr == "" || dbUser == "" || dbPass == "" || dbName == "" {
-		t.Skip("Skipping database integration tests: missing DB env variables")
-		return
+	dbPath := filepath.Join(t.TempDir(), "test-qol.db")
+	if err := InitDB(dbPath); err != nil {
+		t.Fatalf("Failed to initialize test SQLite DB: %v", err)
 	}
 
-	dbPort, err := strconv.Atoi(dbPortStr)
+	_, err := DB.Exec(`
+		INSERT INTO cities (geoname_id, name, full_name, latitude, longitude, population, timezone, country, continent, urban_area_slug)
+		VALUES 
+			(5391959, 'San Francisco', 'San Francisco, United States', 37.7749, -122.4194, 883305, 'America/Los_Angeles', 'United States', 'North America', 'san-francisco-bay-area'),
+			(5128581, 'New York', 'New York, United States', 40.7128, -74.0060, 8419000, 'America/New_York', 'United States', 'North America', 'new-york')
+		ON CONFLICT (geoname_id) DO NOTHING;
+	`)
 	if err != nil {
-		t.Fatalf("Invalid DB_PORT: %v", err)
+		t.Fatalf("Failed to seed test cities: %v", err)
 	}
 
-	if err := InitDB(dbHost, dbPort, dbUser, dbPass, dbName, "disable"); err != nil {
-		if DB != nil {
-			_ = DB.Close()
-			DB = nil
-		}
-		t.Skipf("Skipping database integration tests: failed to initialize test DB: %v", err)
-		return
+	_, err = DB.Exec(`
+		INSERT INTO scores (
+			urban_area_slug, housing, cost_of_living, startups, venture_capital,
+			travel_connectivity, commute, business_freedom, safety, healthcare,
+			education, environmental_quality, economy, taxation, internet_access,
+			leisure_and_culture, tolerance, outdoors, summary, teleport_city_score
+		) VALUES 
+			('san-francisco-bay-area', 2.5, 3.0, 9.8, 9.9, 7.5, 4.5, 8.5, 6.0, 8.0, 8.2, 7.8, 8.5, 5.0, 9.0, 8.5, 8.0, 8.0, '<p>SF summary</p>', 70.5),
+			('new-york', 2.0, 2.5, 9.5, 9.2, 8.5, 4.0, 8.0, 6.5, 8.2, 8.5, 7.0, 8.8, 4.5, 9.2, 9.5, 7.8, 7.5, '<p>NY summary</p>', 72.0)
+		ON CONFLICT (urban_area_slug) DO NOTHING;
+	`)
+	if err != nil {
+		t.Fatalf("Failed to seed test scores: %v", err)
 	}
 }
 
@@ -51,7 +53,7 @@ func getFirstGeonameIDAndSlug(t *testing.T) (int, string) {
 	var slug string
 	err := DB.QueryRow("SELECT geoname_id, urban_area_slug FROM cities LIMIT 1").Scan(&id, &slug)
 	if err != nil {
-		t.Skip("Skipping details test: no cities in test database")
+		t.Fatalf("no cities in test database: %v", err)
 	}
 	return id, slug
 }
@@ -75,7 +77,7 @@ func TestGetBaseURL(t *testing.T) {
 func TestSearchCitiesHandler(t *testing.T) {
 	initTestDB(t)
 
-	req, err := http.NewRequest("GET", "/api/cities/?search=a", nil)
+	req, err := http.NewRequest("GET", "/api/cities/?search=San", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -144,9 +146,6 @@ func TestCityDetailsHandler(t *testing.T) {
 
 func TestCityDetailsNotFound(t *testing.T) {
 	initTestDB(t)
-	if DB == nil {
-		t.Skip("Skipping details test: database not initialized")
-	}
 
 	req, err := http.NewRequest("GET", "/api/cities/geonameid:9999999/", nil)
 	if err != nil {
@@ -164,9 +163,6 @@ func TestCityDetailsNotFound(t *testing.T) {
 
 func TestUrbanAreaScoresHandler(t *testing.T) {
 	_, slug := getFirstGeonameIDAndSlug(t)
-	if slug == "" {
-		t.Skip("Skipping scores test: city has no urban area slug")
-	}
 
 	req, err := http.NewRequest("GET", "/api/urban_areas/slug:"+slug+"/scores/", nil)
 	if err != nil {
@@ -177,17 +173,13 @@ func TestUrbanAreaScoresHandler(t *testing.T) {
 	handler := http.HandlerFunc(UrbanAreaScoresHandler)
 	handler.ServeHTTP(rr, req)
 
-	// Since mock database might not have the score record, we accept OK or NotFound
-	if status := rr.Code; status != http.StatusOK && status != http.StatusNotFound {
+	if status := rr.Code; status != http.StatusOK {
 		t.Errorf("handler returned unexpected status: got %v", status)
 	}
 }
 
 func TestUrbanAreaDetailsHandler(t *testing.T) {
 	_, slug := getFirstGeonameIDAndSlug(t)
-	if slug == "" {
-		t.Skip("Skipping details test: city has no urban area slug")
-	}
 
 	req, err := http.NewRequest("GET", "/api/urban_areas/slug:"+slug+"/details/", nil)
 	if err != nil {
@@ -198,16 +190,13 @@ func TestUrbanAreaDetailsHandler(t *testing.T) {
 	handler := http.HandlerFunc(UrbanAreaDetailsHandler)
 	handler.ServeHTTP(rr, req)
 
-	if status := rr.Code; status != http.StatusOK && status != http.StatusNotFound {
+	if status := rr.Code; status != http.StatusOK {
 		t.Errorf("handler returned unexpected status: got %v", status)
 	}
 }
 
 func TestUrbanAreaImagesHandler(t *testing.T) {
 	_, slug := getFirstGeonameIDAndSlug(t)
-	if slug == "" {
-		t.Skip("Skipping images test: city has no urban area slug")
-	}
 
 	req, err := http.NewRequest("GET", "/api/urban_areas/slug:"+slug+"/images/", nil)
 	if err != nil {
@@ -218,7 +207,7 @@ func TestUrbanAreaImagesHandler(t *testing.T) {
 	handler := http.HandlerFunc(UrbanAreaImagesHandler)
 	handler.ServeHTTP(rr, req)
 
-	if status := rr.Code; status != http.StatusOK && status != http.StatusNotFound {
+	if status := rr.Code; status != http.StatusOK {
 		t.Errorf("handler returned unexpected status: got %v", status)
 	}
 }
@@ -242,6 +231,18 @@ func TestGenerateSlug(t *testing.T) {
 	}
 }
 
+func TestHealthzHandler(t *testing.T) {
+	initTestDB(t)
+
+	req, _ := http.NewRequest("GET", "/healthz", nil)
+	rr := httptest.NewRecorder()
+	HealthzHandler(rr, req)
+
+	if rr.Code != http.StatusOK {
+		t.Errorf("expected 200 for connected DB, got %d", rr.Code)
+	}
+}
+
 func TestHealthzHandlerNilDB(t *testing.T) {
 	origDB := DB
 	DB = nil
@@ -253,6 +254,18 @@ func TestHealthzHandlerNilDB(t *testing.T) {
 
 	if rr.Code != http.StatusServiceUnavailable {
 		t.Errorf("expected 503 for nil DB, got %d", rr.Code)
+	}
+}
+
+func TestCityCountHandler(t *testing.T) {
+	initTestDB(t)
+
+	req, _ := http.NewRequest("GET", "/api/cities/count", nil)
+	rr := httptest.NewRecorder()
+	CityCountHandler(rr, req)
+
+	if rr.Code != http.StatusOK {
+		t.Errorf("expected 200, got %d", rr.Code)
 	}
 }
 
@@ -286,9 +299,6 @@ func TestListCitiesHandlerNilDB(t *testing.T) {
 
 func TestListCitiesHandler(t *testing.T) {
 	initTestDB(t)
-	if DB == nil {
-		t.Skip("Skipping list cities test: database not initialized")
-	}
 
 	// Test default population sorting
 	req, err := http.NewRequest("GET", "/api/cities?page=1&limit=5", nil)
@@ -355,6 +365,8 @@ func TestUrbanAreaImageFileHandlerMissingSlug(t *testing.T) {
 }
 
 func TestUrbanAreaImagesHandlerFormatting(t *testing.T) {
+	initTestDB(t)
+
 	req, _ := http.NewRequest("GET", "/api/urban_areas/slug:san-francisco-bay-area/images/", nil)
 	rr := httptest.NewRecorder()
 	UrbanAreaImagesHandler(rr, req)
@@ -375,5 +387,3 @@ func TestUrbanAreaImagesHandlerFormatting(t *testing.T) {
 		}
 	}
 }
-
-

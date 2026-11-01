@@ -4,28 +4,54 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"os"
+	"path/filepath"
 
-	_ "github.com/lib/pq"
+	_ "modernc.org/sqlite"
 )
 
 var DB *sql.DB
 
-// InitDB initializes the database pool and creates tables if they don't exist
-func InitDB(host string, port int, user, password, dbname, sslmode string) error {
-	connStr := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=%s",
-		host, port, user, password, dbname, sslmode)
+// InitDB initializes the SQLite database and creates tables if they don't exist
+func InitDB(dbPath string) error {
+	if dbPath == "" {
+		dbPath = os.Getenv("DB_PATH")
+		if dbPath == "" {
+			dbPath = "/app/data/quality-of-life.db"
+		}
+	}
+
+	// Ensure parent directory exists for file-based database
+	if dir := filepath.Dir(dbPath); dir != "." && dir != "" {
+		if err := os.MkdirAll(dir, 0755); err != nil {
+			return fmt.Errorf("failed to create db directory %s: %w", dir, err)
+		}
+	}
 
 	var err error
-	DB, err = sql.Open("postgres", connStr)
+	DB, err = sql.Open("sqlite", dbPath)
 	if err != nil {
-		return fmt.Errorf("failed to open database connection: %w", err)
+		return fmt.Errorf("failed to open sqlite database: %w", err)
+	}
+
+	pragmas := []string{
+		"PRAGMA journal_mode = WAL;",
+		"PRAGMA synchronous = NORMAL;",
+		"PRAGMA foreign_keys = ON;",
+		"PRAGMA busy_timeout = 5000;",
+	}
+
+	for _, pragma := range pragmas {
+		if _, err := DB.Exec(pragma); err != nil {
+			log.Printf("Warning: failed to execute pragma %s: %v", pragma, err)
+		}
 	}
 
 	if err := DB.Ping(); err != nil {
 		return fmt.Errorf("failed to ping database: %w", err)
 	}
 
-	log.Println("Successfully connected to the database")
+	log.Printf("Successfully connected to SQLite database at %s", dbPath)
 
 	if err := createTables(); err != nil {
 		return fmt.Errorf("failed to create tables: %w", err)
@@ -46,22 +72,22 @@ func createTables() error {
 	queries := []string{
 		`CREATE TABLE IF NOT EXISTS cities (
 			geoname_id INTEGER PRIMARY KEY,
-			name VARCHAR(255) NOT NULL,
-			full_name VARCHAR(255) NOT NULL,
-			latitude DOUBLE PRECISION,
-			longitude DOUBLE PRECISION,
+			name TEXT NOT NULL,
+			full_name TEXT NOT NULL,
+			latitude REAL,
+			longitude REAL,
 			population INTEGER,
-			timezone VARCHAR(100),
-			country VARCHAR(100),
-			continent VARCHAR(100),
-			urban_area_slug VARCHAR(100) UNIQUE
+			timezone TEXT,
+			country TEXT,
+			continent TEXT,
+			urban_area_slug TEXT UNIQUE
 		);`,
 		`CREATE INDEX IF NOT EXISTS idx_cities_name ON cities(name);`,
 		`CREATE INDEX IF NOT EXISTS idx_cities_country ON cities(country);`,
 		`CREATE INDEX IF NOT EXISTS idx_cities_full_name ON cities(full_name);`,
 		`CREATE INDEX IF NOT EXISTS idx_cities_slug ON cities(urban_area_slug);`,
 		`CREATE TABLE IF NOT EXISTS scores (
-			urban_area_slug VARCHAR(100) PRIMARY KEY REFERENCES cities(urban_area_slug) ON DELETE CASCADE,
+			urban_area_slug TEXT PRIMARY KEY REFERENCES cities(urban_area_slug) ON DELETE CASCADE,
 			housing REAL,
 			cost_of_living REAL,
 			startups REAL,
