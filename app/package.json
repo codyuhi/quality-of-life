@@ -26,7 +26,7 @@
     "@vitejs/plugin-react": "^6.1.0",
     "jsdom": "^26.0.0",
     "vite": "^8.3.3",
-    "vitest": "^4.1.12"
+    "vitest": "^5.1.0"
   },
   "resolutions": {
     "@babel/runtime": "^7.26.10",
