@@ -11,7 +11,10 @@ export default function Navbar({
     updateCityImg,
     updateAdvancedCityData,
     search,
-    searchTerm
+    searchTerm,
+    onOpenCompare,
+    comparisonActive,
+    onExitCompare
 }) {
     const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
@@ -39,6 +42,7 @@ export default function Navbar({
         updateActiveCity(null);
         updateCityImg(null);
         updateAdvancedCityData(null);
+        if (onExitCompare) onExitCompare();
     };
 
     const updateSearchHistory = () => {
@@ -60,6 +64,15 @@ export default function Navbar({
         setMobileNavOpen(false);
     };
 
+    const handleCompareClick = () => {
+        if (onOpenCompare) onOpenCompare();
+    };
+
+    const mobileCompareClick = () => {
+        if (onOpenCompare) onOpenCompare();
+        setMobileNavOpen(false);
+    };
+
     return (
         <div className="Navbar-Container">
             <div className="Navbar center">
@@ -70,6 +83,15 @@ export default function Navbar({
                 </div>
                 <div className="Navbar-Right-Aligned-Items">
                     <div className="Navbar-Search">
+                        <button
+                            type="button"
+                            className={`Navbar-Compare-Button ${comparisonActive ? 'active' : ''}`}
+                            onClick={handleCompareClick}
+                            aria-label="Compare cities navigation"
+                        >
+                            <i className="fa fa-balance-scale"></i> Compare
+                        </button>
+                        <p>|</p>
                         <span onClick={clearCurrentSearch}>Clear Current Search</span>
                         <p>|</p>
                         <span onClick={updateSearchHistory}>Search History</span>
@@ -96,6 +118,14 @@ export default function Navbar({
                             <span></span>
                         </button>
                         <div id="Navbar-Mobile-Search-Dropdown" className={mobileNavOpen ? 'open' : 'closed'}>
+                            <button
+                                type="button"
+                                className="Mobile-Compare-Button"
+                                onClick={mobileCompareClick}
+                            >
+                                <i className="fa fa-balance-scale"></i> Compare Cities
+                            </button>
+                            <hr />
                             <span onClick={mobileClearSearch}>Clear Current Search</span>
                             <hr />
                             <span onClick={mobileSearchHistory}>Search History</span>

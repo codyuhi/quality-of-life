@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import '../App.css';
+import ComparisonView from './ComparisonView';
 
 export default function Content({
     updateSearchTerm,
@@ -18,7 +19,15 @@ export default function Content({
     citiesPagination,
     citiesLoading,
     locationStatus,
-    onPageChange
+    onPageChange,
+    onOpenCompare,
+    onCompareFromCity,
+    comparisonActive,
+    compareCityA,
+    compareCityB,
+    onExitCompare,
+    onSwapCompare,
+    onChangeCompareCities
 }) {
     const cityIndexRef = useRef(-1);
 
@@ -73,6 +82,14 @@ export default function Content({
                     aria-label="City name"
                 />
                 <button type="button" onClick={() => search()}>Search Cities</button>
+                <button
+                    type="button"
+                    className="Hero-Compare-Btn"
+                    onClick={onOpenCompare}
+                    aria-label="Compare Cities"
+                >
+                    <i className="fa fa-balance-scale"></i> Compare Cities
+                </button>
             </div>
         </div>
     );
@@ -370,14 +387,24 @@ export default function Content({
 
     const activeCityLayout = activeCity ? (
         <div className="Active-City-Container">
-            <button 
-                className="Back-To-List-Button" 
-                onClick={() => updateActiveCity ? updateActiveCity(null) : null}
-                type="button"
-                aria-label="Back to cities"
-            >
-                <i className="fa fa-arrow-left"></i> {cityList ? 'Back to Search Results' : 'Back to Cities'}
-            </button>
+            <div className="Active-City-Actions-Bar">
+                <button 
+                    className="Back-To-List-Button" 
+                    onClick={() => updateActiveCity ? updateActiveCity(null) : null}
+                    type="button"
+                    aria-label="Back to cities"
+                >
+                    <i className="fa fa-arrow-left"></i> {cityList ? 'Back to Search Results' : 'Back to Cities'}
+                </button>
+                <button
+                    type="button"
+                    className="Compare-From-City-Btn"
+                    onClick={() => onCompareFromCity ? onCompareFromCity(activeCity) : null}
+                    aria-label={`Compare ${activeCity.name} with another city`}
+                >
+                    <i className="fa fa-balance-scale"></i> Compare with another city
+                </button>
+            </div>
             {cityImgLayout}
             <h1>{activeCity.name}</h1>
             <div className="Active-City-Column-Container">
@@ -412,7 +439,15 @@ export default function Content({
         <div className="Content-Container">
             <div className="Content center">
                 {
-                    activeCity ? (
+                    comparisonActive && compareCityA && compareCityB ? (
+                        <ComparisonView
+                            cityA={compareCityA}
+                            cityB={compareCityB}
+                            onExit={onExitCompare}
+                            onChangeCities={onChangeCompareCities}
+                            onSwapCities={onSwapCompare}
+                        />
+                    ) : activeCity ? (
                         activeCityLayout
                     ) : cityList ? (
                         cityListLayout

@@ -4,6 +4,7 @@ import 'App.css';
 import Navbar from 'components/Navbar';
 import Sidebar from 'components/Sidebar';
 import Content from 'components/Content';
+import CityPickerModal from 'components/CityPickerModal';
 
 const getApiBaseUrl = () => {
     if (typeof import.meta !== 'undefined' && import.meta.env) {
@@ -33,6 +34,12 @@ function App() {
     const [citiesLoading, setCitiesLoading] = useState(false)
     const [userLocation, setUserLocation] = useState(null)
     const [locationStatus, setLocationStatus] = useState('prompting')
+
+    // Comparison Mode States
+    const [compareModalOpen, setCompareModalOpen] = useState(false)
+    const [comparisonActive, setComparisonActive] = useState(false)
+    const [compareCityA, setCompareCityA] = useState(null)
+    const [compareCityB, setCompareCityB] = useState(null)
 
     const isMountedRef = useRef(true);
     useEffect(() => {
@@ -141,6 +148,7 @@ function App() {
         if (!queryTerm) {
             return;
         }
+        setComparisonActive(false);
         setActiveCity(null)
         const API_BASE_URL = getApiBaseUrl();
         axios.get(`${API_BASE_URL}/api/cities/?search=${encodeURIComponent(queryTerm)}`)
@@ -180,6 +188,7 @@ function App() {
     }
 
     const getCityInfo = (cityUrl) => {
+        setComparisonActive(false);
         setCityImg(null);
         setAdvancedCityData(null);
         setUrbanCityDetails(null);
@@ -258,6 +267,43 @@ function App() {
             })
     }
 
+    const handleOpenCompare = (initialA = null, initialB = null) => {
+        if (initialA) setCompareCityA(initialA);
+        if (initialB) setCompareCityB(initialB);
+        setCompareModalOpen(true);
+    };
+
+    const handleCompareFromCity = (city) => {
+        if (!city) return;
+        const formatted = {
+            name: city.name,
+            full_name: city.full_name || city.name,
+            href: city._links?.['city:item']?.href || city._links?.self?.href || `${getApiBaseUrl()}/api/cities/geonameid:${city.geoname_id}/`,
+            rawItem: city
+        };
+        setCompareCityA(formatted);
+        setCompareModalOpen(true);
+    };
+
+    const handleStartCompare = (cityA, cityB) => {
+        setCompareCityA(cityA);
+        setCompareCityB(cityB);
+        setComparisonActive(true);
+        setActiveCity(null);
+        setCityList(null);
+        setCompareModalOpen(false);
+    };
+
+    const handleExitCompare = () => {
+        setComparisonActive(false);
+    };
+
+    const handleSwapCompare = () => {
+        const temp = compareCityA;
+        setCompareCityA(compareCityB);
+        setCompareCityB(temp);
+    };
+
     return (
         <div className="App">
             <Navbar
@@ -270,6 +316,9 @@ function App() {
                 updateAdvancedCityData={setAdvancedCityData}
                 searchTerm={searchTerm}
                 search={search}
+                onOpenCompare={handleOpenCompare}
+                comparisonActive={comparisonActive}
+                onExitCompare={handleExitCompare}
             />
             <Sidebar
                 searchHistory={searchHistory}
@@ -297,6 +346,22 @@ function App() {
                 citiesLoading={citiesLoading}
                 locationStatus={locationStatus}
                 onPageChange={handlePageChange}
+                onOpenCompare={handleOpenCompare}
+                onCompareFromCity={handleCompareFromCity}
+                comparisonActive={comparisonActive}
+                compareCityA={compareCityA}
+                compareCityB={compareCityB}
+                onExitCompare={handleExitCompare}
+                onSwapCompare={handleSwapCompare}
+                onChangeCompareCities={handleOpenCompare}
+            />
+            <CityPickerModal
+                isOpen={compareModalOpen}
+                onClose={() => setCompareModalOpen(false)}
+                onCompare={handleStartCompare}
+                initialCityA={compareCityA}
+                initialCityB={compareCityB}
+                getApiBaseUrl={getApiBaseUrl}
             />
         </div>
     );

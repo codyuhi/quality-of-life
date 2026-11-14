@@ -82,7 +82,7 @@ test('renders search description text', async () => {
 
 test('toggles mobile navigation button and search history', async () => {
   render(<App />);
-  const mobileNavBtn = await screen.findByRole('button', { name: /Toggle mobile menu/i });
+  const mobileNavBtn = screen.getByLabelText(/Toggle mobile menu/i);
   expect(mobileNavBtn).toBeInTheDocument();
   expect(mobileNavBtn).toHaveClass('closed');
 
@@ -107,3 +107,32 @@ test('renders suggested city cards from API', async () => {
   expect(sfCity).toBeInTheDocument();
   expect(screen.getByText('Salt Lake City')).toBeInTheDocument();
 });
+
+test('opens City Picker modal when Compare button in Navbar is clicked', async () => {
+  render(<App />);
+  const compareNavBtn = screen.getByRole('button', { name: /Compare cities navigation/i });
+  expect(compareNavBtn).toBeInTheDocument();
+
+  fireEvent.click(compareNavBtn);
+
+  const modal = await screen.findByRole('dialog');
+  expect(modal).toBeInTheDocument();
+  expect(screen.getByText(/Compare Cities Side-by-Side/i)).toBeInTheDocument();
+
+  // Close modal via Close button
+  const closeBtn = screen.getByRole('button', { name: /Close modal/i });
+  fireEvent.click(closeBtn);
+  await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull());
+});
+
+test('opens City Picker modal from Hero Compare Cities button', async () => {
+  render(<App />);
+  const heroCompareBtn = screen.getByRole('button', { name: /^Compare Cities$/ });
+  expect(heroCompareBtn).toBeInTheDocument();
+
+  fireEvent.click(heroCompareBtn);
+
+  const modal = await screen.findByRole('dialog');
+  expect(modal).toBeInTheDocument();
+});
+
