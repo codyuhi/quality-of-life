@@ -5,7 +5,7 @@ go 1.26.10
 require (
 	github.com/joho/godotenv v1.5.1
 	github.com/minio/minio-go/v7 v7.4.1
-	modernc.org/sqlite v1.62.0
+	modernc.org/sqlite v1.63.0
 )
 
 require (
